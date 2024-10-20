@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2024 at 08:20 AM
+-- Generation Time: Oct 20, 2024 at 03:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `parent` (
   `password` varchar(30) DEFAULT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `parent`
+--
+
+INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
+(1, 'test', 'test', 'Mathology');
 
 --
 -- Indexes for dumped tables

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'connect.php';
+include '../config/connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -36,7 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["username"] = $username;
                         
                         // Redirect user to welcome page
-                        header("location: parent-dashboard.php");
+                        header("location: ../parent/parent-dashboard.php");
+                        exit();
                     } else {
                         // Password is not valid, display a generic error message
                         $login_err = "Invalid username or password.";
