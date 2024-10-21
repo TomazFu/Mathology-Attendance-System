@@ -30,7 +30,7 @@ include_once 'includes/header.php';
     <div class="welcome-container">
         <h1>Welcome to Mathology</h1>
         <p>Mathology is an innovative online platform designed to make learning mathematics fun and engaging for students. Our interactive lessons, practice exercises, and progress tracking tools help students build confidence and excel in math.</p>
-        <img src="assets/images/math-illustration.jpg" alt="Math illustration" class="welcome-image">
+        <img src="assets/img/math-illustration.jpg" alt="Math illustration" class="welcome-image">
     </div>
     
     <div class="features-container">

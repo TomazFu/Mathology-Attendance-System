@@ -19,7 +19,14 @@ require_once "../includes/sidebar.php";
 
 <div class="dashboard-layout">
     <?php renderSidebar('parent'); ?>
-    <!-- dashboard content here -->
+    <div class="main-content">
+        <!-- dashboard content here -->
+        <h2>Welcome to the Parent Dashboard</h2>
+        <ul>
+            <li><a href="parent-attendance.php">View Attendance</a></li>
+            <li><a href="parent-package.php">View Package</a></li>
+        </ul>
+    </div>
 </div>
 
 <?php
