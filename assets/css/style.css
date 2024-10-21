@@ -81,6 +81,7 @@ header {
     height: 80px; /* Set a specific height */
     display: flex;
     align-items: center; /* Center content vertically */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box shadow */
 }
 
 nav {
@@ -285,4 +286,12 @@ nav {
 
 .quick-links a:hover {
     text-decoration: underline;
+}
+
+.welcome-image {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 20px;
 }

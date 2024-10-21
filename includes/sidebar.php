@@ -3,10 +3,10 @@ function renderSidebar($role) {
     $sidebarItems = [
         'parent' => [
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => '#'],
-            ['icon' => 'fas fa-user-graduate', 'text' => 'Students', 'link' => '#'],
-            ['icon' => 'fas fa-calendar-alt', 'text' => 'Attendance', 'link' => '#'],
-            ['icon' => 'fas fa-chart-bar', 'text' => 'Reports', 'link' => '#'],
-            ['icon' => 'fas fa-cog', 'text' => 'Settings', 'link' => '#'],
+            ['icon' => 'fas fa-table', 'text' => 'Timetable', 'link' => '#'],
+            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => '#'],
+            ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => '#'],
+            ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => '#'],
         ],
         'teacher' => [
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => '#'],

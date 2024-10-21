@@ -57,7 +57,7 @@ include_once 'includes/header.php';
     <div class="login-options">
         <h2>Choose Your Login Option</h2>
         <a href="parent/parent-login.php" class="login-button">Parent Login</a>
-        <a href="staff/staff-login.php" class="login-button">Staff Login</a>
+        <a href="#" class="login-button">Staff Login</a>
     </div>
 </div>
 
