@@ -39,8 +39,8 @@
                     <i class="material-icons">search</i>
                 </div>
                 <div class="icons">
-                    <button class="icon-button"><i class="material-icons">notifications</i></button>
-                    <button class="icon-button"><i class="material-icons">chat</i></button>
+                    <i class="material-icons">notifications</i>
+                    <i class="material-icons">chat</i>
                 </div>
             </header>
             <div class="content">
@@ -88,13 +88,14 @@
                         <div class="leave-details">
                             <p><strong>Leave ID:</strong> P120</p>
                             <p><strong>Student Name:</strong> John Doe</p>
-                            <p><strong>Reason:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+                            <p><strong>Reason:</strong> Sick</p>
                         </div>
                         <div class="leave-dates">
                             <p>12-01-2023 to 12-01-2023</p>
                             <button class="btn-icon"><i class="material-icons">visibility</i></button>
                         </div>
                     </div>
+                    <!-- Add more leave history items here -->
                 </div>
             </div>
         </main>

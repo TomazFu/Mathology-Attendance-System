@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showView(viewId) {
         if (viewId === 'leaveForm') {
-            
             leaveForm.style.display = 'block';
             leaveHistory.style.display = 'none';
             trackLeaveBtn.style.display = 'block';
@@ -30,14 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submission
+    // Form submission (you'll need to implement the actual submission logic)
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         // Add your form submission logic here
         console.log('Form submitted');
-        // Show a success message
-        alert('Leave request submitted successfully!');
     });
 
     // Track Leave button functionality
@@ -52,17 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // File upload preview
-    const fileUpload = document.getElementById('file-upload');
-    const fileUploadLabel = document.querySelector('.custom-file-upload');
-    fileUpload.addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-            fileUploadLabel.textContent = e.target.files[0].name;
-        } else {
-            fileUploadLabel.innerHTML = '<i class="material-icons">cloud_upload</i> Upload Leave Application';
-        }
-    });
-
     // Initially show the Leave Form
     showView('leaveForm');
+
+    // Function to handle window resize
+    function handleResize() {
+        if (window.innerWidth <= 768) {
+            // Adjust any specific styles or classes for mobile
+            document.body.classList.add('mobile');
+        } else {
+            document.body.classList.remove('mobile');
+        }
+    }
+
+    // Initial check
+    handleResize();
+
+    // Add resize event listener
+    window.addEventListener('resize', handleResize);
 });
