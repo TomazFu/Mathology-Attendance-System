@@ -1,1 +1,1 @@
-Mathology Attendance System
+# Mathology Attendance System
