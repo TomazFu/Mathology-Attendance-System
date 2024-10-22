@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Timetable</title>
-    <link rel="stylesheet" href="parentTimetable.css">
-</head>
-<body>
-    <div class="timetable-container">
-        <div class="header">
-            <h1>Your Timetable</h1>
-        </div>
+<!-- tmp -->
+<?php
+session_start();
+
+// Check if the user is logged in, if not then redirect to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: parent-login.php");
+    exit;
+}
+
+// Include database connection
+require_once "../config/connect.php";
+
+// Include header
+include "../includes/header.php";
+
+// Include sidebar
+require_once "../includes/sidebar.php";
+?>
+
+    <div class="dashboard-layout">
+        <?php renderSidebar('parent'); ?>
+        <div class="main-content">
+                <h1>Your Timetable</h1>
         
         <!-- Timetable Section -->
         <div class="timetable-section">
@@ -37,8 +48,10 @@
                 <!-- Enrolled Classes will be populated here by JS -->
             </ul>
         </div>
+        </div>
     </div>
 
-    <script src="parentTimetable.js"></script>
-</body>
-</html>
+<?php
+// Include footer
+include "../includes/footer.php";
+?>

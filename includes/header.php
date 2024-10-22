@@ -10,6 +10,7 @@ $base_path = isset($is_index) && $is_index ? '' : '../';
     <title>Mathology</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .profile-icon {
             font-size: 2.5em; /* Increase this value to make the icon larger */

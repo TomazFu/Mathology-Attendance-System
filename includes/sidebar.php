@@ -2,18 +2,11 @@
 function renderSidebar($role) {
     $sidebarItems = [
         'parent' => [
-            ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => '#'],
-            ['icon' => 'fas fa-table', 'text' => 'Timetable', 'link' => '#'],
-            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => '#'],
-            ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => '#'],
-            ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => '#'],
-        ],
-        'teacher' => [
-            ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => '#'],
-            ['icon' => 'fas fa-users', 'text' => 'Classes', 'link' => '#'],
-            ['icon' => 'fas fa-book', 'text' => 'Lessons', 'link' => '#'],
-            ['icon' => 'fas fa-calendar-check', 'text' => 'Attendance', 'link' => '#'],
-            ['icon' => 'fas fa-chart-line', 'text' => 'Performance', 'link' => '#'],
+            ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'parent-dashboard.php'],
+            ['icon' => 'fas fa-table', 'text' => 'Timetable', 'link' => 'parent-timetable.php'],
+            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => 'parent_leave_view.php'],
+            ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'parent-attendance.php'],
+            ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'parent-package.php'],
         ],
         // Add more roles as needed
     ];

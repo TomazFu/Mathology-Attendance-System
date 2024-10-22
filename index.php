@@ -1,3 +1,4 @@
+<!-- tmp -->
 <?php
 session_start();
 

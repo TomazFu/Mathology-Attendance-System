@@ -1,3 +1,4 @@
+<!-- tmp -->
 <?php
 session_start();
 
@@ -20,9 +21,14 @@ require_once "../includes/sidebar.php";
 <div class="dashboard-layout">
     <?php renderSidebar('parent'); ?>
     <div class="main-content">
-        <img src="../assets/img/attendancereport.png"/>
-        <img src="../assets/img/attendancelog.png"/>
+        <div class="image-container">
+            <img src="../assets/img/attendancereport.png" alt="Attendance Report"/>
+            <img src="../assets/img/attendancelog.png" alt="Attendance Log"/>
+        </div>
     </div>
 </div>
-</body>
-</html>
+
+<?php
+// Include footer
+include "../includes/footer.php";
+?>

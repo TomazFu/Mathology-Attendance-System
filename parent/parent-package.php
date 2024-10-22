@@ -1,3 +1,4 @@
+<!-- tmp -->
 <?php
 session_start();
 
@@ -23,5 +24,9 @@ require_once "../includes/sidebar.php";
         <img src="../assets/img/packagelist.png" class="package-list-image" alt="Package List">
     </div>
 </div>
-</body>
-</html>
+
+<?php
+// Include footer
+include "../includes/footer.php";
+?>
+

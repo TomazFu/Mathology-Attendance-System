@@ -1,20 +1,21 @@
+<!-- tmp -->
 <?php
-$host = 'localhost';
-$db = 'mathology_db';
-$user = 'root';
-$pass = '';
+session_start();
+include '../config/connect.php';
 
-// Database connection
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database connection failed.']);
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Unauthorized access']);
     exit();
 }
 
-// Assuming student_id is stored in session
-session_start();
-$studentId = $_SESSION['student_id'] ?? 1; // Default for testing
+$studentId = $_SESSION["id"] ?? null;
+
+if (!$studentId) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Student ID not found']);
+    exit();
+}
 
 // Fetch timetable data for a specific student
 $stmt = $conn->prepare("SELECT subject_id, title, room, instructor, time FROM timetable WHERE student_id = ?");
