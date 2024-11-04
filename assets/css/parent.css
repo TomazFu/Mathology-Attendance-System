@@ -1,0 +1,475 @@
+/* Card Layout */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Form Title */
+.form-title {
+    color: #1e293b;
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+}
+
+.form-title:after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: #2563eb;
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 2rem;
+}
+
+/* Form Controls */
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Date Range */
+.date-range {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.date-input {
+    position: relative;
+    flex: 1;
+}
+
+.date-input input[type="date"] {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #fff;
+    cursor: pointer;
+    
+    /* Remove default date picker styling */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Hide default calendar icon across browsers */
+.date-input input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.date-input input[type="date"]::-webkit-inner-spin-button,
+.date-input input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+
+/* Custom calendar icon */
+.date-input i {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.date-range-separator {
+    color: #64748b;
+    font-weight: 500;
+    padding: 0 0.5rem;
+}
+
+/* Focus state */
+.date-input input[type="date"]:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* File Upload */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.custom-file-upload:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.custom-file-upload i {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #2563eb;
+}
+
+#file-upload {
+    display: none;
+}
+
+.file-help-text {
+    color: #64748b;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    min-width: 120px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+/* Messages */
+.error-message, .success-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fee2e2;
+}
+
+.success-message {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #dcfce7;
+    display: none;
+}
+
+/* Track Leave Button */
+.track-leave-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 2rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.track-leave-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .date-range {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .date-input {
+        max-width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .track-leave-btn {
+        width: calc(100% - 2rem);
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+        border-radius: 12px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dashboard Layout */
+.dashboard-layout {
+    display: flex;
+    min-height: calc(100vh - 80px);
+}
+
+.dashboard-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Dashboard Sections */
+.dashboard-sections {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.enrolled-classes, 
+.enrolled-package, 
+.attendance-chart, 
+.latest-leave {
+    flex: 1;
+    margin: 0 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-chart .chart {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attendance-chart .chart span {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.attendance-chart ul {
+    display: flex;
+    gap: 15px;
+}
+
+.attendance-chart ul li {
+    display: inline-block;
+}
+
+.present { color: #22c55e; }
+.late { color: #f59e0b; }
+.leaves { color: #ef4444; }
+
+.latest-leave {
+    background-color: #f8fafc;
+}
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+    .dashboard-sections {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .enrolled-classes, 
+    .enrolled-package, 
+    .attendance-chart, 
+    .latest-leave {
+        margin: 0;
+        width: 100%;
+    }
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.book-image {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.welcome-title {
+    color: #1e293b;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1e293b;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.card-title i {
+    color: #3b82f6;
+}
+
+/* Loading State */
+.loading {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Card Actions */
+.card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn i {
+    font-size: 1.25rem;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        margin: 1rem;
+    }
+
+    .book-image {
+        max-width: 150px;
+    }
+
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
