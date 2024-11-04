@@ -4,7 +4,7 @@ function renderSidebar($role) {
         'parent' => [
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'parent-dashboard.php'],
             ['icon' => 'fas fa-table', 'text' => 'Timetable', 'link' => 'parent-timetable.php'],
-            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => 'parent_leave_view.php'],
+            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => 'parent-leave-view.php'],
             ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'parent-attendance.php'],
             ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'parent-package.php'],
         ],
