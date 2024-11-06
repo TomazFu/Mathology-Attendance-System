@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2024 at 04:13 PM
+-- Generation Time: Nov 06, 2024 at 05:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,16 +81,19 @@ CREATE TABLE `leaves` (
   `student_id` int(11) NOT NULL,
   `reason` text DEFAULT NULL,
   `fromDate` date DEFAULT NULL,
-  `toDate` date DEFAULT NULL
+  `toDate` date DEFAULT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `document_path` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `leaves`
 --
 
-INSERT INTO `leaves` (`leave_id`, `student_id`, `reason`, `fromDate`, `toDate`) VALUES
-(1, 1, 'Family vacation', '2023-07-01', '2023-07-05'),
-(2, 2, 'Medical appointment', '2023-07-10', '2023-07-10');
+INSERT INTO `leaves` (`leave_id`, `student_id`, `reason`, `fromDate`, `toDate`, `status`, `document_path`, `created_at`) VALUES
+(1, 1, 'Family vacation', '2023-07-01', '2023-07-05', 'pending', NULL, '2024-11-04 15:34:36'),
+(2, 2, 'Medical appointment', '2023-07-10', '2023-07-10', 'pending', NULL, '2024-11-04 15:34:36');
 
 -- --------------------------------------------------------
 
@@ -131,6 +134,42 @@ CREATE TABLE `parent` (
 
 INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
 (1729434667, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parents`
+--
+
+CREATE TABLE `parents` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(64) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `students`
+--
+
+CREATE TABLE `students` (
+  `student_id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `student_name` varchar(100) NOT NULL,
+  `class` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`student_id`, `parent_id`, `student_name`, `class`, `created_at`) VALUES
+(1, 1729434667, 'Student One', 'Class A', '2024-11-04 15:34:36'),
+(2, 1729434667, 'Student Two', 'Class B', '2024-11-04 15:34:36');
 
 -- --------------------------------------------------------
 
@@ -194,6 +233,19 @@ ALTER TABLE `parent`
   ADD UNIQUE KEY `parent_id` (`parent_id`) USING BTREE;
 
 --
+-- Indexes for table `parents`
+--
+ALTER TABLE `parents`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`student_id`);
+
+--
 -- Indexes for table `timetable`
 --
 ALTER TABLE `timetable`
@@ -226,6 +278,18 @@ ALTER TABLE `leaves`
 --
 ALTER TABLE `packages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `parents`
+--
+ALTER TABLE `parents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `students`
+--
+ALTER TABLE `students`
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `timetable`

@@ -1,21 +1,73 @@
-function toggleDropdown() {
-    var dropdown = document.getElementById("profileDropdown");
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "block";
-    }
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.profile-icon')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.style.display === "block") {
-                openDropdown.style.display = "none";
-            }
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const toggle = document.querySelector('.sidebar-toggle');
+    const mainContent = document.querySelector('.main-content');
+    const sidebarItems = document.querySelectorAll('.sidebar a span');
+    
+    // Function to handle sidebar state
+    function toggleSidebar(collapse) {
+        if (collapse) {
+            sidebar.classList.add('collapsed');
+            toggle.classList.add('collapsed');
+            mainContent.classList.add('collapsed');
+            // Add a small delay to hide text for smooth transition
+            setTimeout(() => {
+                sidebarItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+            }, 300);
+        } else {
+            sidebar.classList.remove('collapsed');
+            toggle.classList.remove('collapsed');
+            mainContent.classList.remove('collapsed');
+            // Show text immediately when expanding
+            sidebarItems.forEach(item => {
+                item.style.display = '';
+            });
         }
+        // Save state to localStorage
+        localStorage.setItem('sidebarCollapsed', collapse);
     }
+
+    // Initialize sidebar state from localStorage
+    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    toggleSidebar(isSidebarCollapsed);
+
+    // Handle click event with debounce
+    let isToggling = false;
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!isToggling) {
+            isToggling = true;
+            const willCollapse = !sidebar.classList.contains('collapsed');
+            toggleSidebar(willCollapse);
+            // Prevent multiple clicks for 500ms
+            setTimeout(() => {
+                isToggling = false;
+            }, 500);
+        }
+    });
+
+    // Handle window resize with debounce
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (window.innerWidth < 768) {
+                toggleSidebar(true);
+            }
+        }, 250);
+    });
+});
+
+function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.profile-dropdown')) {
+            dropdown.classList.remove('show');
+        }
+    });
 }

@@ -98,7 +98,7 @@ include_once 'includes/header.php';
                 </div>
                 <div class="testimonial-author">
                     <div class="author-image">
-                        <img src="assets/img/testimonial-1.jpg" alt="Parent">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4218/4218292.png" alt="Parent">
                     </div>
                     <div class="author-info">
                         <h4>Sarah Thompson</h4>
@@ -121,7 +121,7 @@ include_once 'includes/header.php';
                 </div>
                 <div class="testimonial-author">
                     <div class="author-image">
-                        <img src="assets/img/testimonial-2.jpg" alt="Parent">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4218/4218155.png" alt="Parent">
                     </div>
                     <div class="author-info">
                         <h4>Michael Chen</h4>
@@ -144,7 +144,7 @@ include_once 'includes/header.php';
                 </div>
                 <div class="testimonial-author">
                     <div class="author-image">
-                        <img src="assets/img/testimonial-3.jpg" alt="Parent">
+                        <img src="https://cdn-icons-png.flaticon.com/256/4218/4218204.png" alt="Parent">
                     </div>
                     <div class="author-info">
                         <h4>Emily Rodriguez</h4>
@@ -163,18 +163,23 @@ include_once 'includes/header.php';
     </div>
 
     <!-- 5. Login Options - Call to action after building trust -->
-    <div id="login-section" class="login-options section">
+    <div id="login-section" class="login-options">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
         <div class="login-options-content">
             <h2>Begin Your Journey</h2>
             <p>Experience the future of mathematics education with our premium learning platform. Join our community of successful learners today.</p>
             <div class="login-buttons-container">
                 <a href="parent/parent-login.php" class="login-button">
                     <i class="fas fa-user-friends"></i>
-                    Parent Portal
+                    <span>Parent Portal</span>
                 </a>
                 <a href="staff/staff-login.php" class="login-button">
                     <i class="fas fa-chalkboard-teacher"></i>
-                    Staff Portal
+                    <span>Staff Portal</span>
                 </a>
             </div>
         </div>

@@ -11,30 +11,29 @@ $base_path = isset($is_index) && $is_index ? '' : '../';
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        .profile-icon {
-            font-size: 2.5em; /* Increase this value to make the icon larger */
-            color: #333; /* Adjust color as needed */
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">
+        <div class="header-container">
+            <a href="<?php echo $base_path; ?>index.php" class="logo">
                 <i class="fas fa-square-root-alt"></i>
                 <span>Mathology</span>
-            </div>
+            </a>
             <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
-            <div class="profile-dropdown">
-                <i class="fas fa-user-circle profile-icon" onclick="toggleDropdown()"></i>
-                <div class="dropdown-content" id="profileDropdown">
-                    <a href="#">Edit Profile</a>
-                    <a href="<?php echo $base_path; ?>includes/logout.php">Log Out</a>
+            <div class="header-right">
+                <div class="profile-dropdown">
+                    <div class="profile-icon" onclick="toggleDropdown()">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="dropdown-content" id="profileDropdown">
+                        <a href="#"><i class="fas fa-user"></i>Edit Profile</a>
+                        <a href="<?php echo $base_path; ?>includes/logout.php">
+                            <i class="fas fa-sign-out-alt"></i>Log Out
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php endif; ?>
-        </nav>
+        </div>
     </header>
     <main>
