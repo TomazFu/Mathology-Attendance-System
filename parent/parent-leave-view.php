@@ -29,7 +29,6 @@ try {
 ?>
 
 <!-- Update CSS references -->
-<link rel="stylesheet" href="../assets/css/style.css">  <!-- Global styles -->
 <link rel="stylesheet" href="../assets/css/parent.css"> <!-- Parent-specific styles -->
 
 <div class="dashboard-layout">
