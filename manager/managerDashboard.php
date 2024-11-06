@@ -38,7 +38,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="managerDashboard.css">
+    <link rel="stylesheet" href="../assets/css/managerDashboard.css">
 </head>
 <body>
     <div class="dashboard">
