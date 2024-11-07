@@ -21,33 +21,30 @@ require_once "../includes/sidebar.php";
     <div class="dashboard-layout">
         <?php renderSidebar('parent'); ?>
         <div class="main-content">
+            <div class="timetable-section">
                 <h1>Your Timetable</h1>
-        
-        <!-- Timetable Section -->
-        <div class="timetable-section">
-            <table id="timetable">
-                <thead>
-                    <tr>
-                        <th>Subject ID</th>
-                        <th>Title</th>
-                        <th>Room</th>
-                        <th>Instructor</th>
-                        <th>Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data to be filled by JS -->
-                </tbody>
-            </table>
-        </div>
+                <table id="timetable">
+                    <thead>
+                        <tr>
+                            <th>Subject ID</th>
+                            <th>Title</th>
+                            <th>Room</th>
+                            <th>Instructor</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data to be filled by JS -->
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Enrolled Classes Section -->
-        <div class="enrolled-classes-section">
-            <h2>Enrolled Classes</h2>
-            <ul id="enrolled-classes-list">
-                <!-- Enrolled Classes will be populated here by JS -->
-            </ul>
-        </div>
+            <div class="enrolled-classes-section">
+                <h2>Enrolled Classes</h2>
+                <ul id="enrolled-classes-list">
+                    <!-- Enrolled Classes will be populated here by JS -->
+                </ul>
+            </div>
         </div>
     </div>
 

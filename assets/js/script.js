@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
     const toggle = document.querySelector('.sidebar-toggle');
     const mainContent = document.querySelector('.main-content');
+    const footer = document.querySelector('.site-footer');
     const sidebarItems = document.querySelectorAll('.sidebar a span');
     
     // Function to handle sidebar state
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.classList.add('collapsed');
             toggle.classList.add('collapsed');
             mainContent.classList.add('collapsed');
+            footer.classList.add('collapsed');
             // Add a small delay to hide text for smooth transition
             setTimeout(() => {
                 sidebarItems.forEach(item => {
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.classList.remove('collapsed');
             toggle.classList.remove('collapsed');
             mainContent.classList.remove('collapsed');
+            footer.classList.remove('collapsed');
             // Show text immediately when expanding
             sidebarItems.forEach(item => {
                 item.style.display = '';

@@ -2,11 +2,14 @@
 .card {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 2.5rem;
     margin: 2rem auto;
     max-width: 600px;
     animation: fadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* Form Title */
@@ -275,7 +278,6 @@
         border-radius: 12px;
     }
 }
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -1271,5 +1273,89 @@ input[type="file"] {
 
     .main-content {
         padding-bottom: 70px; /* Slightly reduced padding for mobile */
+    }
+}
+
+/* Timetable Section */
+.timetable-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timetable-section h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#timetable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+#timetable th, #timetable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#timetable th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
+
+#timetable tr:hover {
+    background: #f1f5f9;
+    transition: background 0.3s ease;
+}
+
+/* Enrolled Classes Section */
+.enrolled-classes-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.enrolled-classes-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#enrolled-classes-list {
+    list-style: none;
+    padding: 0;
+}
+
+#enrolled-classes-list li {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+    transition: background 0.3s ease;
+}
+
+#enrolled-classes-list li:hover {
+    background: #f1f5f9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .timetable-section, .enrolled-classes-section {
+        padding: 1.5rem;
+    }
+
+    #timetable th, #timetable td {
+        padding: 0.75rem;
     }
 }

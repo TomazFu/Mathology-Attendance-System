@@ -222,3 +222,21 @@ function initializeDashboardData() {
         }, 300);
     });
 }
+
+function toggleView() {
+    const leaveForm = document.getElementById('leaveForm');
+    const leaveHistory = document.getElementById('leaveHistory');
+    const trackBtn = document.querySelector('.track-leave-btn');
+
+    if (leaveForm && leaveHistory && trackBtn) {
+        if (leaveForm.style.display === 'none') {
+            leaveForm.style.display = 'block';
+            leaveHistory.style.display = 'none';
+            trackBtn.textContent = 'Track Leave';
+        } else {
+            leaveForm.style.display = 'none';
+            leaveHistory.style.display = 'block';
+            trackBtn.textContent = 'New Leave Request';
+        }
+    }
+}
