@@ -1,8 +1,7 @@
-<!-- tmp -->
 <?php
 session_start();
 
-//Check if the user is logged in, if not then redirect to login page
+// Check if the user is logged in, if not then redirect to login page
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: staff-login.php");
     exit;
@@ -17,7 +16,7 @@ include "../includes/header.php";
 // Include sidebar
 require_once "../includes/sidebar.php";
 
-//Include fetch attendance data
+// Include fetch attendance data
 require_once "includes/fetch-attendance-data-process.php";
 ?>
 
@@ -35,37 +34,30 @@ require_once "includes/fetch-attendance-data-process.php";
                 <div class="attendance-list dashboard-staff-box">
                     <h3>Attendance List</h3>
                     <?php if (!empty($studentsWithAttendance)): ?>
-                        <div class="scrollable-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th style="width:60%">Student Name</th>
-                                        <th>Present</th>
-                                        <th>Absent</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($studentsWithAttendance as $student): ?>
-                                        <tr>
-                                            <td style="width:60%"><?php echo htmlspecialchars($student['student_name']); ?></td>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    id="present_<?php echo $student['student_id']; ?>"
-                                                    <?php echo ($student['attendance_status'] == 'present') ? 'checked' : ''; ?>
-                                                    onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'present')" />
-                                            </td>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    id="absent_<?php echo $student['student_id']; ?>"
-                                                    <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
-                                                    onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                        <div class="attendance-container">
+                            <?php foreach ($studentsWithAttendance as $student): ?>
+                                <div class="attendance-record">
+                                    <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
+                                    <div class="attendance-status">
+                                        <label>
+                                            Present:
+                                            <input
+                                                type="checkbox"
+                                                id="present_<?php echo $student['student_id']; ?>"
+                                                <?php echo ($student['attendance_status'] == 'present') ? 'checked' : ''; ?>
+                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'present')" />
+                                        </label>
+                                        <label>
+                                            Absent:
+                                            <input
+                                                type="checkbox"
+                                                id="absent_<?php echo $student['student_id']; ?>"
+                                                <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
+                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
+                                        </label>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <p>No attendance records available.</p>
