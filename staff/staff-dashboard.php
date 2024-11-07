@@ -74,7 +74,7 @@ require_once "includes/fetch-attendance-data-process.php";
             </div>                
             <div class="staff-dashboard-sections">
                 <!-- View Package -->
-                <a href="staff-packages.php" class="dashboard-link">
+                <a href="staff-package.php" class="dashboard-link">
                     <div class="view-package dashboard-staff-box">
                         <h3>View Packages</h3>
                     </div>
