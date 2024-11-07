@@ -1,25 +1,183 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-}
-
+/* Overall Layout */
 .dashboard {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 20px;
+    width: 100%;
+    justify-content: center;
 }
 
-.monthly-summary, .stats, .attendance, .latest-leave-requests {
-    background-color: #008cba;
-    color: white;
-    padding: 15px;
+/* Monthly Summary Section */
+.monthly-summary {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-summary h2 {
+    font-weight: 800;
+}
+
+.monthly-summary p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats div {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Attendance Section */
+.attendance {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.attendance h2 {
+    font-weight: 800;
+}
+
+.attendance p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Latest Leave Requests */
+.latest-leave-requests {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.latest-leave-requests h2 {
+    font-weight: 800;
+}
+
+.leave-request {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
 }
 
-.latest-leave-requests .leave-request {
-    background-color: white;
-    color: black;
-    padding: 10px;
-    border: 1px solid #ddd;
-    margin-top: 5px;
+.leave-request p {
+    font-size: 14px;
+}
+
+.view-btn {
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.view-btn:hover {
+    background-color: #45a049;
+}
+
+/* Export Options */
+.export-options {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: auto 0;
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+
+/* Button Styling */
+button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.mark-present {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.mark-absent {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Leave Request Details Section */
+.leave-request-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #FFFFFF;
+    padding: 30px;
+    margin: 20px auto;
+    width: 60%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leave-request-details h2 {
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.leave-request-details p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.leave-request-details p strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #45a049;
 }
