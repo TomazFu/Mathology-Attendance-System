@@ -21,6 +21,10 @@ SET time_zone = "+00:00";
 -- Database: `mathlogydb`
 --
 
+CREATE DATABASE IF NOT EXISTS mathlogydb;
+
+USE mathlogydb;
+
 -- --------------------------------------------------------
 
 --
