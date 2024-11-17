@@ -1,4 +1,5 @@
 <?php
+// Include database connection
 require_once "../config/connect.php";
 
 // Get today's date
@@ -37,4 +38,7 @@ mysqli_free_result($attendanceResult);
 
 // Close connection
 mysqli_close($conn);
+
+// Return the results as JSON
+echo json_encode($studentsWithAttendance);
 ?>
