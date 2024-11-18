@@ -19,7 +19,8 @@ require_once "../includes/sidebar.php";
 // Include fetch attendance data
 require_once "includes/fetch-attendance-data-process.php";
 ?>
-
+<!DOCTYPE html>
+<html>
 <head>
     <link rel="stylesheet" href="../assets/css/staff.css">
 </head>
@@ -81,7 +82,7 @@ require_once "includes/fetch-attendance-data-process.php";
         </div>
     </div>
 </body>
-
+</html>
 <?php
 // Include footer
 include "../includes/footer.php";

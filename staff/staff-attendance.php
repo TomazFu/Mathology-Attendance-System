@@ -56,6 +56,7 @@ mysqli_close($conn);
 
 <head>
     <link rel="stylesheet" href="../assets/css/staff.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>

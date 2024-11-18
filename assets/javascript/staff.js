@@ -34,3 +34,19 @@ function updateAttendanceStatus(studentId, status, selectedDate) {
     // Send the data (student_id, attendance_status, and selected_date) to update the record
     xhr.send(`student_id=${studentId}&attendance_status=${status}&date=${selectedDate}`);
 }
+
+function toggleExpandRecord(recordId, imageUrl) {
+    const record = document.getElementById(recordId);
+    const expandedImage = document.getElementById('expanded-image');
+
+    if (expandedImage.dataset.recordId === recordId) {
+        // If the image is already expanded for this record, hide it
+        expandedImage.style.display = 'none';
+        expandedImage.dataset.recordId = '';
+    } else {
+        // Expand the image for the clicked record
+        expandedImage.src = imageUrl;
+        expandedImage.style.display = 'block';
+        expandedImage.dataset.recordId = recordId;
+    }
+}

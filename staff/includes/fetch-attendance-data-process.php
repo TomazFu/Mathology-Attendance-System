@@ -40,5 +40,5 @@ mysqli_free_result($attendanceResult);
 mysqli_close($conn);
 
 // Return the results as JSON
-echo json_encode($studentsWithAttendance);
+// echo json_encode($studentsWithAttendance);
 ?>
