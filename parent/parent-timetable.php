@@ -1,54 +1,50 @@
-<!-- tmp -->
 <?php
 session_start();
 
-// Check if the user is logged in, if not then redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: parent-login.php");
     exit;
 }
 
-// Include database connection
 require_once "../config/connect.php";
-
-// Include header
 include "../includes/header.php";
-
-// Include sidebar
 require_once "../includes/sidebar.php";
+
 ?>
 
-    <div class="dashboard-layout">
-        <?php renderSidebar('parent'); ?>
-        <div class="main-content">
-            <div class="timetable-section">
-                <h1>Your Timetable</h1>
-                <table id="timetable">
-                    <thead>
-                        <tr>
-                            <th>Subject ID</th>
-                            <th>Title</th>
-                            <th>Room</th>
-                            <th>Instructor</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data to be filled by JS -->
-                    </tbody>
-                </table>
+<link rel="stylesheet" href="../assets/css/parent.css">
+
+<div class="dashboard-layout">
+    <?php renderSidebar('parent'); ?>
+    <div class="main-content">
+        <div class="timetable-container">
+            <div class="timetable-header">
+                <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
             </div>
 
-            <div class="enrolled-classes-section">
-                <h2>Enrolled Classes</h2>
-                <ul id="enrolled-classes-list">
-                    <!-- Enrolled Classes will be populated here by JS -->
-                </ul>
+            <!-- Weekly View -->
+            <div id="weekly-view" class="timetable-view">
+                <div class="week-navigation">
+                    <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="week-display">Week of September 1, 2024</h2>
+                    <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="weekly-timetable">
+                    <div class="time-slots">
+                        <div class="time-header">Time</div>
+                    </div>
+                    <div class="weekly-grid">
+                    </div>
+                </div>
             </div>
+
+            <!-- List view will be dynamically added by JavaScript -->
         </div>
     </div>
+</div>
 
-<?php
-// Include footer
-include "../includes/footer.php";
-?>
+<script src="../assets/js/timetable.js"></script>
+<script src="../assets/js/script.js"></script>
+
+<?php include "../includes/footer.php"; ?>
