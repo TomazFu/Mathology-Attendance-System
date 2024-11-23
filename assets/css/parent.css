@@ -300,9 +300,11 @@
     flex: 1;
     padding: 2rem 3rem;
     overflow-y: auto;
+    min-width: 0;
 }
 
 .dashboard-container {
+    width: 100%;
     max-width: 1800px;
     margin: 0 auto;
 }
@@ -715,7 +717,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .hero-content {
@@ -1517,4 +1519,345 @@ input[type="file"] {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+/* Attendance Page Specific Styles */
+.content-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    width: 95%;
+    position: relative;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.attendance-hero {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    padding: 3rem;
+    border-radius: 24px;
+    color: white;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.hero-content .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    color: white;
+}
+
+.quick-filters {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.filter-select {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    min-width: 180px;
+    font-size: 0.95rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23FFFFFF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+}
+
+.filter-select option {
+    background: #1d4ed8;
+    color: white;
+    padding: 10px;
+}
+
+.filter-select:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Stats Grid Enhancement */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.stat-icon {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+/* Content Grid Enhancement */
+.content-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    width: 95%;
+    position: relative;
+}
+
+.attendance-chart-section,
+.attendance-log-section {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Chart Controls Enhancement */
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chart-type-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-type-btn {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chart-type-btn.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* Attendance Log Enhancement */
+.attendance-log {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.attendance-log-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.attendance-log-item.present {
+    border-left: 3px solid #10b981;
+}
+
+.attendance-log-item.absent {
+    border-left: 3px solid #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        width: 90%;
+    }
+    
+    .attendance-chart-section,
+    .attendance-log-section {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-grid {
+        width: 85%;
+        margin: 1rem auto;
+    }
+}
+
+/* Enhanced Chart Section */
+.attendance-chart-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+#attendance-period {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 2.5rem 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    min-width: 160px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.chart-type-buttons {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.375rem;
+    border-radius: 10px;
+}
+
+.chart-type-btn {
+    padding: 0.625rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-type-btn.active {
+    background: white;
+    color: #2563eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chart-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .attendance-chart-section {
+        padding: 1.5rem;
+    }
+
+    .chart-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    #attendance-period {
+        width: 100%;
+    }
+
+    .chart-type-buttons {
+        align-self: center;
+    }
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fee2e2;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.no-data {
+    text-align: center;
+    color: #64748b;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    font-size: 0.95rem;
 }

@@ -1,34 +1,131 @@
-<!-- tmp -->
 <?php
 session_start();
+error_log("Session data: " . print_r($_SESSION, true));
 
-// Check if the user is logged in, if not then redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: parent-login.php");
     exit;
 }
 
-// Include database connection
 require_once "../config/connect.php";
-
-// Include header
 include "../includes/header.php";
-
-// Include sidebar
 require_once "../includes/sidebar.php";
 ?>
+
+<link rel="stylesheet" href="../assets/css/parent.css">
 
 <div class="dashboard-layout">
     <?php renderSidebar('parent'); ?>
     <div class="main-content">
-        <div class="image-container">
-            <img src="../assets/img/attendancereport.png" alt="Attendance Report"/>
-            <img src="../assets/img/attendancelog.png" alt="Attendance Log"/>
+        <!-- Hero Section -->
+        <div class="attendance-hero">
+            <div class="hero-content">
+                <h1>Attendance Overview</h1>
+                <p class="subtitle">Track and monitor your child's attendance records</p>
+            </div>
+            <div class="quick-filters">
+                <select id="term-filter" class="filter-select">
+                    <option value="current">Current Term</option>
+                    <option value="previous">Previous Term</option>
+                </select>
+                <select id="class-filter" class="filter-select">
+                    <option value="all">All Classes</option>
+                    <option value="math">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="english">English</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="material-icons">calendar_today</i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="total-days">180</span>
+                    <span class="stat-label">Total School Days</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="material-icons">check_circle</i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="present-days">175</span>
+                    <span class="stat-label">Days Present</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="material-icons">trending_up</i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="attendance-rate">97.2%</span>
+                    <span class="stat-label">Attendance Rate</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="material-icons">warning</i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="absences">5</span>
+                    <span class="stat-label">Total Absences</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Attendance Chart Section -->
+            <div class="attendance-chart-section">
+                <div class="section-header">
+                    <h2>Attendance Trends</h2>
+                    <div class="chart-controls">
+                        <select id="attendance-period" onchange="updateAttendanceChart(this.value)">
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="semester">This Semester</option>
+                        </select>
+                        <div class="chart-type-buttons">
+                            <button class="chart-type-btn active" data-type="line">
+                                <i class="material-icons">show_chart</i>
+                            </button>
+                            <button class="chart-type-btn" data-type="bar">
+                                <i class="material-icons">bar_chart</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Attendance Log Section -->
+            <div class="attendance-log-section">
+                <div class="section-header">
+                    <h2>Recent Attendance</h2>
+                    <button class="view-all-btn">
+                        View All
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+                <div class="attendance-log">
+                    <!-- Logs will be populated dynamically -->
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<?php
-// Include footer
-include "../includes/footer.php";
-?>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/attendance.js"></script>
+<script src="../assets/js/script.js"></script>
+
+<?php include "../includes/footer.php"; ?>
