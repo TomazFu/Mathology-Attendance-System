@@ -105,18 +105,20 @@ INSERT INTO `leaves` (`leave_id`, `student_id`, `reason`, `fromDate`, `toDate`, 
 --
 
 CREATE TABLE `packages` (
-  `id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `package_name` varchar(100) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `package_name` varchar(100) NOT NULL,
+  `price` int(11) NOT NULL,
+  `details` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`id`, `student_id`, `package_name`) VALUES
-(1, 1, 'Premium Package'),
-(2, 2, 'Basic Package');
+INSERT INTO `packages` (`id`, `package_name`, `price`, `details`) VALUES
+(1, `package_1`, 'XX'),
+(2, `package_2`, 'XX');
 
 -- --------------------------------------------------------
 
@@ -128,7 +130,7 @@ CREATE TABLE `parent` (
   `parent_id` int(50) DEFAULT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(60) DEFAULT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -183,17 +185,19 @@ CREATE TABLE `students` (
   `parent_id` int(11) DEFAULT NULL,
   `student_name` varchar(100) NOT NULL,
   `class` varchar(50) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `package_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  FOREIGN KEY (`package_id`) REFERENCES `packages`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`student_id`, `parent_id`, `student_name`, `class`, `created_at`) VALUES
-(1, 1729434667, 'Student One', 'Class A', '2024-11-04 15:34:36'),
-(2, 1729434667, 'Student Two', 'Class B', '2024-11-04 15:34:36'),
-(3, 1729434667, 'Student 3', 'Class A', '2024-11-07 13:44:30');
+INSERT INTO `students` (`student_id`, `parent_id`, `student_name`, `class`, `package_id`, `created_at`) VALUES
+(1, 1729434667, 'Student One', 'Class A', '1', '2024-11-04 15:34:36'),
+(2, 1729434667, 'Student Two', 'Class B', '2', '2024-11-04 15:34:36'),
+(3, 1729434667, 'Student 3', 'Class A', '3', '2024-11-07 13:44:30');
 
 -- --------------------------------------------------------
 
