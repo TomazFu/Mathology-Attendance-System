@@ -183,21 +183,31 @@ require_once "includes/fetch-student-package-process.php";
                                                     </td>
                                                     <td><?php echo htmlspecialchars($details); ?></td>
                                                     <td>
-                                                        <button class="print-button" onclick="printInvoice(<?php
-                                                            echo htmlspecialchars(json_encode([
-                                                                'payment_id' => $payment['id'],
-                                                                'student_id' => $student['student_id'],
-                                                                'student_name' => $student['student_name'],
-                                                                'date' => $payment['date'],
-                                                                'amount' => $payment['amount'],
-                                                                'payment_method' => $payment['payment_method'],
-                                                                'package_name' => $payment['package_name'],
-                                                                'details' => $details,
-                                                                'status' => $payment['status']
-                                                            ]));
-                                                            ?>)">
+                                                        <?php
+                                                        $printData = [
+                                                            'payment_id' => $payment['id'],
+                                                            'student_id' => $payment['student_id'],
+                                                            'student_name' => $payment['student_name'],
+                                                            'parent_name' => $payment['parent_name'],
+                                                            'date' => $payment['date'],
+                                                            'amount' => $payment['amount'],
+                                                            'package_price' => $payment['package_price'],
+                                                            'payment_method' => $payment['payment_method'],
+                                                            'package_name' => $payment['package_name'],
+                                                            'registration' => $payment['registration'],
+                                                            'diagnostic_test' => $payment['diagnostic_test'],
+                                                            'deposit_fee' => $payment['deposit_fee'],
+                                                            'status' => $payment['status']
+                                                        ];
+                                                        ?>
+                                                        <button class="print-button" onclick='printInvoice(<?php echo json_encode($printData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>)'>
                                                             <i class="fas fa-print"></i> Print
                                                         </button>
+                                                        <?php if ($payment['status'] === 'unpaid'): ?>
+                                                            <button class="update-status-button" onclick="updatePaymentStatus(<?php echo $payment['id']; ?>)">
+                                                                <i class="fas fa-check"></i> Mark as Paid
+                                                            </button>
+                                                        <?php endif; ?> 
                                                     </td>
                                                 </tr>
                                             <?php

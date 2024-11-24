@@ -224,6 +224,23 @@ window.onclick = function(event) {
 
 function printInvoice(paymentData) {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+    const now = new Date();
+    const currentTime = now.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: true 
+    });
+    const totalAmount = parseFloat(paymentData.amount);
+    let paidToDate = 0;
+    let paidToday = 0;
+    let outstandingAmount = totalAmount;
+
+    if (paymentData.status === 'paid') {
+        paidToDate = totalAmount;
+        paidToday = totalAmount;
+        outstandingAmount = 0;
+    }
     
     const invoiceHtml = `
         <!DOCTYPE html>
@@ -316,7 +333,7 @@ function printInvoice(paymentData) {
         </head>
         <body>
             <div class="header">
-                <img src="/Mathology-Attendance-System/assets/images/logo.png" class="logo" alt="Mathology">
+                <img src="/Mathology-Attendance-System/assets/img/mathology.png" class="logo" alt="Mathology">
                 <div class="receipt-title">Official Receipt</div>
             </div>
             
@@ -333,20 +350,20 @@ function printInvoice(paymentData) {
                 </div>
                 <div class="right-details">
                     <div class="detail-row">
-                        <div class="detail-label">Receipt No:</div>
+                        <div class="detail-label" style="font-weight:bold">Receipt No:</div>
                         <div>RCPT-${paymentData.payment_id}</div>
                     </div>
                     <div class="detail-row">
-                        <div class="detail-label">Invoice No:</div>
+                        <div class="detail-label" style="font-weight:bold">Invoice No:</div>
                         <div>INV-${paymentData.payment_id}</div>
                     </div>
                     <div class="detail-row">
-                        <div class="detail-label">Date:</div>
+                        <div class="detail-label" style="font-weight:bold">Date:</div>
                         <div>${new Date(paymentData.date).toLocaleDateString()}</div>
                     </div>
                     <div class="detail-row">
-                        <div class="detail-label">Time:</div>
-                        <div>${new Date(paymentData.date).toLocaleTimeString()}</div>
+                        <div class="detail-label" style="font-weight:bold">Time:</div>
+                        <div>${currentTime}</div>
                     </div>
                 </div>
             </div>
@@ -356,7 +373,7 @@ function printInvoice(paymentData) {
                     <tr>
                         <th style="width: 30px;">No</th>
                         <th>Particulars</th>
-                        <th style="width: 50px;">RM</th>
+                        <th style="width: 50px;">Currency</th>
                         <th style="width: 100px;" class="amount-column">Amount</th>
                     </tr>
                 </thead>
@@ -365,33 +382,33 @@ function printInvoice(paymentData) {
                 </tbody>
             </table>
 
-            <div class="totals">
+           <div class="totals">
                 <div class="total-row">
                     <div>Total Amount:</div>
-                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                    <div>RM ${totalAmount.toFixed(2)}</div>
                 </div>
                 <div class="total-row">
                     <div>Total Paid to Date:</div>
-                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                    <div>RM ${paidToDate.toFixed(2)}</div>
                 </div>
                 <div class="total-row">
                     <div>Paid Today:</div>
-                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                    <div>RM ${paidToday.toFixed(2)}</div>
                 </div>
                 <div class="total-row">
                     <div>Outstanding Amount:</div>
-                    <div>RM 0.00</div>
+                    <div>RM ${outstandingAmount.toFixed(2)}</div>
                 </div>
             </div>
 
             <div class="payment-method">
-                <div>Payment Method</div>
+                <div style="font-weight:bold">Payment Method</div>
                 <div>
-                    <span class="checkbox ${paymentData.payment_method === 'cash' ? 'checked' : ''}"></span> Cash
-                    <span class="checkbox ${paymentData.payment_method === 'credit-card' ? 'checked' : ''}"></span> Credit Card
-                    <span class="checkbox ${paymentData.payment_method === 'cheque' ? 'checked' : ''}"></span> Cheque
-                    <span class="checkbox ${paymentData.payment_method === 'bank-in' ? 'checked' : ''}"></span> Bank In
-                    <span class="checkbox ${paymentData.payment_method === 'deposit' ? 'checked' : ''}"></span> Deposit
+                    <span class="checkbox ${paymentData.payment_method === 'cash' ? 'checked' : ''}"></span> Cash<br>
+                    <span class="checkbox ${paymentData.payment_method === 'credit-card' ? 'checked' : ''}"></span> Credit Card<br>
+                    <span class="checkbox ${paymentData.payment_method === 'cheque' ? 'checked' : ''}"></span> Cheque<br>
+                    <span class="checkbox ${paymentData.payment_method === 'bank-in' ? 'checked' : ''}"></span> Bank In<br>
+                    <span class="checkbox ${paymentData.payment_method === 'deposit' ? 'checked' : ''}"></span> Deposit<br>
                 </div>
             </div>
 
@@ -454,9 +471,9 @@ function generateItemRows(paymentData) {
         rows += `
             <tr>
                 <td>${rowNumber++}</td>
-                <td>Programme Duration ${new Date(paymentData.date).toLocaleDateString()} - ${getEndDate(paymentData.date)}<br>2.00 Hours(s) Per Week</td>
+                <td>${paymentData.package_name}</td>
                 <td>RM</td>
-                <td class="amount-column">${parseFloat(paymentData.amount).toFixed(2)}</td>
+                <td class="amount-column">${parseFloat(paymentData.package_price).toFixed(2)}</td>
             </tr>`;
     }
 
@@ -468,4 +485,31 @@ function getEndDate(startDate) {
     date.setMonth(date.getMonth() + 1);
     date.setDate(date.getDate() - 1);
     return date.toLocaleDateString();
+}
+
+function updatePaymentStatus(paymentId) {
+    if (confirm('Are you sure you want to mark this payment as paid?')) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Mathology-Attendance-System/staff/includes/update-payment-status.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('Payment status updated successfully!');
+                        location.reload(); // Refresh the page to show updated status
+                    } else {
+                        alert('Error: ' + (response.message || 'Failed to update payment status'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error updating payment status');
+                }
+            }
+        };
+
+        xhr.send('payment_id=' + paymentId);
+    }
 }
