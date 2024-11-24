@@ -31,6 +31,32 @@ require_once "includes/fetch-student-package-process.php";
 
         <div class="main-content">
             <h1>Manage Packages</h1>
+            <button class="view-packages-btn" onclick="showPackagesModal()">View All Packages</button>
+            <div id="packagesModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closePackagesModal()">&times;</span>
+                    <h2>Available Packages</h2>
+                    <div class="packages-list">
+                        <?php
+                        // Query to get all packages
+                        $sql = "SELECT package_name, price, details FROM packages ORDER BY id";
+                        $result = $conn->query($sql);
+
+                        if ($result && $result->num_rows > 0) {
+                            while ($package = $result->fetch_assoc()) {
+                                echo "<div class='package-item'>";
+                                echo "<h3>" . htmlspecialchars($package['package_name']) . "</h3>";
+                                echo "<p class='package-price'>RM " . htmlspecialchars($package['price']) . "</p>";
+                                echo "<p class='package-details'>" . htmlspecialchars($package['details']) . "</p>";
+                                echo "</div>";
+                            }
+                        } else {
+                            echo "<p>No packages found</p>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
             <div class="attendance-container-list">
                 <?php if (!empty($students)): ?>
                     <?php foreach ($students as $student): ?>
@@ -41,7 +67,7 @@ require_once "includes/fetch-student-package-process.php";
                             <!-- Update form specific to each student -->
                             <div id="update-form-<?php echo $student['student_id']; ?>" class="update-form" style="display:none;">
                                 <input type="hidden" id="student-id-<?php echo $student['student_id']; ?>" value="<?php echo $student['student_id']; ?>">
-
+                                <h2>Package Details</h2>
                                 <table>
                                     <tr>
                                         <td>Current Package</td>
@@ -63,12 +89,15 @@ require_once "includes/fetch-student-package-process.php";
                                                         $selected = ($row['id'] == $student['package']['package_id']) ? 'selected' : '';
                                                         echo "<option value='" . $row['id'] . "' " . $selected . ">" . htmlspecialchars($row['package_name']) . "</option>";
                                                     }
-                                                } 
+                                                }
                                                 ?>
                                             </select>
                                             <button onclick="updatePackage(<?php echo $student['student_id']; ?>)">Update</button>
                                         </td>
                                     </tr>
+                                </table>
+                                <h2>Generate New Payment</h2>
+                                <table>
                                     <tr>
                                         <td>Registration</td>
                                         <td><input type="checkbox" id="registration-<?php echo $student['student_id']; ?>" value="1"></td>

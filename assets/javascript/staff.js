@@ -155,3 +155,20 @@ function updatePackage(studentId) {
                "&package_id=" + encodeURIComponent(packageId);
     xhr.send(data);
 }
+
+// Add these new functions
+function showPackagesModal() {
+    document.getElementById('packagesModal').style.display = 'block';
+}
+
+function closePackagesModal() {
+    document.getElementById('packagesModal').style.display = 'none';
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    var modal = document.getElementById('packagesModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
