@@ -117,9 +117,8 @@ CREATE TABLE `packages` (
 --
 
 INSERT INTO `packages` (`id`, `package_name`, `price`, `details`) VALUES
-(1, `package_1`, 'XX'),
-(2, `package_2`, 'XX');
-
+(1, 'package_1', 100, 'This is package 1'),
+(2, 'package_2', 200, 'This is package 2');
 -- --------------------------------------------------------
 
 --
