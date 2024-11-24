@@ -2,18 +2,17 @@
 // Include database connection
 require_once "../config/connect.php";
 
-// Get today's date
-$dateToday = date("Y-m-d");
+$selectedDate = isset($_GET['date']) ? $_GET['date'] : date("Y-m-d");
 
 // Fetch all students
 $sqlStudents = "SELECT * FROM students";
 $studentsResult = mysqli_query($conn, $sqlStudents);
 
-// Initialize an array to hold all students and their attendance status for today
+// Initialize an array to hold all students and their attendance status for the selected date
 $studentsWithAttendance = array();
 
-// Fetch today's attendance records for comparison
-$sqlAttendance = "SELECT * FROM attendance WHERE date = '$dateToday'";
+// Fetch attendance records for the selected date
+$sqlAttendance = "SELECT * FROM attendance WHERE date = '$selectedDate'";
 $attendanceResult = mysqli_query($conn, $sqlAttendance);
 $attendanceRecords = array();
 
@@ -23,7 +22,7 @@ if ($attendanceResult) {
     }
 }
 
-// Process all students and attach their attendance status for today
+// Process all students and attach their attendance status for the selected date
 while ($student = mysqli_fetch_assoc($studentsResult)) {
     $studentsWithAttendance[] = array(
         'student_id' => $student['student_id'],
@@ -38,7 +37,4 @@ mysqli_free_result($attendanceResult);
 
 // Close connection
 mysqli_close($conn);
-
-// Return the results as JSON
-// echo json_encode($studentsWithAttendance);
 ?>

@@ -16,8 +16,6 @@ include "../includes/header.php";
 // Include sidebar
 require_once "../includes/sidebar.php";
 
-// Include fetch attendance data
-require_once "includes/fetch-attendance-data-process.php";
 ?>
 <!DOCTYPE html>
 <html>
