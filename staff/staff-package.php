@@ -85,8 +85,11 @@ require_once "includes/fetch-student-package-process.php";
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         $selected = ($row['id'] == $student['package']['package_id']) ? 'selected' : '';
-                                                        echo "<option value='" . $row['id'] . "' data-price='" . $row['price'] . "' " . $selected . ">"
-                                                            . htmlspecialchars($row['package_name']) . "</option>";
+                                                        echo "<option value='" . $row['id'] . "' 
+                                                                data-price='" . $row['price'] . "' 
+                                                                " . $selected . ">"
+                                                            . htmlspecialchars($row['package_name'])
+                                                            . "</option>";
                                                     }
                                                 }
                                                 ?>
@@ -136,8 +139,59 @@ require_once "includes/fetch-student-package-process.php";
                                     </tr>
                                     <input type="hidden" id="parent-id-<?php echo $student['student_id']; ?>"
                                         value="<?php echo $student['parent_id']; ?>">
+                                    <input type="hidden" id="current-package-<?php echo $student['student_id']; ?>"
+                                        value="<?php echo $student['package']['package_id']; ?>">
                                 </table>
                                 <button onclick="submitPayment(<?php echo $student['student_id']; ?>)">Generate Payment</button>
+                                <h2>Payment History</h2>
+                                <table class="payment-history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Package</th>
+                                            <th>Amount</th>
+                                            <th>Payment Method</th>
+                                            <th>Status</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        require_once "includes/fetch-payment-details-process.php";
+                                        $payments = getPaymentDetails($student['student_id'], $conn);
+
+                                        if (!empty($payments)):
+                                            foreach ($payments as $payment):
+                                                // Calculate additional fees
+                                                $additionalFees = array();
+                                                if ($payment['registration']) $additionalFees[] = "Registration";
+                                                if ($payment['diagnostic_test']) $additionalFees[] = "Diagnostic Test";
+                                                if ($payment['deposit_fee'] > 0) $additionalFees[] = "Deposit: RM" . $payment['deposit_fee'];
+
+                                                $details = !empty($additionalFees) ? implode(", ", $additionalFees) : "Package Only";
+                                        ?>
+                                                <tr>
+                                                    <td><?php echo date('d/m/Y', strtotime($payment['date'])); ?></td>
+                                                    <td><?php echo htmlspecialchars($payment['package_name'] ?? 'No Package'); ?></td>
+                                                    <td>RM<?php echo number_format($payment['amount'], 2); ?></td>
+                                                    <td><?php echo ucfirst(str_replace('-', ' ', $payment['payment_method'])); ?></td>
+                                                    <td>
+                                                        <span class="status-badge <?php echo $payment['status']; ?>">
+                                                            <?php echo ucfirst($payment['status']); ?>
+                                                        </span>
+                                                    </td>
+                                                    <td><?php echo htmlspecialchars($details); ?></td>
+                                                </tr>
+                                            <?php
+                                            endforeach;
+                                        else:
+                                            ?>
+                                            <tr>
+                                                <td colspan="6">No payment records found.</td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     <?php endforeach; ?>

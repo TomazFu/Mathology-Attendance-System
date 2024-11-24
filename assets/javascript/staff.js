@@ -69,37 +69,87 @@ function showUpdateForm(studentId) {
     }
 }
 
-
-
 function submitPayment(studentId) {
-    if (window.isSubmitting) return;
-    
     try {
-        window.isSubmitting = true;
-
         // Get all required elements
         const packageSelect = document.getElementById(`package-select-${studentId}`);
         const registrationCheckbox = document.getElementById(`registration-${studentId}`);
         const diagnosticCheckbox = document.getElementById(`diagnostic-${studentId}`);
         const depositInput = document.getElementById(`deposit_fee-${studentId}`);
-        const paymentMethodInputs = document.getElementsByName(`payment-method-${studentId}`);
         const statusSelect = document.getElementById(`status-${studentId}`);
         const paymentDateInput = document.getElementById(`payment-date-${studentId}`);
-        const parentIdInput = document.getElementById(`parent-id-${studentId}`); // Add this line
+        const parentIdInput = document.getElementById(`parent-id-${studentId}`);
+        const currentPackageInput = document.getElementById(`current-package-${studentId}`);
 
-        // Get parent_id
-        const parentId = parentIdInput ? parentIdInput.value : null; // Add this line
+        // Get payment method first
+        const selectedPaymentMethod = document.querySelector(`input[name="payment-method-${studentId}"]:checked`);
+        if (!selectedPaymentMethod) {
+            alert("Please select a payment method");
+            return;
+        }
 
-        // Calculate total amount
+        // Get current package ID from students table
+        const currentPackageId = currentPackageInput.value;
+
+        // Calculate total amount and fees
         let totalAmount = 0;
+        let depositFee = parseFloat(depositInput.value) || 0; // Moved this up
 
-        // ... rest of your calculation code ...
+        // Add package price if a package is selected
+        if (packageSelect.value && packageSelect.value !== 'none') {
+            const selectedOption = packageSelect.options[packageSelect.selectedIndex];
+            const packagePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+            totalAmount += packagePrice;
+        }
+
+        // Add registration fee if checked (50)
+        if (registrationCheckbox.checked) {
+            totalAmount += 50;
+        }
+
+        // Add diagnostic test fee if checked (100)
+        if (diagnosticCheckbox.checked) {
+            totalAmount += 100;
+        }
+
+        // Add deposit fee
+        totalAmount += depositFee;
+
+        // Validation
+        if (!paymentDateInput.value) {
+            alert("Please select a payment date");
+            return;
+        }
+
+        // Send the payment data
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Mathology-Attendance-System/staff/includes/update-payment.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert("Payment updated successfully. Total amount: RM" + totalAmount);
+                        location.reload();
+                    } else {
+                        alert("Error: " + (response.message || "Unknown error occurred"));
+                    }
+                } catch (e) {
+                    console.error('Response:', xhr.responseText);
+                    console.error('Parse error:', e);
+                    alert("Error processing payment response");
+                }
+            }
+        };
 
         const data = new URLSearchParams({
             student_id: studentId,
-            parent_id: parentId, // Add this line
+            parent_id: parentIdInput.value,
+            package_id: currentPackageId,
             amount: totalAmount,
-            payment_method: paymentMethod,
+            payment_method: selectedPaymentMethod.value,
             registration: registrationCheckbox.checked ? 1 : 0,
             deposit_fee: depositFee,
             diagnostic_test: diagnosticCheckbox.checked ? 1 : 0,
@@ -111,7 +161,6 @@ function submitPayment(studentId) {
         xhr.send(data);
 
     } catch (error) {
-        window.isSubmitting = false;
         console.error('Error in submitPayment:', error);
         alert(`Error: ${error.message}`);
     }

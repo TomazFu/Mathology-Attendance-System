@@ -263,13 +263,15 @@ CREATE TABLE `payments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `date` date NULL,
   `payment_method` varchar(50) NOT NULL,
   `registration` BOOLEAN DEFAULT FALSE, 
   `deposit_fee` int(11) DEFAULT NULL,
   `diagnostic_test` BOOLEAN DEFAULT FALSE, 
-  `status` varchar(50) NOT NULL
+  `status` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 

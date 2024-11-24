@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Get and validate input
 $student_id = isset($_POST['student_id']) ? intval($_POST['student_id']) : 0;
 $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
+$package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
 $amount = isset($_POST['amount']) ? intval($_POST['amount']) : 0;
 $payment_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : '';
 $registration = isset($_POST['registration']) ? (bool)$_POST['registration'] : false;
@@ -27,18 +28,19 @@ $date = isset($_POST['date']) ? $_POST['date'] : null;
 try {
     $conn->begin_transaction();
 
-    $sql = "INSERT INTO payments (parent_id, student_id, amount, date, payment_method, 
+    $sql = "INSERT INTO payments (parent_id, student_id, package_id, amount, date, payment_method, 
             registration, deposit_fee, diagnostic_test, status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception("Prepare failed: " . $conn->error);
     }
 
-    $stmt->bind_param("iiissiiss", 
+    $stmt->bind_param("iiiissiiss", 
         $parent_id,
         $student_id,
+        $package_id,
         $amount,
         $date,
         $payment_method,
