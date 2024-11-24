@@ -256,6 +256,21 @@ INSERT INTO `timetable` (`id`, `student_id`, `subject_id`, `title`, `room`, `ins
 (5, 2, 104, 'Statistics', 'Room D4', 'Mr. Brown', 'Thursday 1:00 PM');
 
 --
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `date` date NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+--
 -- Indexes for dumped tables
 --
 
