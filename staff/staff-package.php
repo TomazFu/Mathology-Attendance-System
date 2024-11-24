@@ -153,6 +153,7 @@ require_once "includes/fetch-student-package-process.php";
                                             <th>Payment Method</th>
                                             <th>Status</th>
                                             <th>Details</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -181,6 +182,23 @@ require_once "includes/fetch-student-package-process.php";
                                                         </span>
                                                     </td>
                                                     <td><?php echo htmlspecialchars($details); ?></td>
+                                                    <td>
+                                                        <button class="print-button" onclick="printInvoice(<?php
+                                                            echo htmlspecialchars(json_encode([
+                                                                'payment_id' => $payment['id'],
+                                                                'student_id' => $student['student_id'],
+                                                                'student_name' => $student['student_name'],
+                                                                'date' => $payment['date'],
+                                                                'amount' => $payment['amount'],
+                                                                'payment_method' => $payment['payment_method'],
+                                                                'package_name' => $payment['package_name'],
+                                                                'details' => $details,
+                                                                'status' => $payment['status']
+                                                            ]));
+                                                            ?>)">
+                                                            <i class="fas fa-print"></i> Print
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <?php
                                             endforeach;

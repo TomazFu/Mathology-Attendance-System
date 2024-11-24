@@ -221,3 +221,251 @@ window.onclick = function(event) {
         modal.style.display = 'none';
     }
 }
+
+function printInvoice(paymentData) {
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    
+    const invoiceHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Official Receipt - ${paymentData.payment_id}</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 40px;
+                    font-size: 12px;
+                }
+                .logo {
+                    width: 200px;
+                    margin-bottom: 10px;
+                }
+                .header {
+                    margin-bottom: 20px;
+                }
+                .receipt-title {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin: 10px 0;
+                }
+                .receipt-details {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 20px;
+                }
+                .left-details, .right-details {
+                    width: 48%;
+                }
+                .detail-row {
+                    display: flex;
+                    margin-bottom: 5px;
+                }
+                .detail-label {
+                    width: 100px;
+                    font-weight: bold;
+                }
+                .items-table {
+                    width: 100%;
+                    margin-bottom: 20px;
+                    border-collapse: collapse;
+                }
+                .items-table th, .items-table td {
+                    padding: 5px;
+                    text-align: left;
+                }
+                .amount-column {
+                    text-align: right;
+                }
+                .totals {
+                    width: 100%;
+                    margin-top: 20px;
+                }
+                .total-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                }
+                .payment-method {
+                    margin-top: 20px;
+                }
+                .checkbox {
+                    width: 15px;
+                    height: 15px;
+                    border: 1px solid #000;
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+                .checked {
+                    background-color: #000;
+                }
+                .footer {
+                    margin-top: 30px;
+                    font-size: 10px;
+                }
+                .address {
+                    text-align: center;
+                    margin-top: 50px;
+                    font-size: 10px;
+                }
+                @media print {
+                    .no-print {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <img src="/Mathology-Attendance-System/assets/images/logo.png" class="logo" alt="Mathology">
+                <div class="receipt-title">Official Receipt</div>
+            </div>
+            
+            <div class="receipt-details">
+                <div class="left-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Student:</div>
+                        <div>${paymentData.student_name}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Guardian:</div>
+                        <div>${paymentData.parent_name}</div>
+                    </div>
+                </div>
+                <div class="right-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Receipt No:</div>
+                        <div>RCPT-${paymentData.payment_id}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Invoice No:</div>
+                        <div>INV-${paymentData.payment_id}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Date:</div>
+                        <div>${new Date(paymentData.date).toLocaleDateString()}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Time:</div>
+                        <div>${new Date(paymentData.date).toLocaleTimeString()}</div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;">No</th>
+                        <th>Particulars</th>
+                        <th style="width: 50px;">RM</th>
+                        <th style="width: 100px;" class="amount-column">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${generateItemRows(paymentData)}
+                </tbody>
+            </table>
+
+            <div class="totals">
+                <div class="total-row">
+                    <div>Total Amount:</div>
+                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                </div>
+                <div class="total-row">
+                    <div>Total Paid to Date:</div>
+                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                </div>
+                <div class="total-row">
+                    <div>Paid Today:</div>
+                    <div>RM ${parseFloat(paymentData.amount).toFixed(2)}</div>
+                </div>
+                <div class="total-row">
+                    <div>Outstanding Amount:</div>
+                    <div>RM 0.00</div>
+                </div>
+            </div>
+
+            <div class="payment-method">
+                <div>Payment Method</div>
+                <div>
+                    <span class="checkbox ${paymentData.payment_method === 'cash' ? 'checked' : ''}"></span> Cash
+                    <span class="checkbox ${paymentData.payment_method === 'credit-card' ? 'checked' : ''}"></span> Credit Card
+                    <span class="checkbox ${paymentData.payment_method === 'cheque' ? 'checked' : ''}"></span> Cheque
+                    <span class="checkbox ${paymentData.payment_method === 'bank-in' ? 'checked' : ''}"></span> Bank In
+                    <span class="checkbox ${paymentData.payment_method === 'deposit' ? 'checked' : ''}"></span> Deposit
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Thank you! It has been great working with you and your child!</p>
+                <p>1. Please be advised that all registration fees, diagnostic test and program fees paid are non - refundable with exception of Deposit.</p>
+                <p>2. Cancellation of program by the customer shall be notified through written notice one (1) month in advance.</p>
+                <p>3. This is a computer generated document therefore no signature is required.</p>
+            </div>
+
+            <div class="address">
+                Mathology Kuchai Lama (LLP0022441)<br>
+                2-4, Jalan 3/114, Kuchai Business Centre, 58200 KL
+            </div>
+
+            <button class="no-print" onclick="window.print()">Print Receipt</button>
+        </body>
+        </html>
+    `;
+
+    printWindow.document.write(invoiceHtml);
+    printWindow.document.close();
+}
+
+function generateItemRows(paymentData) {
+    let rows = '';
+    let rowNumber = 1;
+
+    if (paymentData.diagnostic_test) {
+        rows += `
+            <tr>
+                <td>${rowNumber++}</td>
+                <td>Diagnostic Test</td>
+                <td>RM</td>
+                <td class="amount-column">100.00</td>
+            </tr>`;
+    }
+
+    if (paymentData.registration) {
+        rows += `
+            <tr>
+                <td>${rowNumber++}</td>
+                <td>Registration</td>
+                <td>RM</td>
+                <td class="amount-column">50.00</td>
+            </tr>`;
+    }
+
+    if (paymentData.deposit_fee > 0) {
+        rows += `
+            <tr>
+                <td>${rowNumber++}</td>
+                <td>Deposit</td>
+                <td>RM</td>
+                <td class="amount-column">${parseFloat(paymentData.deposit_fee).toFixed(2)}</td>
+            </tr>`;
+    }
+
+    if (paymentData.package_name) {
+        rows += `
+            <tr>
+                <td>${rowNumber++}</td>
+                <td>Programme Duration ${new Date(paymentData.date).toLocaleDateString()} - ${getEndDate(paymentData.date)}<br>2.00 Hours(s) Per Week</td>
+                <td>RM</td>
+                <td class="amount-column">${parseFloat(paymentData.amount).toFixed(2)}</td>
+            </tr>`;
+    }
+
+    return rows;
+}
+
+function getEndDate(startDate) {
+    const date = new Date(startDate);
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(date.getDate() - 1);
+    return date.toLocaleDateString();
+}
