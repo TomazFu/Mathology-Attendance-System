@@ -4,6 +4,9 @@ include '../manager/includes/fetch-leave-request.php';
 
 // Include header
 include "../includes/header.php";
+
+// Include sidebar functionality
+include "../manager/includes/sidebar.php";
 ?>
 
 <!DOCTYPE html>
@@ -11,10 +14,11 @@ include "../includes/header.php";
 <head>
     <meta charset="UTF-8">
     <title>Leave Request Details</title>
-    <link rel="stylesheet" href="../assets/css/managerDashboard.css">
+    <link rel="stylesheet" href="../assets/css/manager-leave-details.css">
 </head>
 <body>
     <div class="leave-request-details">
+        <?php renderSidebar('manager'); ?>
         <h2>Leave Request Details</h2>
         <p><strong>Leave ID:</strong> <?php echo $leave_data['leave_id']; ?></p>
         <p><strong>Student Name:</strong> <?php echo $leave_data['student_name']; ?></p>
@@ -25,8 +29,3 @@ include "../includes/header.php";
     </div>
 </body>
 </html>
-
-<?php
-// Include footer
-include "../includes/footer.php";
-?>

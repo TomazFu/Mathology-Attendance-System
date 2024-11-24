@@ -1,7 +1,7 @@
 <?php
 // Include the process file to fetch data
 include('fetch-managerDashboard.php');
-require_once('C:\xampp\htdocs\Mathology-Attendance-System\Mathology-Attendance-System\manager\TCPDF-main\TCPDF-main\tcpdf.php'); 
+require_once('C:\xampp\htdocs\Mathology-Attendance-System\manager\TCPDF-main\TCPDF-main\tcpdf.php'); 
 
 // Handle export logic based on the type (PDF or CSV)
 $type = isset($_GET['type']) ? $_GET['type'] : '';

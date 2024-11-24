@@ -1,5 +1,5 @@
 /* Overall Layout */
-.dashboard {
+.leave-dashboard {
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -8,56 +8,48 @@
     justify-content: center;
 }
 
-/* Monthly Summary Section */
-.monthly-summary {
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.monthly-summary h2 {
-    font-weight: 800;
-}
-
-.monthly-summary p {
-    font-size: 16px;
-    margin: 5px 0;
-}
-
-/* Stats Section */
-.stats {
+/* Search and Sort Section */
+.search-sort {
     display: flex;
     justify-content: space-between;
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.stats div {
-    font-size: 16px;
-    font-weight: bold;
+.search-sort form {
+    display: flex;
+    gap: 10px;
 }
 
-/* Attendance Section */
-.attendance {
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.search-sort input[type="text"] {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px;
 }
 
-.attendance h2 {
-    font-weight: 800;
+.search-sort select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-.attendance p {
-    font-size: 18px;
-    font-weight: bold;
+.search-sort button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-/* Latest Leave Requests */
+.search-sort button:hover {
+    background-color: #45a049;
+}
+
+/* Leave Requests Section */
 .latest-leave-requests {
     background-color: #FFFFFF;
     padding: 20px;
@@ -67,19 +59,25 @@
 
 .latest-leave-requests h2 {
     font-weight: 800;
+    margin-bottom: 20px;
 }
 
 .leave-request {
     background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 10px;
+    border: 1px solid #ddd;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .leave-request p {
     font-size: 14px;
+    margin: 5px 0;
+}
+
+.leave-request span {
+    font-weight: bold;
 }
 
 .view-btn {
@@ -88,9 +86,9 @@
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    
+    margin-top: 10px;
+    display: inline-block;
+    text-align: center;
 }
 
 .view-btn:hover {
@@ -115,7 +113,6 @@
     color: white;
     border: none;
     cursor: pointer;
-    margin: auto 0;
 }
 
 .export-btn:hover {
@@ -124,7 +121,7 @@
 
 /* Button Styling */
 button {
-    padding: 5px 10px;
+    padding: 8px 15px;
     margin-left: 5px;
     cursor: pointer;
 }
@@ -139,15 +136,15 @@ button {
     color: white;
 }
 
-/*sidebar*/
+/* Sidebar */
 .sidebar {
     width: 200px;
     background-color: #f8f9fa;
     padding: 20px;
     position: fixed;
     height: 100%;
-    position: fixed; 
-    left: 0; 
+    left: 0;
+    top: 0;
 }
 
 .sidebar ul {
