@@ -20,8 +20,9 @@ include "../manager/includes/sidebar.php";
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search">
                 <select id="sortSelect">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
+                    <option value="none" selected>No Sorting</option>
+                    <option value="leave_asc">Lowest Leave</option>
+                    <option value="leave_desc">Highest Leave</option>
                 </select>
             </div>
             <table id="staffTable">

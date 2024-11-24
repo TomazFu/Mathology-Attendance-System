@@ -1,141 +1,91 @@
 <?php
-// Database connection
+// Connect to the MySQL database
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "mathlogydb";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check the connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(['success' => false, 'message' => "Connection failed: " . $conn->connect_error]));
 }
 
-// Get the request method
-$requestMethod = $_SERVER['REQUEST_METHOD'];
+header('Content-Type: application/json');
 
-header('Content-Type: application/json'); // Set response type to JSON
+$method = $_SERVER['REQUEST_METHOD'];
 
-if ($requestMethod === 'GET') {
+if ($method === 'GET') {
     if (isset($_GET['staff_id'])) {
-        $staff_id = intval($_GET['staff_id']); // Ensure staff_id is an integer
-
+        $staff_id = intval($_GET['staff_id']);
         $stmt = $conn->prepare("SELECT * FROM staff WHERE staff_id = ?");
         $stmt->bind_param("i", $staff_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $staff = $result->fetch_assoc();
 
-        if ($stmt->execute()) {
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                $staff = $result->fetch_assoc();
-                echo json_encode($staff); // Return the staff data as JSON
-            } else {
-                error_log("No staff found for staff_id: " . $staff_id);
-                echo json_encode(["success" => false, "message" => "Staff not found"]);
-            }
+        if ($staff) {
+            echo json_encode(['success' => true, 'staff' => $staff]);
         } else {
-            error_log("SQL query failed: " . $stmt->error);
-            echo json_encode(["success" => false, "message" => "SQL query failed"]);
+            echo json_encode(['success' => false, 'message' => 'Staff not found']);
         }
-
         $stmt->close();
     } else {
-        // Fetch all staff data if no staff_id is provided
-        $result = $conn->query("SELECT * FROM staff");
-        $data = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-
-        echo json_encode($data); // Return all staff data as JSON
+        $result = $conn->query("SELECT * FROM staff ORDER BY staff_id DESC");
+        $staff = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode(['success' => true, 'staff' => $staff]);
     }
-} elseif ($requestMethod === 'POST') {
-    // Add new staff member
+} elseif ($method === 'POST') {
     $name = $_POST['name'] ?? '';
     $qualification = $_POST['qualification'] ?? '';
     $contact = $_POST['contact'] ?? '';
-    $leave = $_POST['leave'] ?? '';
+    $leave = intval($_POST['leave'] ?? 0);
     $status = $_POST['status'] ?? '';
 
-    // Validate required fields
-    if (empty($name) || empty($qualification) || empty($contact) || empty($leave) || empty($status)) {
-        echo json_encode(["success" => false, "message" => "All fields are required"]);
-        exit;
-    }
-
-    // Prepare the SQL query to insert new staff
     $stmt = $conn->prepare("INSERT INTO staff (name, qualification, contact_number, leave_left, current_status) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssis", $name, $qualification, $contact, $leave, $status);
+    $stmt->bind_param("sssds", $name, $qualification, $contact, $leave, $status);
 
     if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Staff added successfully"]);
+        echo json_encode(['success' => true]);
     } else {
-        echo json_encode(["success" => false, "message" => "Database insertion failed"]);
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
-
     $stmt->close();
-} elseif ($requestMethod === 'PUT') {
-    // Parse JSON input
-    $_PUT = json_decode(file_get_contents("php://input"), true);
+} elseif ($method === 'PUT') {
+    parse_str(file_get_contents("php://input"), $input);
+    $staff_id = intval($input['id'] ?? 0);
+    $name = $input['name'] ?? '';
+    $qualification = $input['qualification'] ?? '';
+    $contact = $input['contact'] ?? '';
+    $leave = intval($input['leave'] ?? 0);
+    $status = $input['status'] ?? '';
 
-    // Extract variables
-    $staff_id = $_PUT['staff_id'] ?? '';
-    $name = $_PUT['name'] ?? '';
-    $qualification = $_PUT['qualification'] ?? '';
-    $contact = $_PUT['contact'] ?? '';
-    $leave = $_PUT['leave'] ?? '';
-    $status = $_PUT['status'] ?? '';
-
-    // Validate required fields
-    if (empty($staff_id) || empty($name) || empty($qualification) || empty($contact) || empty($leave) || empty($status)) {
-        echo json_encode(["success" => false, "message" => "All fields are required"]);
-        exit;
-    }
-
-    // Validate numeric fields
-    if (!is_numeric($staff_id) || intval($staff_id) <= 0) {
-        echo json_encode(["success" => false, "message" => "Invalid staff ID"]);
-        exit;
-    }
-    $leave = intval($leave); // Convert leave to integer
-
-    // Prepare the SQL query to update staff
     $stmt = $conn->prepare("UPDATE staff SET name = ?, qualification = ?, contact_number = ?, leave_left = ?, current_status = ? WHERE staff_id = ?");
-    $stmt->bind_param("sssis", $name, $qualification, $contact, $leave, $status, $staff_id);
+    $stmt->bind_param("sssisi", $name, $qualification, $contact, $leave, $status, $staff_id);
 
     if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Staff updated successfully"]);
+        echo json_encode(['success' => true]);
     } else {
-        echo json_encode(["success" => false, "message" => "Update failed: " . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
-
     $stmt->close();
-} elseif ($requestMethod === 'DELETE') {
-    // Delete staff member
-    parse_str(file_get_contents("php://input"), $_DELETE);
+} elseif ($method === 'DELETE') {
+    parse_str(file_get_contents("php://input"), $input);
+    $staff_id = intval($input['staff_id'] ?? 0);
 
-    $staff_id = $_DELETE['staff_id'] ?? '';
-
-    if (empty($staff_id)) {
-        echo json_encode(["success" => false, "message" => "Staff ID is required"]);
-        exit;
-    }
-
-    // Prepare the SQL query to delete staff
     $stmt = $conn->prepare("DELETE FROM staff WHERE staff_id = ?");
     $stmt->bind_param("i", $staff_id);
 
     if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Staff deleted successfully"]);
+        echo json_encode(['success' => true]);
     } else {
-        echo json_encode(["success" => false, "message" => "Deletion failed"]);
+        echo json_encode(['success' => false, 'message' => $stmt->error]);
     }
-
     $stmt->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
 
-// Close the database connection
 $conn->close();
 ?>
