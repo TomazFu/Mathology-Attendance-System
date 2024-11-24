@@ -60,8 +60,8 @@ require_once "includes/fetch-student-package-process.php";
             <div class="attendance-container-list">
                 <?php if (!empty($students)): ?>
                     <?php foreach ($students as $student): ?>
-                        <div class="student-package-record">
-                            <div class="student-header" onclick="showUpdateForm(<?php echo $student['student_id']; ?>)">
+                        <div class="student-package-record" onclick="showUpdateForm(<?php echo $student['student_id']; ?>)">
+                            <div class="student-header">
                                 <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
                             </div>
                             <!-- Update form specific to each student -->

@@ -31,8 +31,18 @@ require_once "../includes/sidebar.php";
 
         <div class="main-content">
             <h1> Parent Registration </h1>
+            <?php 
+                if (isset($_SESSION['registration_success'])) {
+                    echo '<div class="alert alert-success">' . $_SESSION['registration_success'] . '</div>';
+                    unset($_SESSION['registration_success']);
+                }
+                if (isset($_SESSION['registration_error'])) {
+                    echo '<div class="alert alert-error">' . $_SESSION['registration_error'] . '</div>';
+                    unset($_SESSION['registration_error']);
+                }
+            ?>
             <div class="form-container">
-                <form id="parent-account-registration-form" action="../includes/register-process.php" method="POST">
+                <form id="parent-account-registration-form" action="includes/register-process.php" method="POST">
                     <div class="form-row">
                         <input type="text" name="username" placeholder="Username *" class="half-width" required>
                     </div>
