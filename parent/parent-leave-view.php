@@ -26,10 +26,19 @@ try {
     $leave_history = null;
     error_log("Error fetching leave history: " . $e->getMessage());
 }
+
+$base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/parent');
 ?>
 
 <!-- Update CSS references -->
 <link rel="stylesheet" href="../assets/css/parent.css"> <!-- Parent-specific styles -->
+
+<head>
+    <meta name="base-url" content="<?php echo $base_url; ?>">
+    <script>
+        const BASE_URL = '<?php echo rtrim(dirname($_SERVER['PHP_SELF']), '/parent'); ?>';
+    </script>
+</head>
 
 <div class="dashboard-layout">
     <?php renderSidebar('parent'); ?>
@@ -79,8 +88,8 @@ try {
                 </div>
             </div>
 
-            <form id="leaveApplicationForm" method="POST" action="../includes/submit-leave.php" enctype="multipart/form-data">
-                <input type="hidden" name="leave_type" id="leave_type" required>
+            <form id="leaveApplicationForm" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="leave_type" id="leave_type">
                 
                 <!-- Dynamic form fields based on leave type -->
                 <div class="form-sections">
@@ -138,16 +147,16 @@ try {
                     </div>
 
                     <!-- Date Selection (Hidden for Gap Month) -->
-                    <div class="date-selection">
+                    <div class="date-selection" style="display: none;">
                         <div class="date-range">
                             <div class="date-input">
                                 <i class="material-icons">calendar_today</i>
-                                <input type="date" name="start_date" id="start_date" required>
+                                <input type="date" name="start_date" id="start_date">
                             </div>
                             <span class="date-range-separator">to</span>
                             <div class="date-input">
                                 <i class="material-icons">calendar_today</i>
-                                <input type="date" name="end_date" id="end_date" required>
+                                <input type="date" name="end_date" id="end_date">
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2024 at 05:02 PM
+-- Generation Time: Nov 23, 2024 at 05:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,19 +31,25 @@ CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `date` date DEFAULT NULL,
-  `status` enum('present','absent') NOT NULL
+  `status` enum('present','absent') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`) VALUES
-(1, 1, '2023-06-01', 'present'),
-(2, 1, '2023-06-02', 'present'),
-(3, 1, '2023-06-03', 'absent'),
-(4, 2, '2023-06-01', 'present'),
-(5, 2, '2023-06-02', 'absent');
+INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`, `created_at`) VALUES
+(1, 1, '2023-06-01', 'present', '2024-11-23 16:42:10'),
+(2, 1, '2023-06-02', 'present', '2024-11-23 16:42:10'),
+(3, 1, '2023-06-03', 'absent', '2024-11-23 16:42:10'),
+(4, 2, '2023-06-01', 'present', '2024-11-23 16:42:10'),
+(5, 2, '2023-06-02', 'absent', '2024-11-23 16:42:10'),
+(6, 1, '2024-11-24', 'present', '2024-11-23 16:42:20'),
+(7, 1, '2024-11-23', 'present', '2024-11-23 16:42:20'),
+(8, 1, '2024-11-22', 'absent', '2024-11-23 16:42:20'),
+(9, 1, '2024-11-21', 'present', '2024-11-23 16:42:20'),
+(10, 1, '2024-11-20', 'present', '2024-11-23 16:42:20');
 
 -- --------------------------------------------------------
 
@@ -259,7 +265,7 @@ ALTER TABLE `timetable`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `enrolled_classes`

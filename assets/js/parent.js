@@ -10,8 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeLeaveForm() {
-    const leaveForm = document.getElementById('leaveForm');
-    if (!leaveForm) return; // Exit if not on leave form page
+    const leaveForm = document.getElementById('leaveApplicationForm');
+    if (!leaveForm) return;
+
+    leaveForm.addEventListener('submit', submitLeaveForm);
 
     const leaveTypeCards = document.querySelectorAll('.leave-type-card');
     const leaveTypeInput = document.getElementById('leave_type');
@@ -62,9 +64,14 @@ function updateLeaveRequirements(leaveType) {
         document: document.querySelector('.document-section')
     };
     
-    // Hide all sections first
+    // Hide all sections first and remove required attributes
     Object.values(sections).forEach(section => {
-        if (section) section.style.display = 'none';
+        if (section) {
+            section.style.display = 'none';
+            // Remove required attribute from all date inputs
+            const dateInputs = section.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(input => input.removeAttribute('required'));
+        }
     });
     
     // If no leave type selected, return early
@@ -76,10 +83,16 @@ function updateLeaveRequirements(leaveType) {
             sections.medical.style.display = 'block';
             sections.date.style.display = 'block';
             sections.document.style.display = 'block';
+            // Add required attribute to date inputs
+            const medicalDateInputs = sections.date.querySelectorAll('input[type="date"]');
+            medicalDateInputs.forEach(input => input.setAttribute('required', ''));
             break;
         case 'normal':
             sections.date.style.display = 'block';
             sections.document.style.display = 'block';
+            // Add required attribute to date inputs
+            const normalDateInputs = sections.date.querySelectorAll('input[type="date"]');
+            normalDateInputs.forEach(input => input.setAttribute('required', ''));
             break;
         case 'gap':
             sections.gap.style.display = 'block';
@@ -154,6 +167,9 @@ function updateFileName(input, displayId) {
                 <i class="material-icons">close</i>
             </button>`;
         
+        // Clear previous files
+        fileDisplay.innerHTML = '';
+        
         // Add the new file info to display
         fileDisplay.appendChild(fileInfo);
         fileDisplay.style.display = 'block';
@@ -163,10 +179,8 @@ function updateFileName(input, displayId) {
             alert('File size exceeds 5MB limit. Please choose a smaller file.');
             fileInfo.remove();
             input.value = '';
+            fileDisplay.style.display = 'none';
         }
-        
-        // Reset input to allow selecting the same file again
-        input.value = '';
     }
 }
 
@@ -178,4 +192,135 @@ function removeFile(inputId, displayId, fileInfoElement) {
     if (!fileDisplay.querySelector('.file-info')) {
         fileDisplay.style.display = 'none';
     }
+}
+
+function submitLeaveForm(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('leaveApplicationForm');
+    const formData = new FormData(form);
+    
+    // Log form data for debugging
+    console.log('Form data being sent:', Object.fromEntries(formData));
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+
+    fetch('/Mathology-Attendance-System/parent/includes/submit-leave.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+    })
+    .then(async response => {
+        const text = await response.text();
+        try {
+            const data = JSON.parse(text);
+            if (!response.ok) {
+                throw new Error(data.message || 'Server error');
+            }
+            return data;
+        } catch (e) {
+            console.error('Server response:', text);
+            throw new Error('Invalid server response');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            showMessage('success', data.message);
+            if (data.leave) {
+                addLeaveToHistory(data.leave);
+            }
+            form.reset();
+            resetFileInputs();
+            updateLeaveRequirements('');
+            document.querySelectorAll('.leave-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            setTimeout(() => {
+                showView('leaveHistory');
+            }, 2000);
+        } else {
+            showMessage('error', data.message || 'Error submitting leave request');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage('error', error.message || 'An error occurred while submitting the leave request');
+    })
+    .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit Leave Request';
+    });
+}
+
+function showMessage(type, message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `${type}-message`;
+    messageDiv.textContent = message;
+    
+    // Insert message at the top of the form
+    const form = document.getElementById('leaveApplicationForm');
+    form.insertBefore(messageDiv, form.firstChild);
+    
+    // Remove message after 3 seconds
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000);
+}
+
+function addLeaveToHistory(leave) {
+    const leaveHistory = document.querySelector('#leaveHistory');
+    const noRecords = leaveHistory.querySelector('.no-records');
+    if (noRecords) {
+        noRecords.remove();
+    }
+
+    const leaveItem = document.createElement('div');
+    leaveItem.className = 'leave-history-item';
+    leaveItem.innerHTML = `
+        <div class="leave-details">
+            <p><strong>Leave ID:</strong> ${leave.leave_id}</p>
+            <p><strong>Student Name:</strong> ${leave.student_name}</p>
+            <p><strong>Reason:</strong> ${leave.reason}</p>
+            <p>
+                <strong>Status:</strong> 
+                <span class="status-badge pending">Pending</span>
+            </p>
+        </div>
+        <div class="leave-dates">
+            <p>${formatDate(leave.fromDate)} to ${formatDate(leave.toDate)}</p>
+            <button class="btn-icon" onclick="viewLeaveDetails(${leave.leave_id})">
+                <i class="material-icons">visibility</i>
+            </button>
+        </div>
+    `;
+
+    // Add new leave item at the top of the history
+    const firstItem = leaveHistory.querySelector('.leave-history-item');
+    if (firstItem) {
+        firstItem.parentNode.insertBefore(leaveItem, firstItem);
+    } else {
+        leaveHistory.appendChild(leaveItem);
+    }
+}
+
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('en-GB');
+}
+
+// Add helper function to reset file inputs
+function resetFileInputs() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(input => {
+        input.value = '';
+        const displayId = input.getAttribute('data-display');
+        if (displayId) {
+            const display = document.getElementById(displayId);
+            if (display) {
+                display.innerHTML = '';
+                display.style.display = 'none';
+            }
+        }
+    });
 }
