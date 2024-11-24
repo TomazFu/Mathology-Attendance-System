@@ -15,6 +15,8 @@ include "../includes/header.php";
 
 // Include sidebar
 require_once "../includes/sidebar.php";
+
+require_once "includes/fetch-student-package-process.php";
 ?>
 
 <head>
@@ -25,12 +27,22 @@ require_once "../includes/sidebar.php";
 <body>
     <div class="dashboard-layout">
         <?php renderSidebar('staff'); ?>
+
         <div class="main-content">
             <h1>Manage Packages</h1>
-            <div class="student-package-record">
-                <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
+            <div class="attendance-container-list">
+                <?php if (!empty($students)): ?>
+                    <?php foreach ($students as $student): ?>
+                        <div class="student-package-record">
+                            <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
+                        </div>
+                    <?php endforeach; ?>
             </div>
+        <?php else: ?>
+            <p>No student records found.</p>
+        <?php endif; ?>
         </div>
+
     </div>
 </body>
 

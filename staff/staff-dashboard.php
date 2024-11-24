@@ -33,7 +33,7 @@ require_once "includes/fetch-attendance-data-process.php";
             <div class="staff-dashboard-sections">
                 <!-- Attendance list overview -->
                 <div class="attendance-list dashboard-staff-box">
-                    <h3>Attendance List</h3>
+                    <h3>Attendance List for <?php echo date("Y-m-d") ?></h3>
                     <?php if (!empty($studentsWithAttendance)): ?>
                         <div class="attendance-container">
                             <?php foreach ($studentsWithAttendance as $student): ?>
