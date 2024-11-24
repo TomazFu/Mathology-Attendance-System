@@ -37,66 +37,124 @@ try {
         <div class="card" id="leaveForm">
             <h2 class="form-title">Submit Leave Request</h2>
             
-            <div class="success-message" id="successMessage">
-                Leave request submitted successfully!
+            <!-- Leave Type Selection -->
+            <div class="leave-type-selector">
+                <h3>Select Leave Type</h3>
+                <div class="leave-types">
+                    <div class="leave-type-card" data-type="medical">
+                        <div class="leave-type-header">
+                            <i class="material-icons">local_hospital</i>
+                            <h4>Medical Leave</h4>
+                        </div>
+                        <ul class="leave-requirements">
+                            <li>Medical Certificate required</li>
+                            <li>Can submit same day</li>
+                            <li>Up to 6 days per year</li>
+                        </ul>
+                    </div>
+
+                    <div class="leave-type-card" data-type="normal">
+                        <div class="leave-type-header">
+                            <i class="material-icons">event_available</i>
+                            <h4>Normal Leave</h4>
+                        </div>
+                        <ul class="leave-requirements">
+                            <li>No documentation needed</li>
+                            <li>48 hours advance notice</li>
+                            <li>Auto-approved with replacement</li>
+                        </ul>
+                    </div>
+
+                    <div class="leave-type-card" data-type="gap">
+                        <div class="leave-type-header">
+                            <i class="material-icons">date_range</i>
+                            <h4>Gap Month</h4>
+                        </div>
+                        <ul class="leave-requirements">
+                            <li>Monthly leave option</li>
+                            <li>Up to 2 months per year</li>
+                            <li>Auto stop charging</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <form id="leaveApplicationForm" method="POST" action="../includes/submit-leave.php" enctype="multipart/form-data">
-                <div class="form-group">
-                    <textarea 
-                        name="reason" 
-                        placeholder="Please refer to the email sent for leave reason" 
-                        rows="4" 
-                        class="form-control"
-                        required
-                    ></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="file-upload" class="custom-file-upload">
-                        <i class="material-icons">cloud_upload</i>
-                        <span>Upload Supporting Document</span>
-                    </label>
-                    <input 
-                        type="file" 
-                        id="file-upload" 
-                        name="leave_application" 
-                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                        onchange="updateFileName(this)"
-                    >
-                    <div class="selected-file" id="selectedFile"></div>
-                    <small class="file-help-text">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</small>
-                </div>
-
-                <div class="date-range">
-                    <div class="date-input">
-                        <i class="material-icons">calendar_today</i>
-                        <input 
-                            type="date" 
-                            name="start_date" 
-                            id="start_date"
-                            required
-                            min="<?php echo date('Y-m-d'); ?>"
-                        >
+                <input type="hidden" name="leave_type" id="leave_type" required>
+                
+                <!-- Dynamic form fields based on leave type -->
+                <div class="form-sections">
+                    <!-- Medical Leave Fields -->
+                    <div class="leave-section medical-leave" style="display: none;">
+                        <div class="form-group required-doc">
+                            <label>Medical Certificate (Required)</label>
+                            <div class="file-upload-container">
+                                <label class="custom-file-upload">
+                                    <input type="file" id="medical_certificate" name="medical_certificate" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="updateFileName(this, 'medical-file-name')">
+                                    <i class="material-icons">upload_file</i>
+                                    <span class="file-upload-text">Click to upload Medical Certificate</span>
+                                </label>
+                                <div id="medical-file-name" class="selected-file"></div>
+                            </div>
+                            <small>Accepted formats: PDF, JPG, PNG (Max 5MB)</small>
+                        </div>
                     </div>
-                    
-                    <span class="date-range-separator">to</span>
-                    
-                    <div class="date-input">
-                        <i class="material-icons">calendar_today</i>
-                        <input 
-                            type="date" 
-                            name="end_date" 
-                            id="end_date"
-                            required
-                            min="<?php echo date('Y-m-d'); ?>"
-                        >
+
+                    <!-- Gap Month Fields -->
+                    <div class="leave-section gap-month" style="display: none;">
+                        <div class="form-group">
+                            <label>Select Month</label>
+                            <select name="gap_month" class="form-control">
+                                <?php
+                                for ($i = 0; $i < 3; $i++) {
+                                    $month = date('F Y', strtotime("+$i month"));
+                                    echo "<option value='".date('Y-m', strtotime("+$i month"))."'>$month</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Document Upload Section -->
+                    <div class="leave-section document-section" style="display: none;">
+                        <div class="form-group">
+                            <label>Supporting Documents (Optional)</label>
+                            <div class="file-upload-container">
+                                <label class="custom-file-upload">
+                                    <input type="file" id="supporting_document" name="supporting_document" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;" onchange="updateFileName(this, 'support-file-name')">
+                                    <i class="material-icons">upload_file</i>
+                                    <span class="file-upload-text">Click to upload supporting documents</span>
+                                </label>
+                                <div id="support-file-name" class="selected-file"></div>
+                            </div>
+                            <small>Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</small>
+                        </div>
+                    </div>
+
+                    <!-- Common Fields -->
+                    <div class="form-group">
+                        <label>Reason for Leave</label>
+                        <textarea name="reason" placeholder="Please provide detailed reason for leave" rows="4" class="form-control" required></textarea>
+                    </div>
+
+                    <!-- Date Selection (Hidden for Gap Month) -->
+                    <div class="date-selection">
+                        <div class="date-range">
+                            <div class="date-input">
+                                <i class="material-icons">calendar_today</i>
+                                <input type="date" name="start_date" id="start_date" required>
+                            </div>
+                            <span class="date-range-separator">to</span>
+                            <div class="date-input">
+                                <i class="material-icons">calendar_today</i>
+                                <input type="date" name="end_date" id="end_date" required>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Request Leave</button>
+                    <button type="submit" class="btn btn-primary">Submit Leave Request</button>
                 </div>
             </form>
         </div>
