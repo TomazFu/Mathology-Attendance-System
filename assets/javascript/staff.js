@@ -70,51 +70,51 @@ function showUpdateForm(studentId) {
 }
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Your JavaScript code here
-//     document.getElementById('diagnostic_test').addEventListener('change', function() {
-//         document.getElementById('diagnostic_price').style.display = this.checked ? 'inline' : 'none';
-//     });
-//     document.getElementById('credit_card').addEventListener('change', function() {
-//         document.getElementById('credit_card_input').style.display = this.checked ? 'inline' : 'none';
-//     });
-//     document.getElementById('cheque').addEventListener('change', function() {
-//         document.getElementById('cheque_input').style.display = this.checked ? 'inline' : 'none';
-//     });
-//     document.getElementById('bank_in').addEventListener('change', function() {
-//         document.getElementById('bank_in_input').style.display = this.checked ? 'inline' : 'none';
-//     });
-// });
 
+function submitPayment(studentId) {
+    if (window.isSubmitting) return;
+    
+    try {
+        window.isSubmitting = true;
 
+        // Get all required elements
+        const packageSelect = document.getElementById(`package-select-${studentId}`);
+        const registrationCheckbox = document.getElementById(`registration-${studentId}`);
+        const diagnosticCheckbox = document.getElementById(`diagnostic-${studentId}`);
+        const depositInput = document.getElementById(`deposit_fee-${studentId}`);
+        const paymentMethodInputs = document.getElementsByName(`payment-method-${studentId}`);
+        const statusSelect = document.getElementById(`status-${studentId}`);
+        const paymentDateInput = document.getElementById(`payment-date-${studentId}`);
+        const parentIdInput = document.getElementById(`parent-id-${studentId}`); // Add this line
 
-function submitPayment() {
-    var studentId = document.getElementById('student-id').value;
-    var packageId = document.getElementById('package-select').value;
-    var registration = document.getElementById('registration').checked ? 1 : 0;
-    var deposit = document.getElementById('deposit').checked ? 1 : 0;
-    var diagnostic = document.getElementById('diagnostic').checked ? 1 : 0;
-    var diagnosticAmount = document.getElementById('diagnostic-amount').value;
-    var paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
-    var amount = document.getElementById('amount').value;
-    var status = document.getElementById('status').value;
-    var paymentDate = document.getElementById('payment-date').value;
+        // Get parent_id
+        const parentId = parentIdInput ? parentIdInput.value : null; // Add this line
 
-    // Send the data via AJAX
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "update-payment.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            alert("Payment updated successfully.");
-        } else {
-            alert("Error updating payment.");
-        }
-    };
-    xhr.send("student_id=" + studentId + "&package_id=" + packageId + "&registration=" + registration +
-             "&deposit=" + deposit + "&diagnostic=" + diagnostic + "&diagnostic_amount=" + diagnosticAmount +
-             "&payment_method=" + paymentMethod + "&amount=" + amount + "&status=" + status +
-             "&payment_date=" + paymentDate);
+        // Calculate total amount
+        let totalAmount = 0;
+
+        // ... rest of your calculation code ...
+
+        const data = new URLSearchParams({
+            student_id: studentId,
+            parent_id: parentId, // Add this line
+            amount: totalAmount,
+            payment_method: paymentMethod,
+            registration: registrationCheckbox.checked ? 1 : 0,
+            deposit_fee: depositFee,
+            diagnostic_test: diagnosticCheckbox.checked ? 1 : 0,
+            status: statusSelect.value,
+            date: paymentDateInput.value
+        }).toString();
+
+        console.log('Sending payment data:', data);
+        xhr.send(data);
+
+    } catch (error) {
+        window.isSubmitting = false;
+        console.error('Error in submitPayment:', error);
+        alert(`Error: ${error.message}`);
+    }
 }
 
 function updatePackage(studentId) {

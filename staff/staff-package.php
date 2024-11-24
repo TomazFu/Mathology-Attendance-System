@@ -77,17 +77,16 @@ require_once "includes/fetch-student-package-process.php";
                                         <td>Change Package</td>
                                         <td>
                                             <select id="package-select-<?php echo $student['student_id']; ?>">
-                                                <!-- "None" option for students without a package -->
-                                                <option value="none" <?php echo (empty($student['package']['package_id']) ? 'selected' : ''); ?>>None</option>
+                                                <option value="none" data-price="0" <?php echo (empty($student['package']['package_id']) ? 'selected' : ''); ?>>None</option>
                                                 <?php
-                                                // Query to get available packages
-                                                $sql = "SELECT id, package_name FROM packages";
+                                                // Query to get available packages with prices
+                                                $sql = "SELECT id, package_name, price FROM packages";
                                                 $result = $conn->query($sql);
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
-                                                        // Check if the student has a package assigned and select the correct option
                                                         $selected = ($row['id'] == $student['package']['package_id']) ? 'selected' : '';
-                                                        echo "<option value='" . $row['id'] . "' " . $selected . ">" . htmlspecialchars($row['package_name']) . "</option>";
+                                                        echo "<option value='" . $row['id'] . "' data-price='" . $row['price'] . "' " . $selected . ">"
+                                                            . htmlspecialchars($row['package_name']) . "</option>";
                                                     }
                                                 }
                                                 ?>
@@ -103,15 +102,14 @@ require_once "includes/fetch-student-package-process.php";
                                         <td><input type="checkbox" id="registration-<?php echo $student['student_id']; ?>" value="1"></td>
                                     </tr>
                                     <tr>
-                                        <td>Deposit</td>
-                                        <td><input type="checkbox" id="deposit-<?php echo $student['student_id']; ?>" value="1"></td>
-                                    </tr>
-                                    <tr>
                                         <td>Diagnostic Test/ Mathology Assessment</td>
                                         <td>
                                             <input type="checkbox" id="diagnostic-<?php echo $student['student_id']; ?>" value="1">
-                                            <input type="text" id="diagnostic-amount-<?php echo $student['student_id']; ?>" placeholder="Enter diagnostic test price">
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Deposit</td>
+                                        <td><input type="text" id="deposit_fee-<?php echo $student['student_id']; ?>" value="0"></td>
                                     </tr>
                                     <tr>
                                         <td>Payment Method</td>
@@ -122,10 +120,6 @@ require_once "includes/fetch-student-package-process.php";
                                             <input type="radio" name="payment-method-<?php echo $student['student_id']; ?>" value="bank-in"> Bank-in
                                             <input type="radio" name="payment-method-<?php echo $student['student_id']; ?>" value="deposit"> Deposit
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Amount</td>
-                                        <td><input type="number" id="amount-<?php echo $student['student_id']; ?>" placeholder="Enter amount"></td>
                                     </tr>
                                     <tr>
                                         <td>Status</td>
@@ -140,6 +134,8 @@ require_once "includes/fetch-student-package-process.php";
                                         <td>Date</td>
                                         <td><input type="date" id="payment-date-<?php echo $student['student_id']; ?>"></td>
                                     </tr>
+                                    <input type="hidden" id="parent-id-<?php echo $student['student_id']; ?>"
+                                        value="<?php echo $student['parent_id']; ?>">
                                 </table>
                                 <button onclick="submitPayment(<?php echo $student['student_id']; ?>)">Generate Payment</button>
                             </div>

@@ -1,47 +1,72 @@
 <?php
-// Include database connection
-require_once "../config/connect.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Retrieve data from POST request
-$student_id = $_POST['student_id'];
-$parent_id = $_POST['parent_id']; // Assuming you pass parent_id from the form
-$amount = $_POST['amount'];
-$payment_date = $_POST['payment_date'];
-$payment_method = $_POST['payment_method'];
-$status = $_POST['status'];
+require_once "../../config/connect.php";
 
-// Prepare SQL query to update payment details (excluding fields that don't exist in payments table)
-$sql = "INSERT INTO payments (student_id, parent_id, amount, date, payment_method, status) 
-        VALUES (?, ?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE 
-        amount = ?, date = ?, payment_method = ?, status = ?";
+header('Content-Type: application/json');
 
-// Prepare the statement
-$stmt = $conn->prepare($sql);
-
-// Bind parameters to the statement
-$stmt->bind_param(
-    "iiissssss", 
-    $student_id, 
-    $parent_id, 
-    $amount, 
-    $payment_date, 
-    $payment_method, 
-    $status,
-    $amount, 
-    $payment_date, 
-    $payment_method, 
-    $status
-);
-
-// Execute the query
-if ($stmt->execute()) {
-    echo "Payment updated successfully.";
-} else {
-    echo "Error: " . $stmt->error;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    exit;
 }
 
-// Close the connection
-$stmt->close();
+// Get and validate input
+$student_id = isset($_POST['student_id']) ? intval($_POST['student_id']) : 0;
+$parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
+$amount = isset($_POST['amount']) ? intval($_POST['amount']) : 0;
+$payment_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : '';
+$registration = isset($_POST['registration']) ? (bool)$_POST['registration'] : false;
+$deposit_fee = isset($_POST['deposit_fee']) ? intval($_POST['deposit_fee']) : null;
+$diagnostic_test = isset($_POST['diagnostic_test']) ? (bool)$_POST['diagnostic_test'] : false;
+$status = isset($_POST['status']) ? $_POST['status'] : '';
+$date = isset($_POST['date']) ? $_POST['date'] : null;
+
+// Validate required fields
+
+try {
+    $conn->begin_transaction();
+
+    $sql = "INSERT INTO payments (parent_id, student_id, amount, date, payment_method, 
+            registration, deposit_fee, diagnostic_test, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $conn->error);
+    }
+
+    $stmt->bind_param("iiissiiss", 
+        $parent_id,
+        $student_id,
+        $amount,
+        $date,
+        $payment_method,
+        $registration,
+        $deposit_fee,
+        $diagnostic_test,
+        $status
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception("Execute failed: " . $stmt->error);
+    }
+
+    $conn->commit();
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Payment recorded successfully',
+        'amount' => $amount
+    ]);
+
+} catch (Exception $e) {
+    $conn->rollback();
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
+}
+
 $conn->close();
 ?>
