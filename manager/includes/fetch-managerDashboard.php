@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "mathlogydb";
+$dbname = "mathologydb";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

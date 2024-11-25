@@ -7,7 +7,7 @@ if (isset($_GET['leave_id'])) {
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "mathlogydb";
+    $dbname = "mathologydb";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
