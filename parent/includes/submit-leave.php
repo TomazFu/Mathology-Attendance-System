@@ -15,6 +15,12 @@ header('Content-Type: application/json');
 $response = ['success' => false, 'message' => '', 'leave' => null];
 
 try {
+    // Debug logging
+    error_log("Submit leave request started");
+    error_log("Session Data: " . print_r($_SESSION, true));
+    error_log("POST Data: " . print_r($_POST, true));
+    error_log("FILES Data: " . print_r($_FILES, true));
+
     // Start session if not already started
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -23,12 +29,9 @@ try {
     // Include database connection
     require_once "../../config/connect.php";
 
-    // Debug logging
-    error_log("POST Data: " . print_r($_POST, true));
-    error_log("FILES Data: " . print_r($_FILES, true));
-
     // Validate session
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+        error_log("Session validation failed - loggedin status: " . (isset($_SESSION["loggedin"]) ? $_SESSION["loggedin"] : "not set"));
         throw new Exception("User not logged in");
     }
 
@@ -38,9 +41,18 @@ try {
     $leave_type = $_POST["leave_type"] ?? '';
     $reason = trim($_POST["reason"] ?? '');
 
-    if (!$parent_id || !$student_id) {
-        throw new Exception("Invalid session or student data");
+    // Separate validation for better error messages
+    if (!$parent_id) {
+        error_log("Missing parent_id in session: " . print_r($_SESSION, true));
+        throw new Exception("Parent session not found. Please try logging in again.");
     }
+
+    if (!$student_id) {
+        error_log("Missing student_id in POST data: " . print_r($_POST, true));
+        throw new Exception("Please select a student.");
+    }
+
+    error_log("Parsed data - Parent ID: $parent_id, Student ID: $student_id, Leave Type: $leave_type");
 
     // Verify student belongs to parent
     $student_sql = "SELECT student_name FROM students WHERE student_id = ? AND parent_id = ? LIMIT 1";
@@ -105,8 +117,44 @@ try {
             throw new Exception("Invalid leave type");
     }
 
-    // Process supporting document if provided
+    // Process medical certificate for medical leave
     $document_path = null;
+    if ($leave_type === 'medical') {
+        if (!isset($_FILES["medical_certificate"]) || $_FILES["medical_certificate"]["size"] === 0) {
+            throw new Exception("Medical certificate is required for medical leave");
+        }
+
+        $file = $_FILES["medical_certificate"];
+        $allowed = ["pdf", "jpg", "jpeg", "png"];
+        $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+        
+        if (!in_array($ext, $allowed)) {
+            throw new Exception("Invalid file type for medical certificate. Allowed types: PDF, JPG, PNG");
+        }
+        
+        if ($file["size"] > 5 * 1024 * 1024) {
+            throw new Exception("Medical certificate exceeds 5MB limit");
+        }
+
+        $upload_dir = "../../uploads/medical/";
+        if (!is_dir($upload_dir)) {
+            if (!mkdir($upload_dir, 0777, true)) {
+                throw new Exception("Failed to create medical certificate upload directory");
+            }
+        }
+
+        $original_name = preg_replace("/[^a-zA-Z0-9.-]/", "_", $file["name"]);
+        $filename = pathinfo($original_name, PATHINFO_FILENAME);
+        $new_filename = 'mc_' . $filename . '_' . uniqid() . '.' . $ext;
+        $document_path = $upload_dir . $new_filename;
+        
+        if (!move_uploaded_file($file["tmp_name"], $document_path)) {
+            throw new Exception("Failed to upload medical certificate");
+        }
+    }
+
+    // Process supporting document if provided
+    $supportive_document_path = null;
     if (isset($_FILES["supporting_document"]) && $_FILES["supporting_document"]["size"] > 0) {
         $file = $_FILES["supporting_document"];
         $allowed = ["pdf", "jpg", "jpeg", "png"];
@@ -120,7 +168,7 @@ try {
             throw new Exception("Supporting document exceeds 5MB limit");
         }
 
-        $upload_dir = "../../uploads/";
+        $upload_dir = "../../uploads/supporting/";
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
                 throw new Exception("Failed to create upload directory");
@@ -133,23 +181,23 @@ try {
         // Create unique filename while keeping original name
         $filename = pathinfo($original_name, PATHINFO_FILENAME);
         $new_filename = $filename . '_' . uniqid() . '.' . $ext;
-        $document_path = $upload_dir . $new_filename;
+        $supportive_document_path = $upload_dir . $new_filename;
         
-        if (!move_uploaded_file($file["tmp_name"], $document_path)) {
+        if (!move_uploaded_file($file["tmp_name"], $supportive_document_path)) {
             throw new Exception("Failed to upload supporting document");
         }
     }
 
     // Insert leave request
-    $sql = "INSERT INTO leaves (student_id, reason, fromDate, toDate, document_path, status, leave_type) 
-            VALUES (?, ?, ?, ?, ?, 'pending', ?)";
+    $sql = "INSERT INTO leaves (student_id, reason, fromDate, toDate, document_path, supportive_document_path, status, leave_type) 
+            VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)";
     
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception("Database prepare error: " . $conn->error);
     }
 
-    if (!$stmt->bind_param("isssss", $student_id, $reason, $start_date, $end_date, $document_path, $leave_type)) {
+    if (!$stmt->bind_param("issssss", $student_id, $reason, $start_date, $end_date, $document_path, $supportive_document_path, $leave_type)) {
         throw new Exception("Database binding error: " . $stmt->error);
     }
 
@@ -170,6 +218,8 @@ try {
         'leave_type' => $leave_type
     ];
 
+    error_log("Leave request submitted successfully. Leave ID: " . $conn->insert_id);
+
 } catch (Exception $e) {
     error_log("Leave submission error: " . $e->getMessage());
     $response['message'] = $e->getMessage();
@@ -178,7 +228,8 @@ try {
     while (ob_get_level()) {
         ob_end_clean();
     }
-
+    
+    error_log("Final response: " . print_r($response, true));
     // Ensure proper JSON response
     echo json_encode($response);
     exit;

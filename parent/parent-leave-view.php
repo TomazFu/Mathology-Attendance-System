@@ -46,70 +46,68 @@ $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/parent');
         <div class="card" id="leaveForm">
             <h2 class="form-title">Submit Leave Request</h2>
             
-            <!-- Add Student Selector -->
-            <div class="student-selector">
-                <select name="student_id" id="student_id" required>
-                    <?php
-                    // Fetch students for current parent
-                    $student_sql = "SELECT student_id, student_name FROM students WHERE parent_id = ?";
-                    $stmt = $conn->prepare($student_sql);
-                    $stmt->bind_param("i", $parent_id);
-                    $stmt->execute();
-                    $students = $stmt->get_result();
-                    
-                    while ($student = $students->fetch_assoc()) {
-                        echo "<option value='" . htmlspecialchars($student['student_id']) . "'>" 
-                            . htmlspecialchars($student['student_name']) . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            
-            <!-- Leave Type Selection -->
-            <div class="leave-type-selector">
-                <h3>Select Leave Type</h3>
-                <div class="leave-types">
-                    <div class="leave-type-card" data-type="medical">
-                        <div class="leave-type-header">
-                            <i class="material-icons">local_hospital</i>
-                            <h4>Medical Leave</h4>
-                        </div>
-                        <ul class="leave-requirements">
-                            <li>Medical Certificate required</li>
-                            <li>Can submit same day</li>
-                            <li>Up to 6 days per year</li>
-                        </ul>
-                    </div>
+            <form id="leaveApplicationForm" enctype="multipart/form-data" method="post">
+                <div class="student-selector">
+                    <select name="student_id" id="student_id" required>
+                        <?php
+                        // Fetch students for current parent
+                        $student_sql = "SELECT student_id, student_name FROM students WHERE parent_id = ?";
+                        $stmt = $conn->prepare($student_sql);
+                        $stmt->bind_param("i", $_SESSION['id']);
+                        $stmt->execute();
+                        $students = $stmt->get_result();
+                        
+                        echo "<option value=''>Select Student</option>"; // Add a default option
+                        while ($student = $students->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($student['student_id']) . "'>" 
+                                . htmlspecialchars($student['student_name']) . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
 
-                    <div class="leave-type-card" data-type="normal">
-                        <div class="leave-type-header">
-                            <i class="material-icons">event_available</i>
-                            <h4>Normal Leave</h4>
+                <!-- Leave Type Selection -->
+                <div class="leave-type-selector">
+                    <h3>Select Leave Type</h3>
+                    <div class="leave-types">
+                        <div class="leave-type-card" data-type="medical">
+                            <div class="leave-type-header">
+                                <i class="material-icons">local_hospital</i>
+                                <h4>Medical Leave</h4>
+                            </div>
+                            <ul class="leave-requirements">
+                                <li>Medical Certificate required</li>
+                                <li>Can submit same day</li>
+                                <li>Up to 6 days per year</li>
+                            </ul>
                         </div>
-                        <ul class="leave-requirements">
-                            <li>No documentation needed</li>
-                            <li>48 hours advance notice</li>
-                            <li>Auto-approved with replacement</li>
-                        </ul>
-                    </div>
 
-                    <div class="leave-type-card" data-type="gap">
-                        <div class="leave-type-header">
-                            <i class="material-icons">date_range</i>
-                            <h4>Gap Month</h4>
+                        <div class="leave-type-card" data-type="normal">
+                            <div class="leave-type-header">
+                                <i class="material-icons">event_available</i>
+                                <h4>Normal Leave</h4>
+                            </div>
+                            <ul class="leave-requirements">
+                                <li>No documentation needed</li>
+                                <li>48 hours advance notice</li>
+                                <li>Auto-approved with replacement</li>
+                            </ul>
                         </div>
-                        <ul class="leave-requirements">
-                            <li>Monthly leave option</li>
-                            <li>Up to 2 months per year</li>
-                            <li>Auto stop charging</li>
-                        </ul>
+
+                        <div class="leave-type-card" data-type="gap">
+                            <div class="leave-type-header">
+                                <i class="material-icons">date_range</i>
+                                <h4>Gap Month</h4>
+                            </div>
+                            <ul class="leave-requirements">
+                                <li>Monthly leave option</li>
+                                <li>Up to 2 months per year</li>
+                                <li>Auto stop charging</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <form id="leaveApplicationForm" enctype="multipart/form-data" method="post">
-                <input type="hidden" name="leave_type" id="leave_type">
-                
                 <!-- Dynamic form fields based on leave type -->
                 <div class="form-sections">
                     <!-- Medical Leave Fields -->
@@ -181,10 +179,18 @@ $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/parent');
                     </div>
                 </div>
 
+                <input type="hidden" name="leave_type" id="leave_type">
+
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Submit Leave Request</button>
                 </div>
             </form>
+
+            <!-- Add this alert div after the form -->
+            <div id="leaveAlert" class="alert" style="display: none;">
+                <span class="alert-message"></span>
+                <button type="button" class="close-alert">&times;</button>
+            </div>
         </div>
 
         <div class="card" id="leaveHistory">

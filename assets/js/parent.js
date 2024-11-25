@@ -328,3 +328,76 @@ function resetFileInputs() {
         }
     });
 }
+
+document.getElementById('leaveApplicationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    try {
+        const response = await fetch('/Mathology-Attendance-System/parent/includes/submit-leave.php', {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin'
+        });
+
+        const text = await response.text();
+        console.log('Server response:', text);
+        
+        try {
+            const data = JSON.parse(text);
+            
+            // Show alert
+            const alertDiv = document.getElementById('leaveAlert');
+            const alertMessage = alertDiv.querySelector('.alert-message');
+            
+            alertDiv.className = 'alert ' + (data.success ? 'success' : 'error');
+            alertMessage.textContent = data.message;
+            alertDiv.style.display = 'flex';
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+            
+            if (data.success) {
+                // Reset form if submission was successful
+                this.reset();
+                
+                // Clear file information displays
+                document.getElementById('medical-file-name').textContent = '';
+                document.getElementById('support-file-name').textContent = '';
+                
+                // Reset file input labels to original text
+                const fileLabels = document.querySelectorAll('.file-upload-text');
+                fileLabels.forEach(label => {
+                    if (label.closest('.medical-leave')) {
+                        label.textContent = 'Click to upload Medical Certificate';
+                    } else {
+                        label.textContent = 'Click to upload supporting documents';
+                    }
+                });
+
+                if (data.leave) {
+                    addLeaveToHistory(data.leave);
+                }
+            }
+        } catch (e) {
+            console.error('Failed to parse JSON:', text);
+            throw new Error('Invalid server response');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        const alertDiv = document.getElementById('leaveAlert');
+        const alertMessage = alertDiv.querySelector('.alert-message');
+        
+        alertDiv.className = 'alert error';
+        alertMessage.textContent = error.message || 'An error occurred while submitting the leave request';
+        alertDiv.style.display = 'flex';
+    }
+});
+
+// Add close button functionality
+document.querySelector('.close-alert').addEventListener('click', function() {
+    document.getElementById('leaveAlert').style.display = 'none';
+});
