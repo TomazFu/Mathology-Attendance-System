@@ -36,8 +36,7 @@ try {
     // Fetch attendance data for the last 30 days
     $sql = "SELECT 
             date, 
-            status,
-            TIME_FORMAT(created_at, '%H:%i') as time 
+            status
             FROM attendance 
             WHERE student_id = ? 
             AND date >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
@@ -52,8 +51,7 @@ try {
     while ($row = $result->fetch_assoc()) {
         $attendance_data[] = [
             'date' => $row['date'],
-            'status' => $row['status'],
-            'time' => $row['time']
+            'status' => $row['status']
         ];
     }
     

@@ -197,7 +197,6 @@ function createLogItem(log) {
             <i class="material-icons">${log.status === 'present' ? 'check_circle' : 'cancel'}</i>
             ${formatDate(log.date)}
         </div>
-        <div class="log-time">${log.time}</div>
         <div class="log-status">${log.status.charAt(0).toUpperCase() + log.status.slice(1)}</div>
     `;
     
