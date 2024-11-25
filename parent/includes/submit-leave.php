@@ -34,12 +34,33 @@ try {
 
     // Get and validate form data
     $parent_id = $_SESSION["id"] ?? null;
+    $student_id = $_POST["student_id"] ?? null;
     $leave_type = $_POST["leave_type"] ?? '';
     $reason = trim($_POST["reason"] ?? '');
 
-    if (!$parent_id) {
-        throw new Exception("Invalid session data");
+    if (!$parent_id || !$student_id) {
+        throw new Exception("Invalid session or student data");
     }
+
+    // Verify student belongs to parent
+    $student_sql = "SELECT student_name FROM students WHERE student_id = ? AND parent_id = ? LIMIT 1";
+    $student_stmt = $conn->prepare($student_sql);
+    if (!$student_stmt) {
+        throw new Exception("Database prepare error: " . $conn->error);
+    }
+
+    $student_stmt->bind_param("ii", $student_id, $parent_id);
+    if (!$student_stmt->execute()) {
+        throw new Exception("Database execution error: " . $student_stmt->error);
+    }
+
+    $result = $student_stmt->get_result();
+    if ($result->num_rows === 0) {
+        throw new Exception("Invalid student selection");
+    }
+
+    $student = $result->fetch_assoc();
+    $student_name = $student['student_name'];
 
     // Handle dates based on leave type
     switch ($leave_type) {
@@ -83,27 +104,6 @@ try {
         default:
             throw new Exception("Invalid leave type");
     }
-
-    // Get student information
-    $student_sql = "SELECT student_id, student_name FROM students WHERE parent_id = ? LIMIT 1";
-    $student_stmt = $conn->prepare($student_sql);
-    if (!$student_stmt) {
-        throw new Exception("Database prepare error: " . $conn->error);
-    }
-
-    $student_stmt->bind_param("i", $parent_id);
-    if (!$student_stmt->execute()) {
-        throw new Exception("Database execution error: " . $student_stmt->error);
-    }
-
-    $result = $student_stmt->get_result();
-    if ($result->num_rows === 0) {
-        throw new Exception("No student found for this parent");
-    }
-
-    $student = $result->fetch_assoc();
-    $student_id = $student['student_id'];
-    $student_name = $student['student_name'];
 
     // Process supporting document if provided
     $document_path = null;
