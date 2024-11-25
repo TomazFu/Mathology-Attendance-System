@@ -43,6 +43,22 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePackagePrices(packagePrices[level]);
         });
     });
+
+    const studentSelect = document.getElementById('student-select');
+    const currentPackageDisplay = document.getElementById('current-package-name');
+    
+    // Initialize with first student's package
+    if (studentSelect && studentSelect.options.length > 0) {
+        const currentPackage = studentSelect.options[0].getAttribute('data-package');
+        currentPackageDisplay.textContent = currentPackage || 'No Package';
+    }
+    
+    // Update package display when student selection changes
+    studentSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const currentPackage = selectedOption.getAttribute('data-package');
+        currentPackageDisplay.textContent = currentPackage || 'No Package';
+    });
 });
 
 function initializePackages() {

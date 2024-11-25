@@ -20,20 +20,16 @@ require_once "../includes/sidebar.php";
         <div class="timetable-container">
             <div class="timetable-header">
                 <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
+                <div class="student-selector">
+                    <select id="student-select" class="form-control">
+                        <!-- Will be populated by JavaScript -->
+                    </select>
+                </div>
             </div>
 
             <!-- Weekly View -->
             <div id="weekly-view" class="timetable-view">
-                <div class="week-navigation">
-                    <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
-                    <h2 id="week-display">Week of September 1, 2024</h2>
-                    <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                
                 <div class="weekly-timetable">
-                    <div class="time-slots">
-                        <div class="time-header">Time</div>
-                    </div>
                     <div class="weekly-grid">
                     </div>
                 </div>

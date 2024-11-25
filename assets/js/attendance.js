@@ -1,10 +1,52 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetchAttendanceData();
+    initializeStudentSelector();
 });
 
-async function fetchAttendanceData() {
+async function initializeStudentSelector() {
     try {
-        const response = await fetch('../parent/includes/fetch-attendance-data.php');
+        const response = await fetch('../parent/includes/fetch-students.php');
+        const data = await response.json();
+        
+        if (!data.success) {
+            console.error('Error:', data.error);
+            displayError('Unable to load students data');
+            return;
+        }
+        
+        const selectorHtml = `
+            <select id="student-select">
+                ${data.students.map(student => 
+                    `<option value="${student.student_id}">${student.student_name}</option>`
+                ).join('')}
+            </select>
+        `;
+        
+        // Update selector location
+        const heroContent = document.querySelector('.hero-content .student-selector');
+        if (heroContent) {
+            heroContent.innerHTML = selectorHtml;
+            
+            // Add event listener for student selection
+            const studentSelect = document.getElementById('student-select');
+            studentSelect.addEventListener('change', function() {
+                fetchAttendanceData(this.value);
+            });
+            
+            // Fetch initial data for the first student
+            if (data.students.length > 0) {
+                fetchAttendanceData(data.students[0].student_id);
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing student selector:', error);
+        displayError('Error loading student data');
+    }
+}
+
+// Update fetchAttendanceData to accept student_id parameter
+async function fetchAttendanceData(student_id) {
+    try {
+        const response = await fetch(`../parent/includes/fetch-attendance-data.php?student_id=${student_id}`);
         const data = await response.json();
         
         if (!data.success) {
