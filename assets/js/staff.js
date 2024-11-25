@@ -97,7 +97,11 @@ function submitPayment(studentId) {
 
         // Calculate total amount and fees
         let totalAmount = 0;
-        let depositFee = parseFloat(currentPackageDepositInput.value) 
+        if (currentPackageDepositInput.value != null){
+            depositFee = parseFloat(currentPackageDepositInput.value) 
+        } else {
+            depositFee = 0;
+        }
         // Add package price if a package is selected
         if (packageSelect.value && packageSelect.value !== 'none') {
             const selectedOption = packageSelect.options[packageSelect.selectedIndex];
