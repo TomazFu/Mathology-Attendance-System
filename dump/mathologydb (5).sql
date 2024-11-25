@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 09:16 AM
+-- Generation Time: Nov 25, 2024 at 06:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -191,8 +191,9 @@ CREATE TABLE `parent` (
 --
 
 INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
-(1, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
-(2, 'asdf', '$2y$10$rioS6IyB9wWcAd7r.FaonetXtAuswXreZLAMS.eIB/3MDs01D.QUK', 'asdf');
+(2, 'asdf', '$2y$10$rioS6IyB9wWcAd7r.FaonetXtAuswXreZLAMS.eIB/3MDs01D.QUK', 'asdf'),
+(1729434667, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
+(1732524960, 'testing', '$2y$10$.5wdw9z5mB0tfj09q2VOYOdAH4dv3Wh0Bki34PRhoYs9WQD8.fBO.', 'testing');
 
 -- --------------------------------------------------------
 
@@ -221,7 +222,9 @@ CREATE TABLE `payments` (
 INSERT INTO `payments` (`id`, `parent_id`, `student_id`, `package_id`, `amount`, `date`, `payment_method`, `registration`, `deposit_fee`, `diagnostic_test`, `status`) VALUES
 (1, 1729434667, 1, 1, 530, '2024-10-28', 'cash', 1, 100, 1, 'paid'),
 (2, 1729434667, 1, 1, 380, '2024-10-31', 'credit-card', 0, 100, 0, 'paid'),
-(3, 1729434667, 1, 1, 2435, '2024-11-05', 'cash', 1, 400, 1, 'paid');
+(3, 1729434667, 1, 1, 2435, '2024-11-05', 'cash', 1, 400, 1, 'paid'),
+(4, 1729434667, 1, 1, 910, '2024-10-29', 'cash', 1, 100, 1, 'unpaid'),
+(5, 1729434667, 1, 31, 2109, '2024-11-08', 'cheque', 1, 999, 1, 'paid');
 
 -- --------------------------------------------------------
 
@@ -292,19 +295,21 @@ CREATE TABLE `timetable` (
   `title` varchar(100) NOT NULL,
   `room` varchar(50) NOT NULL,
   `instructor` varchar(100) NOT NULL,
-  `time` varchar(50) NOT NULL
+  `day` varchar(10) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `timetable`
 --
 
-INSERT INTO `timetable` (`id`, `student_id`, `subject_id`, `title`, `room`, `instructor`, `time`) VALUES
-(1, 1, 101, 'Algebra', 'Room A1', 'Dr. Smith', 'Monday 9:00 AM'),
-(2, 1, 102, 'Geometry', 'Room B2', 'Prof. Johnson', 'Tuesday 11:00 AM'),
-(3, 1, 103, 'Calculus', 'Room C3', 'Ms. Williams', 'Wednesday 2:00 PM'),
-(4, 2, 101, 'Algebra', 'Room A1', 'Dr. Smith', 'Monday 10:30 AM'),
-(5, 2, 104, 'Statistics', 'Room D4', 'Mr. Brown', 'Thursday 1:00 PM');
+INSERT INTO `timetable` (`id`, `student_id`, `subject_id`, `title`, `room`, `instructor`, `day`, `start_time`, `end_time`) VALUES
+(1, 1, 101, 'Algebra', 'Room A1', 'Dr. Smith', 'Monday', '09:00:00', '10:00:00'),
+(2, 1, 102, 'Geometry', 'Room B2', 'Prof. Johnson', 'Tuesday', '11:00:00', '12:00:00'),
+(3, 1, 103, 'Calculus', 'Room C3', 'Ms. Williams', 'Wednesday', '14:00:00', '15:00:00'),
+(4, 2, 101, 'Algebra', 'Room A1', 'Dr. Smith', 'Monday', '10:30:00', '11:30:00'),
+(5, 2, 104, 'Statistics', 'Room D4', 'Mr. Brown', 'Thursday', '13:00:00', '14:00:00');
 
 --
 -- Indexes for dumped tables
@@ -410,13 +415,13 @@ ALTER TABLE `packages`
 -- AUTO_INCREMENT for table `parent`
 --
 ALTER TABLE `parent`
-  MODIFY `parent_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1732498610;
+  MODIFY `parent_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `staff`

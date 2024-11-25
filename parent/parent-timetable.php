@@ -29,16 +29,7 @@ require_once "../includes/sidebar.php";
 
             <!-- Weekly View -->
             <div id="weekly-view" class="timetable-view">
-                <div class="week-navigation">
-                    <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
-                    <h2 id="week-display">Week of September 1, 2024</h2>
-                    <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                
                 <div class="weekly-timetable">
-                    <div class="time-slots">
-                        <div class="time-header">Time</div>
-                    </div>
                     <div class="weekly-grid">
                     </div>
                 </div>
