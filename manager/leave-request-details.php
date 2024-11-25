@@ -1,5 +1,4 @@
 <?php
-
 include '../manager/includes/fetch-leave-request.php';
 
 // Include header
@@ -27,6 +26,18 @@ include "../includes/sidebar.php";
             <p><strong>Reason:</strong> <?php echo htmlspecialchars($leave_data['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
             <p><strong>From:</strong> <?php echo htmlspecialchars($leave_data['start_date'], ENT_QUOTES, 'UTF-8'); ?></p>
             <p><strong>To:</strong> <?php echo htmlspecialchars($leave_data['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><strong>Status:</strong> <?php echo htmlspecialchars(ucfirst($leave_data['status']), ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><strong>Proof:</strong> 
+                <?php 
+                if (!empty($leave_data['document_path'])) {
+                    $proofPath = htmlspecialchars($leave_data['document_path'], ENT_QUOTES, 'UTF-8');
+                    echo '<a href="' . $proofPath . '" target="_blank">View Proof</a>';
+                } else {
+                    echo 'No proof provided.';
+                }
+                ?>
+            </p>
+
             <a href="managerDashboard.php" class="back-button">Back to Dashboard</a>
         </div>
     </div>
