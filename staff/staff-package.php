@@ -65,7 +65,10 @@ require_once "includes/fetch-student-package-process.php";
                                 <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
                             </div>
                             <!-- Update form specific to each student -->
-                            <div id="update-form-<?php echo $student['student_id']; ?>" class="update-form" style="display:none;">
+                            <div id="update-form-<?php echo $student['student_id']; ?>" 
+                                 class="update-form" 
+                                 style="display:none;" 
+                                 onclick="handleFormClick(event)">
                                 <input type="hidden" id="student-id-<?php echo $student['student_id']; ?>" value="<?php echo $student['student_id']; ?>">
                                 <h2>Package Details</h2>
                                 <table>

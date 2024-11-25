@@ -56,17 +56,20 @@ function toggleExpandRecord(recordId, imageUrl) {
 }
 
 function showUpdateForm(studentId) {
-    // Get the specific update form element for the student
     const updateForm = document.getElementById(`update-form-${studentId}`);
     
     if (updateForm) {
-        // Check the current display state and toggle it
         if (updateForm.style.display === 'none' || updateForm.style.display === '') {
-            updateForm.style.display = 'block'; // Show the form
+            updateForm.style.display = 'block';
         } else {
-            updateForm.style.display = 'none'; // Hide the form
+            updateForm.style.display = 'none';
         }
     }
+}
+
+// Add this new function to stop event propagation
+function handleFormClick(event) {
+    event.stopPropagation();
 }
 
 function submitPayment(studentId) {
