@@ -17,8 +17,8 @@ if (isset($_GET['leave_id'])) {
     }
 
     // Fetch the leave request details - Updated table and column names
-    $leave_query = $conn->prepare("SELECT leaves.leave_id, students.name AS student_name, leaves.reason, 
-                                   leaves.fromDate as start_date, leaves.toDate as end_date 
+    $leave_query = $conn->prepare("SELECT leaves.leave_id, students.student_name AS student_name, leaves.reason, 
+                                   leaves.fromDate as start_date, leaves.toDate as end_date, leaves.status, leaves.document_path
                                    FROM leaves 
                                    JOIN students ON leaves.student_id = students.student_id
                                    WHERE leaves.leave_id = ?");

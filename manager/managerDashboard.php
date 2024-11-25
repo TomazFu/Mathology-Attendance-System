@@ -36,7 +36,7 @@ include "../includes/sidebar.php";
                 <div class="monthly-summary">
                     <h2>This Month</h2>
                     <p>Total Fees Collection: RM <?php echo number_format($total_fees, 2); ?></p>
-                    <p>Total Fees Outstanding: RM <?php echo number_format($outstanding_fees, 2); ?></p>
+                    <p>Total Fees Outstanding: RM <?php echo number_format($outstanding_fees, decimals: 2); ?></p>
                 </div>
 
                 <!-- Stats -->
