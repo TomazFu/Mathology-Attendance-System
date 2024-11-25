@@ -18,8 +18,8 @@ function renderSidebar($role) {
     ];
 
     $items = $sidebarItems[$role] ?? [];
-
-    echo '<aside class="sidebar" data-collapsed="false">';
+    
+    echo "<aside class='sidebar' id='sidebar'>";
     echo '<nav><ul>';
     foreach ($items as $item) {
         $isActive = ($currentPage === $item['link']) ? 'active' : '';
@@ -30,10 +30,6 @@ function renderSidebar($role) {
     }
     echo '</ul></nav>';
     echo '</aside>';
-    
-    echo '<div class="sidebar-toggle" title="Toggle Sidebar">';
-    echo '<i class="fas fa-chevron-left"></i>';
-    echo '</div>';
 }
 ?>
 

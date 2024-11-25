@@ -26,8 +26,12 @@ body {
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.main-content.collapsed {
-    margin-left: 70px; /* Adjust margin for collapsed sidebar */
+/* Initial state handling */
+.sidebar-init .sidebar,
+.sidebar-init .sidebar-toggle,
+.sidebar-init .main-content,
+.sidebar-init .sidebar a span {
+    transition: none !important;
 }
 
 .login-container {
@@ -474,10 +478,6 @@ header {
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.site-footer.collapsed {
-    margin-left: 70px; /* Adjust margin for collapsed sidebar */
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content,
@@ -645,21 +645,17 @@ header {
 /* Sidebar Styles */
 .sidebar {
     width: 280px;
-    height: calc(100vh - 64px);
+    height: 100vh;
     background: #ffffff;
     position: fixed;
     left: 0;
-    top: 64px;
+    top: 0;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 4px 0 8px rgba(0, 0, 0, 0.02);
     z-index: 100;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
-}
-
-/* Collapsed state */
-.sidebar.collapsed {
-    width: 70px;
+    padding-top: 64px;
 }
 
 /* Logo Section */
@@ -688,7 +684,7 @@ header {
 
 /* Navigation */
 .sidebar nav {
-    padding: 16px 12px;
+    width: 280px; /* Fixed width to prevent text wrapping */
 }
 
 .sidebar ul {
@@ -708,7 +704,6 @@ header {
     color: #64748b;
     text-decoration: none;
     border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.95rem;
     font-weight: 500;
     white-space: nowrap;
@@ -732,82 +727,33 @@ header {
 }
 
 .sidebar a span {
-    transition: opacity 0.2s ease;
     opacity: 1;
-}
-
-.sidebar.collapsed a span {
-    opacity: 0;
-}
-
-/* Collapse Toggle Button */
-.sidebar-toggle {
-    position: fixed;
-    left: 280px;
-    top: 76px;
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 101;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.sidebar-toggle:hover {
-    background: #f8fafc;
-    transform: scale(1.1);
-}
-
-.sidebar-toggle.collapsed {
-    left: 70px;
-}
-
-.sidebar-toggle i {
-    font-size: 0.8rem;
-    color: #64748b;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-toggle.collapsed i {
-    transform: rotate(180deg);
+    visibility: visible;
+    white-space: nowrap;
 }
 
 /* Adjust main content */
 .main-content {
     margin-left: 280px;
-    margin-top: 64px;
-    padding: 24px;
-    min-height: calc(100vh - 64px);
-    background: #f8fafc;
+    padding: 20px;
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.main-content.collapsed {
-    margin-left: 70px;
+    padding-top: 84px; /* Account for header height + spacing */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .sidebar {
-        transform: translateX(-100%);   
+        transform: translateX(-100%);
     }
-
+    
     .sidebar.active {
         transform: translateX(0);
     }
-
+    
     .main-content {
         margin-left: 0;
-        padding-top: 88px; /* Maintain consistent top padding on mobile */
-        margin-top: 64px;
     }
-
+    
     .sidebar-toggle {
         display: none;
     }
