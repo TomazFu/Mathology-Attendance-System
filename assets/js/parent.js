@@ -200,6 +200,10 @@ function submitLeaveForm(event) {
     const form = document.getElementById('leaveApplicationForm');
     const formData = new FormData(form);
     
+    // Add student_id to form data
+    const studentId = document.getElementById('student_id').value;
+    formData.append('student_id', studentId);
+    
     // Log form data for debugging
     console.log('Form data being sent:', Object.fromEntries(formData));
 

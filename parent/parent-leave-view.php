@@ -46,6 +46,25 @@ $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/parent');
         <div class="card" id="leaveForm">
             <h2 class="form-title">Submit Leave Request</h2>
             
+            <!-- Add Student Selector -->
+            <div class="student-selector">
+                <select name="student_id" id="student_id" required>
+                    <?php
+                    // Fetch students for current parent
+                    $student_sql = "SELECT student_id, student_name FROM students WHERE parent_id = ?";
+                    $stmt = $conn->prepare($student_sql);
+                    $stmt->bind_param("i", $parent_id);
+                    $stmt->execute();
+                    $students = $stmt->get_result();
+                    
+                    while ($student = $students->fetch_assoc()) {
+                        echo "<option value='" . htmlspecialchars($student['student_id']) . "'>" 
+                            . htmlspecialchars($student['student_name']) . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            
             <!-- Leave Type Selection -->
             <div class="leave-type-selector">
                 <h3>Select Leave Type</h3>

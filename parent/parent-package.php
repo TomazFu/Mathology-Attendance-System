@@ -15,7 +15,6 @@ require_once "../includes/sidebar.php";
 <link rel="stylesheet" href="../assets/css/parent.css">
 
 <div class="dashboard-layout">
-    <?php require_once "../includes/sidebar.php"; ?>
     <?php renderSidebar('parent'); ?>
     
     <div class="main-content">
@@ -23,6 +22,37 @@ require_once "../includes/sidebar.php";
             <div class="package-header">
                 <h1>Choose Your Learning Journey</h1>
                 <p>Select the perfect package that suits your child's educational needs</p>
+                
+                <!-- Add Student Selector -->
+                <div class="student-selector">
+                    <select id="student-select">
+                        <?php
+                        // Fetch students for current parent
+                        $parent_id = $_SESSION['id'];
+                        $student_sql = "SELECT s.student_id, s.student_name, p.package_name as current_package 
+                                      FROM students s 
+                                      LEFT JOIN packages p ON s.package_id = p.id 
+                                      WHERE s.parent_id = ?";
+                        $stmt = $conn->prepare($student_sql);
+                        $stmt->bind_param("i", $parent_id);
+                        $stmt->execute();
+                        $students = $stmt->get_result();
+                        
+                        while ($student = $students->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($student['student_id']) . "' 
+                                  data-package='" . htmlspecialchars($student['current_package']) . "'>" 
+                                . htmlspecialchars($student['student_name']) 
+                                . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                
+                <!-- Current Package Indicator -->
+                <div class="current-package-indicator">
+                    <span class="label">Current Package:</span>
+                    <span id="current-package-name" class="value">-</span>
+                </div>
             </div>
 
             <!-- Level Selection -->

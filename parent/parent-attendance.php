@@ -20,20 +20,17 @@ require_once "../includes/sidebar.php";
         <!-- Hero Section -->
         <div class="attendance-hero">
             <div class="hero-content">
-                <h1>Attendance Overview</h1>
-                <p class="subtitle">Track and monitor your child's attendance records</p>
-            </div>
-            <div class="quick-filters">
-                <select id="term-filter" class="filter-select">
-                    <option value="current">Current Term</option>
-                    <option value="previous">Previous Term</option>
-                </select>
-                <select id="class-filter" class="filter-select">
-                    <option value="all">All Classes</option>
-                    <option value="math">Mathematics</option>
-                    <option value="science">Science</option>
-                    <option value="english">English</option>
-                </select>
+                <div class="overview-container">
+                    <div class="overview-content">
+                        <h1>Attendance Overview</h1>
+                        <p class="subtitle">Track and monitor your child's attendance records</p>
+                        <div class="student-selector">
+                            <select id="student-select">
+                                <!-- Will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
