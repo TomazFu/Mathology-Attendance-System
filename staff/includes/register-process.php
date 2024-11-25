@@ -1,6 +1,7 @@
 <?php
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once('../config/connect.php');
+    require_once('../../config/connect.php');
 
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -14,9 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("isss", $parent_id, $username, $password, $name);
 
     if ($stmt->execute()) {
-        echo "Parent registration successful!";
+        $_SESSION['registration_success'] = "Parent registration successful!";
+        header("Location: ../staff-registration.php");
+        exit();
     } else {
-        echo "Error: " . $stmt->error;
+        $_SESSION['registration_error'] = "Error: " . $stmt->error;
+        header("Location: ../staff-registration.php");
+        exit();
     }
 
     $stmt->close();

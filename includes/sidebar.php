@@ -9,6 +9,12 @@ function renderSidebar($role) {
             ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'parent-attendance.php'],
             ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'parent-package.php'],
         ],
+        'staff' => [
+            ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'staff-dashboard.php'],
+            ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'staff-attendance.php'],
+            ['icon' => 'fas fa-user', 'text' => 'Registration', 'link' => 'staff-registration.php'],
+            ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'staff-package.php'],
+        ],
     ];
 
     $items = $sidebarItems[$role] ?? [];
