@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
     backBtn.textContent = 'Back';
     backBtn.className = 'back-btn';
 
+    previousPageBtn.addEventListener('click', function() {
+        window.location.href = 'parent-leave-view.php';
+    });
+
     function showView(viewId) {
         if (viewId === 'leaveForm') {
             leaveForm.style.display = 'block';

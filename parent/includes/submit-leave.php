@@ -120,7 +120,7 @@ try {
             throw new Exception("Supporting document exceeds 5MB limit");
         }
 
-        $upload_dir = "../uploads/";
+        $upload_dir = "../../uploads/";
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
                 throw new Exception("Failed to create upload directory");
