@@ -21,6 +21,7 @@ require_once "includes/fetch-attendance-data-process.php";
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="../assets/css/staff.css">
 </head>
@@ -57,6 +58,14 @@ require_once "includes/fetch-attendance-data-process.php";
                                                 <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
                                                 onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
                                         </label>
+                                        <label>
+                                            Late:
+                                            <input
+                                                type="checkbox"
+                                                id="late_<?php echo $student['student_id']; ?>"
+                                                <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
+                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
+                                        </label>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -65,7 +74,7 @@ require_once "includes/fetch-attendance-data-process.php";
                         <p>No attendance records available.</p>
                     <?php endif; ?>
                 </div>
-            </div>                
+            </div>
             <div class="staff-dashboard-sections">
                 <!-- View Package -->
                 <a href="staff-package.php" class="dashboard-link">
@@ -83,6 +92,7 @@ require_once "includes/fetch-attendance-data-process.php";
         </div>
     </div>
 </body>
+
 </html>
 <?php
 // Include footer

@@ -29,12 +29,12 @@ require_once "includes/fetch-attendance-data-process.php";
         <?php renderSidebar('staff'); ?>
         <div class="main-content">
             <h1>Attendance</h1>
-            
+
             <!-- Date Selector Dropdown -->
             <div class="attendance-date">
                 <label for="date-select">Select Date: </label>
                 <select id="date-select" onchange="window.location.href='staff-attendance.php?date=' + this.value">
-                    <?php 
+                    <?php
                     // Generate the past 10 days options for the date dropdown
                     for ($i = 0; $i < 10; $i++) {
                         $date = date("Y-m-d", strtotime("-$i days"));
@@ -69,6 +69,14 @@ require_once "includes/fetch-attendance-data-process.php";
                                         id="absent_<?php echo $student['student_id']; ?>"
                                         <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
                                         onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
+                                </label>
+                                <label>
+                                    Late:
+                                    <input
+                                        type="checkbox"
+                                        id="late_<?php echo $student['student_id']; ?>"
+                                        <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
+                                        onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
                                 </label>
                             </div>
                         </div>

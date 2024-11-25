@@ -6,7 +6,7 @@ require_once "../../config/connect.php";
 if (isset($_POST['student_id']) && isset($_POST['attendance_status']) && isset($_POST['date'])) {
     $studentId = $_POST['student_id'];
     $attendanceStatus = $_POST['attendance_status'];
-    $selectedDate = $_POST['date'];  // Get the selected date from POST
+    $selectedDate = $_POST['date'];  
 
     // Check if the student has an attendance record for the selected date
     $sql = "SELECT * FROM attendance WHERE student_id = $studentId AND date = '$selectedDate'";

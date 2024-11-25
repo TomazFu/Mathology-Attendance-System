@@ -3,15 +3,17 @@ function toggleAttendance(studentId, status) {
     // Get the checkboxes and date
     const presentCheckbox = document.getElementById(`present_${studentId}`);
     const absentCheckbox = document.getElementById(`absent_${studentId}`);
+    const lateCheckbox = document.getElementById(`late_${studentId}`);
     const currentDate = document.getElementById('date-select').value;
     
-    if (!presentCheckbox || !absentCheckbox) {
+    if (!presentCheckbox || !absentCheckbox || !lateCheckbox) {
         console.error('Attendance checkboxes not found');
         return;
     }
      // Update checkboxes
     presentCheckbox.checked = (status === 'present');
     absentCheckbox.checked = (status === 'absent');
+    lateCheckbox.checked = (status === 'late');
      // Send update to server
     updateAttendanceStatus(studentId, status, currentDate);
 }
