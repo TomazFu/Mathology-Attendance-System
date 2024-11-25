@@ -191,7 +191,7 @@ CREATE TABLE `parent` (
 --
 
 INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
-(1, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
+(1729434667, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
 (2, 'asdf', '$2y$10$rioS6IyB9wWcAd7r.FaonetXtAuswXreZLAMS.eIB/3MDs01D.QUK', 'asdf');
 
 -- --------------------------------------------------------
