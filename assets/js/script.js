@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const backBtn = document.createElement('button');
     backBtn.textContent = 'Back';
     backBtn.className = 'back-btn';
-    document.querySelector('.main-content').appendChild(backBtn);
 
     function showView(viewId) {
         if (viewId === 'leaveForm') {
