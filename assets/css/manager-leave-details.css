@@ -1,0 +1,74 @@
+/* Overall Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.main-content {
+    margin-left: 250px; /* Match sidebar width */
+    padding: 20px;
+    padding-top: 100px; /* Account for header height */
+    min-height: calc(100vh - 80px);
+    box-sizing: border-box;
+}
+
+/* Leave Request Details Section */
+.leave-request-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #FFFFFF;
+    padding: 30px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.leave-request-details h2 {
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.leave-request-details p {
+    font-size: 16px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.leave-request-details p strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.back-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 70px;
+        padding: 15px;
+        padding-top: 90px;
+    }
+
+    .leave-request-details {
+        width: 100%;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,137 @@
+/* Overall Layout */
+.leave-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Search and Sort Section */
+.search-sort {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-sort form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-sort input[type="text"] {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+.search-sort select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-sort button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-sort button:hover {
+    background-color: #45a049;
+}
+
+/* Leave Requests Section */
+.latest-leave-requests {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.latest-leave-requests h2 {
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.leave-request {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.leave-request p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.leave-request span {
+    font-weight: bold;
+}
+
+.view-btn {
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.view-btn:hover {
+    background-color: #45a049;
+}
+
+/* Export Options */
+.export-options {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+
+/* Button Styling */
+button {
+    padding: 8px 15px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.mark-present {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.mark-absent {
+    background-color: #f44336;
+    color: white;
+}

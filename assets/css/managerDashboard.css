@@ -1,0 +1,184 @@
+/* Overall Layout */
+.dashboard-container {
+    flex: 1;
+    margin-left: 250px; /* Match sidebar width */
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+    width: calc(100% - 250px); /* Adjust width to account for sidebar */
+    position: relative;
+    padding-top: 100px; /* Account for header height */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.dashboard-content {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Update width for all dashboard sections */
+.export-options,
+.monthly-summary,
+.stats,
+.attendance,
+.latest-leave-requests {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+/* Monthly Summary Section */
+.monthly-summary {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.monthly-summary h2 {
+    font-weight: 800;
+}
+
+.monthly-summary p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.stats div {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Attendance Section */
+.attendance {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.attendance h2 {
+    font-weight: 800;
+}
+
+.attendance p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Latest Leave Requests */
+.latest-leave-requests {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.latest-leave-requests h2 {
+    font-weight: 800;
+}
+
+.leave-request {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.leave-request p {
+    font-size: 14px;
+}
+
+.view-btn {
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.view-btn:hover {
+    background-color: #45a049;
+}
+
+/* Export Options */
+.export-options {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.export-btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: auto 0;
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+
+/* Button Styling */
+button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.mark-present {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.mark-absent {
+    background-color: #f44336;
+    color: white;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 70px; /* Match sidebar width */
+    width: calc(100% - 70px);
+    min-height: 100vh;
+    padding-top: 84px; /* Account for header height */
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 15px;
+        padding-top: 90px;
+    }
+}
