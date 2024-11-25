@@ -21,8 +21,8 @@ require_once "includes/fetch-student-package-process.php";
 
 <head>
     <link rel="stylesheet" href="../assets/css/staff.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="../assets/javascript/staff.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/staff.js"></script>
 </head>
 
 <body>

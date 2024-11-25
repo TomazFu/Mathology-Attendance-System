@@ -87,4 +87,4 @@ require_once "includes/fetch-attendance-data-process.php";
 // Include footer
 include "../includes/footer.php";
 ?>
-<script src="../assets/javascript/staff.js"></script>
+<script src="../assets/js/staff.js"></script>

@@ -28,9 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($stmt->fetch()) {
                     if (password_verify($password, $hashed_password)) {
                         // Password is correct, so start a new session
-                        session_start();
-                        
-                        // Store data in session variables
                         $_SESSION["loggedin"] = true;
                         $_SESSION["id"] = $id;
                         $_SESSION["username"] = $username;
@@ -40,16 +37,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         header("location: ../staff-dashboard.php");
                         exit();
                     } else {
-                        // Password is not valid, display a generic error message
-                        $login_err = "Invalid username or password.";
+                        $_SESSION['login_error'] = "Invalid username or password.";
+                        header("location: ../staff-login.php");
+                        exit();
                     }
                 }
             } else {
-                // Username doesn't exist, display a generic error message
-                $login_err = "Invalid username or password.";
+                $_SESSION['login_error'] = "Invalid username or password.";
+                header("location: ../staff-login.php");
+                exit();
             }
         } else {
-            echo "Oops! Something went wrong. Please try again later.";
+            $_SESSION['login_error'] = "Oops! Something went wrong. Please try again later.";
+            header("location: ../staff-login.php");
+            exit();
         }
 
         // Close statement
@@ -59,8 +60,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Close connection
 $conn->close();
-
-if (!empty($login_err)) {
-    echo $login_err;
-}
 ?>

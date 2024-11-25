@@ -21,7 +21,7 @@ require_once "includes/fetch-attendance-data-process.php";
 
 <head>
     <link rel="stylesheet" href="../assets/css/staff.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 
 <body>
@@ -86,4 +86,4 @@ require_once "includes/fetch-attendance-data-process.php";
 include "../includes/footer.php";
 ?>
 
-<script src="../assets/javascript/staff.js"></script>
+<script src="../assets/js/staff.js"></script>

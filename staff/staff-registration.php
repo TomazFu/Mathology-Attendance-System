@@ -21,7 +21,7 @@ require_once "../includes/sidebar.php";
 <html>
 
 <head> 
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/staff.css">
 </head>
 
