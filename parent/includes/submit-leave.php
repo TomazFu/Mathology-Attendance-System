@@ -120,14 +120,19 @@ try {
             throw new Exception("Supporting document exceeds 5MB limit");
         }
 
-        $upload_dir = "../uploads/leave_applications/";
+        $upload_dir = "../uploads/";
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
                 throw new Exception("Failed to create upload directory");
             }
         }
 
-        $new_filename = uniqid() . "." . $ext;
+        // Sanitize original filename
+        $original_name = preg_replace("/[^a-zA-Z0-9.-]/", "_", $file["name"]);
+        
+        // Create unique filename while keeping original name
+        $filename = pathinfo($original_name, PATHINFO_FILENAME);
+        $new_filename = $filename . '_' . uniqid() . '.' . $ext;
         $document_path = $upload_dir . $new_filename;
         
         if (!move_uploaded_file($file["tmp_name"], $document_path)) {
