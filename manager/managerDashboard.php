@@ -41,15 +41,18 @@ include "../includes/sidebar.php";
 
                 <!-- Stats -->
                 <div class="stats">
-                    <div>Total Students: <?php echo $student_count; ?></div>
+                    <div>Statistics</div>
+                    <!-- TODO student count, staff count, usage percentage -->
+                    <!-- <div>Total Students: <?php echo $student_count; ?></div>
                     <div>Total Staff: <?php echo $staff_count; ?></div>
-                    <div>Usage: 90%</div>
+                    <div>Usage: 90%</div> -->
                 </div>
 
                 <!-- Attendance -->
                 <div class="attendance">
                     <h2>Overall Attendance Today</h2>
-                    <p><?php echo $attendance_percentage; ?>%</p>
+                    <!-- TODO attendance percentage -->
+                    <!-- <p><?php echo $attendance_percentage; ?>%</p> -->
                 </div>
 
                 <!-- Latest Leave Requests -->

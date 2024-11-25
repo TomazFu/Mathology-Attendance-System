@@ -14,9 +14,9 @@ if ($conn->connect_error) {
 }
 
 // Initialize SQL query
-$sql = "SELECT leave_requests.leave_id, students.name AS student_name, leave_requests.reason, leave_requests.start_date, leave_requests.end_date 
-        FROM leave_requests 
-        JOIN students ON leave_requests.student_id = students.student_id";
+$sql = "SELECT leaves.leave_id, students.name AS student_name, leaves.reason, leaves.fromDate as start_date, leaves.toDate as end_date 
+        FROM leaves 
+        JOIN students ON leaves.student_id = students.student_id";
 
 // Handle Search functionality
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -27,11 +27,11 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 // Handle Sort functionality
 if (isset($_GET['sort']) && !empty($_GET['sort'])) {
     $month = (int) $_GET['sort'];
-    $sql .= (strpos($sql, 'WHERE') === false ? " WHERE" : " AND") . " MONTH(leave_requests.start_date) = ?";
+    $sql .= (strpos($sql, 'WHERE') === false ? " WHERE" : " AND") . " MONTH(leaves.fromDate) = ?";
 }
 
 // Add ordering for the results by start_date
-$sql .= " ORDER BY leave_requests.start_date";
+$sql .= " ORDER BY leaves.fromDate";
 
 // Prepare and execute the query
 $stmt = $conn->prepare($sql);

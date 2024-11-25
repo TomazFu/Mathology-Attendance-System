@@ -19,6 +19,7 @@ if ($type === 'pdf') {
     $pdf->Cell(0, 10, 'Total Fees Outstanding: RM ' . number_format($outstanding_fees, 2), 0, 1);
     $pdf->Cell(0, 10, 'Total Students: ' . $student_count, 0, 1);
     $pdf->Cell(0, 10, 'Total Staff: ' . $staff_count, 0, 1);
+    // TODO
     $pdf->Cell(0, 10, 'Overall Attendance Today: ' . $attendance_percentage . '%', 0, 1);
     $pdf->Ln(10);
 
@@ -45,6 +46,7 @@ if ($type === 'pdf') {
     fputcsv($output, ['Total Fees Outstanding', 'RM ' . number_format($outstanding_fees, 2)]);
     fputcsv($output, ['Total Students', $student_count]);
     fputcsv($output, ['Total Staff', $staff_count]);
+    // TODO
     fputcsv($output, ['Overall Attendance Today', $attendance_percentage . '%']);
     fputcsv($output, ['Leave Requests']);
     

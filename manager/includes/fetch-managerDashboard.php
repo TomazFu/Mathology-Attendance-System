@@ -24,12 +24,16 @@ $outstanding_fees = $fees_data['outstanding_fees'];
 $student_count = $conn->query("SELECT COUNT(*) AS total FROM students")->fetch_assoc()['total'];
 $staff_count = $conn->query("SELECT COUNT(*) AS total FROM staff")->fetch_assoc()['total'];
 
-// Fetch today's attendance percentage
-$attendance_result = $conn->query("SELECT attendance_percentage FROM attendance WHERE date = CURDATE()");
-$attendance_percentage = $attendance_result->num_rows > 0 ? $attendance_result->fetch_assoc()['attendance_percentage'] : 'N/A';
+// TODO attendance percentage
+// // Fetch today's attendance percentage
+// $attendance_result = $conn->query("SELECT attendance_percentage FROM attendance WHERE date = CURDATE()");
+// $attendance_percentage = $attendance_result->num_rows > 0 ? $attendance_result->fetch_assoc()['attendance_percentage'] : 'N/A';
 
-// Fetch latest leave requests
-$leave_requests_result = $conn->query("SELECT leave_id, students.name AS student_name, reason, start_date, end_date FROM leave_requests JOIN students ON leave_requests.student_id = students.student_id ORDER BY leave_id DESC LIMIT 3");
+// Fetch latest leave requests - Updated table and column names
+$leave_requests_result = $conn->query("SELECT leave_id, students.student_name AS student_name, reason, fromDate as start_date, toDate as end_date 
+                                     FROM leaves 
+                                     JOIN students ON leaves.student_id = students.student_id 
+                                     ORDER BY leave_id DESC LIMIT 3");
 
 // Close the database connection
 $conn->close();

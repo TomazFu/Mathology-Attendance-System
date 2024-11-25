@@ -16,12 +16,12 @@ if ($conn->connect_error) {
 // Set the response type to JSON
 header('Content-Type: application/json');
 
-// Default query for fetching student data, joining tables for attendance and program
-$sql = "SELECT s.name, p.package_name AS programme, a.attendance_percentage AS attendance, 
+// Simpler and more efficient query using student table fields
+$sql = "SELECT s.student_name as name, 
+               p.package_name AS programme,
                (s.total_fees - s.fees_paid) AS remaining_payment
         FROM students s
-        LEFT JOIN attendance a ON s.student_id = a.student_id
-        LEFT JOIN packages p ON s.student_id = p.student_id"; 
+        LEFT JOIN packages p ON s.package_id = p.id";
 
 // Search functionality
 $conditions = []; 
