@@ -11,28 +11,29 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 // Get the parent_id from session (this should be the numeric ID)
 $parent_id = $_SESSION["id"]; // This should be 1729434667 based on your data
 
+// Get the student_id from the request
+$student_id = isset($_GET['student_id']) ? $_GET['student_id'] : null;
+
+// Verify that this student belongs to the logged-in parent
+$verify_sql = "SELECT student_id FROM students WHERE parent_id = ? AND student_id = ?";
+$verify_stmt = $conn->prepare($verify_sql);
+$verify_stmt->bind_param("ii", $parent_id, $student_id);
+$verify_stmt->execute();
+$verify_result = $verify_stmt->get_result();
+
+if ($verify_result->num_rows === 0) {
+    $response = [
+        'success' => false,
+        'error' => 'Unauthorized access to student data'
+    ];
+    echo json_encode($response);
+    exit;
+}
+
 try {
     // Debug log
     error_log("Fetching attendance for parent ID: " . $parent_id);
     
-    // First, get the student IDs for this parent
-    $student_sql = "SELECT student_id FROM students WHERE parent_id = ?";
-    $student_stmt = $conn->prepare($student_sql);
-    $student_stmt->bind_param("i", $parent_id);
-    $student_stmt->execute();
-    $result = $student_stmt->get_result();
-    
-    if ($result->num_rows === 0) {
-        throw new Exception("No students found for parent ID: " . $parent_id);
-    }
-    
-    // Get the first student's ID
-    $student = $result->fetch_assoc();
-    $student_id = $student['student_id'];
-    
-    // Debug log
-    error_log("Found student ID: " . $student_id);
-
     // Fetch attendance data for the last 30 days
     $sql = "SELECT 
             date, 
