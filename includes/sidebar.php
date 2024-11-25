@@ -1,5 +1,6 @@
 <?php
 function renderSidebar($role) {
+    $currentPage = basename($_SERVER['PHP_SELF']);
     $sidebarItems = [
         'parent' => [
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'parent-dashboard.php'],
@@ -8,18 +9,25 @@ function renderSidebar($role) {
             ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'parent-attendance.php'],
             ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'parent-package.php'],
         ],
-        // Add more roles as needed
     ];
 
     $items = $sidebarItems[$role] ?? [];
 
-    echo '<aside class="sidebar">';
+    echo '<aside class="sidebar" data-collapsed="false">';
     echo '<nav><ul>';
     foreach ($items as $item) {
-        echo "<li><a href='{$item['link']}'><i class='{$item['icon']}'></i> {$item['text']}</a></li>";
+        $isActive = ($currentPage === $item['link']) ? 'active' : '';
+        echo "<li><a href='{$item['link']}' class='{$isActive}'>";
+        echo "<i class='{$item['icon']}'></i>";
+        echo "<span>{$item['text']}</span>";
+        echo "</a></li>";
     }
     echo '</ul></nav>';
     echo '</aside>';
+    
+    echo '<div class="sidebar-toggle" title="Toggle Sidebar">';
+    echo '<i class="fas fa-chevron-left"></i>';
+    echo '</div>';
 }
 ?>
 

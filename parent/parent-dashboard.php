@@ -1,71 +1,172 @@
-<!-- tmp -->
 <?php
 session_start();
 
-// Check if the user is logged in, if not then redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: parent-login.php");
     exit;
 }
 
-// Include database connection
 require_once "../config/connect.php";
-
-// Include header
 include "../includes/header.php";
-
-// Include sidebar
 require_once "../includes/sidebar.php";
+
+$parent_id = $_SESSION["id"];
 ?>
+
+<!-- Update CSS references -->
+<link rel="stylesheet" href="../assets/css/parent.css">
 
 <div class="dashboard-layout">
     <?php renderSidebar('parent'); ?>
     <div class="main-content">
-        <img src="../assets/img/book.jpeg" alt="Book Image" class="book-image">
-        <h1>Welcome to Mathology!</h1>
-        <div class="dashboard-sections">
-            <!-- Enrolled Classes -->
-            <div class="enrolled-classes">
-                <h3>Enrolled Classes</h3>
-                <ul id="enrolled-classes-list">
-                    <!-- To be filled by JS -->
-                </ul>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="welcome-text">
+                    <h1>Welcome back, <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
+                    <p class="hero-subtitle">Monitor your child's progress, track attendance, and stay connected with their learning journey at Mathology Math Centre.</p>
+                </div>
+                <div class="quick-actions">
+                    <button class="action-btn primary" data-action="apply-leave">
+                        <i class="material-icons">add_circle</i>
+                        Apply Leave
+                    </button>
+                    <button class="action-btn" data-action="view-schedule">
+                        <i class="material-icons">calendar_today</i>
+                        View Schedule
+                    </button>
+                    <button class="action-btn" data-action="contact-teacher">
+                        <i class="material-icons">message</i>
+                        Contact Teacher
+                    </button>
+                </div>
             </div>
-            
-            <!-- Enrolled Package -->
-            <div class="enrolled-package">
-                <h3>Enrolled Package</h3>
-                <p id="enrolled-package-text">Loading...</p>
+            <div class="hero-illustration">
+                <div class="hero-image-wrapper">
+                    <img src="../assets/img/math-hero.png" alt="Mathematics Education" class="hero-image">
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-container">
+            <!-- Progress Overview -->
+            <div class="section-header">
+                <h2>Progress Overview</h2>
+                <p class="section-subtitle">Track your child's academic performance</p>
             </div>
 
-            <!-- Attendance Chart -->
-            <div class="attendance-chart">
-                <h3>Attendance</h3>
-                <div class="chart">
-                    <span id="attendance-percent">0%</span>
-                    <ul>
-                        <li class="present">Present</li>
-                        <li class="late">Late</li>
-                        <li class="leaves">Leaves</li>
-                    </ul>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="material-icons">school</i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-classes">0</span>
+                        <span class="stat-label">Enrolled Classes</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="material-icons">event_available</i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="attendance-rate">0%</span>
+                        <span class="stat-label">Attendance Rate</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="material-icons">trending_up</i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value">85%</span>
+                        <span class="stat-label">Average Performance</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Latest Leave -->
-            <div class="latest-leave">
-                <h3>Latest Leave</h3>
-                <p id="leave-id">Leave ID: Loading...</p>
-                <p id="student-name">Student Name: Loading...</p>
-                <p id="leave-reason">Reason: Loading...</p>
-                <p id="leave-dates">Date: Loading...</p>
-                <button class="view-btn" id="view-leave-btn">View Details</button>
+            <div class="dashboard-sections">
+                <!-- Class Schedule Card -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="material-icons">schedule</i> Upcoming Classes</h3>
+                        <button class="view-all-btn">View Schedule</button>
+                    </div>
+                    <div class="schedule-list">
+                        <!-- Add schedule items here -->
+                        <div class="schedule-item" data-class-id="123">
+                            <div class="schedule-time">
+                                <i class="material-icons">access_time</i>
+                                <span>09:00 AM</span>
+                            </div>
+                            <div class="schedule-info">
+                                <h4>Advanced Mathematics</h4>
+                                <p>with Mr. John Smith</p>
+                            </div>
+                            <div class="schedule-status">
+                                <span class="status-badge upcoming">Upcoming</span>
+                            </div>
+                        </div>
+                        <!-- Add more schedule items -->
+                    </div>
+                </div>
+
+                <!-- Performance Analytics Card -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="material-icons">analytics</i> Performance Analytics</h3>
+                        <select id="performance-period">
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                        </select>
+                    </div>
+                    <div class="performance-chart">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities Section -->
+            <div class="section-header">
+                <h2>Recent Activities</h2>
+                <p class="section-subtitle">Stay updated with your child's latest activities</p>
+            </div>
+
+            <div class="activity-grid">
+                <!-- Activity Cards -->
+                <div class="activity-card" data-activity-id="456">
+                    <div class="activity-icon homework">
+                        <i class="material-icons">assignment</i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Homework Submitted</h4>
+                        <p>Mathematics Assignment #12</p>
+                        <span class="activity-time">2 hours ago</span>
+                    </div>
+                </div>
+
+                <!-- Add more activity cards -->
+            </div>
+
+            <!-- Announcements Section -->
+            <div class="announcements-section">
+                <div class="section-header">
+                    <h2>Important Announcements</h2>
+                </div>
+                <div class="announcement-list">
+                    <!-- Add announcements here -->
+                </div>
             </div>
         </div>
     </div>
-    </div>
-</div>  
+</div>
 
-<?php
-// Include footer
-include "../includes/footer.php";
-?>
+<!-- Add required scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/script.js"></script>
+<script src="../assets/js/parent.js"></script>
+
+<?php include "../includes/footer.php"; ?>

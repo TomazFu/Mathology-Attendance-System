@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config/connect.php';
+include '../../config/connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -37,30 +37,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["name"] = $name;
                         
                         // Redirect user to welcome page
-                        header("location: ../parent/parent-dashboard.php");
+                        header("location: ../parent-dashboard.php");
                         exit();
                     } else {
-                        // Password is not valid, display a generic error message
-                        $login_err = "Invalid username or password.";
+                        $_SESSION["login_error"] = "Invalid username or password.";
+                        header("location: ../parent-login.php");
+                        exit();
                     }
                 }
             } else {
-                // Username doesn't exist, display a generic error message
-                $login_err = "Invalid username or password.";
+                $_SESSION["login_error"] = "Invalid username or password.";
+                header("location: ../parent-login.php");
+                exit();
             }
         } else {
-            echo "Oops! Something went wrong. Please try again later.";
+            $_SESSION["login_error"] = "Oops! Something went wrong. Please try again later.";
+            header("location: ../parent-login.php");
+            exit();
         }
 
         // Close statement
         $stmt->close();
     }
+    
+    // Close connection
+    $conn->close();
 }
 
-// Close connection
-$conn->close();
-
-if (!empty($login_err)) {
-    echo $login_err;
+// If not a POST request, redirect to login page
+if (!isset($_POST["username"])) {
+    header("location: ../parent-login.php");
+    exit();
 }
 ?>

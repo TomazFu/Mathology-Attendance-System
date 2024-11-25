@@ -30,7 +30,10 @@ while ($row = $result->fetch_assoc()) {
 }
 
 // Fetch enrolled package
-$sql = "SELECT package_name FROM packages WHERE student_id = ?";
+$sql = "SELECT p.package_name 
+        FROM packages p 
+        INNER JOIN students s ON s.package_id = p.id 
+        WHERE s.student_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $studentId);
 $stmt->execute();
