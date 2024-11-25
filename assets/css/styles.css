@@ -26,14 +26,6 @@ body {
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Initial state handling */
-.sidebar-init .sidebar,
-.sidebar-init .sidebar-toggle,
-.sidebar-init .main-content,
-.sidebar-init .sidebar a span {
-    transition: none !important;
-}
-
 .login-container {
     background-color: #ffffff;
     padding: 60px 50px;
@@ -754,9 +746,6 @@ header {
         margin-left: 0;
     }
     
-    .sidebar-toggle {
-        display: none;
-    }
 }
 
 /* Index Page Styles */
