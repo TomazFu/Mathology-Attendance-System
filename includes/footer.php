@@ -22,6 +22,6 @@ if (!isset($base_path)) {
     </div>
 </footer>
 
-<script src="<?php echo $base_path; ?>assets/javascript/script.js"></script>
+<script src="<?php echo $base_path; ?>assets/js/script.js"></script>
 </body>
 </html>

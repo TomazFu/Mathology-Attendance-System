@@ -67,6 +67,6 @@ include "../manager/includes/sidebar.php";
             </div>
         </div>
     </div>
-    <script src="../assets/javascript/manager-staff.js"></script>
+    <script src="../assets/js/manager-staff.js"></script>
 </body>
 </html>
