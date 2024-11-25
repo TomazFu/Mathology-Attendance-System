@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2024 at 02:55 PM
+-- Generation Time: Nov 25, 2024 at 02:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,9 +44,11 @@ INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`) VALUES
 (3, 1, '2023-06-03', 'absent'),
 (4, 2, '2023-06-01', 'present'),
 (5, 2, '2023-06-02', 'absent'),
-(8, 1, '2024-11-07', 'absent'),
-(9, 2, '2024-11-07', 'absent'),
-(10, 3, '2024-11-07', 'absent');
+(6, 1, '2024-11-24', 'present'),
+(7, 1, '2024-11-23', 'present'),
+(8, 1, '2024-11-22', 'absent'),
+(9, 1, '2024-11-21', 'present'),
+(10, 1, '2024-11-20', 'present');
 
 -- --------------------------------------------------------
 
@@ -108,8 +110,7 @@ CREATE TABLE `packages` (
   `id` int(11) NOT NULL,
   `package_name` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
-  `details` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `details` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -149,6 +150,7 @@ INSERT INTO `packages` (`id`, `package_name`, `price`, `details`) VALUES
 (30, 'Post-Secondary: Intensive-Quarterly', 2055, 'This is the Quarterly payment package for the Intensive program in Post-Secondary level - 36 Hours'),
 (31, 'Post-Secondary: SuperIntensive-Monthly', 960, 'This is the Monthly payment package for the Super Intensive program in Post-Secondary level - 16 Hours'),
 (32, 'Post-Secondary: SuperIntensive-Quarterly', 2740, 'This is the Quarterly payment package for the Super Intensive program in Post-Secondary level - 48 Hours');
+
 -- --------------------------------------------------------
 
 --
@@ -172,16 +174,30 @@ INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `parents`
+-- Table structure for table `payments`
 --
 
-CREATE TABLE `parents` (
+CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(64) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `parent_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `registration` tinyint(1) DEFAULT 0,
+  `deposit_fee` int(11) DEFAULT NULL,
+  `diagnostic_test` tinyint(1) DEFAULT 0,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `parent_id`, `student_id`, `package_id`, `amount`, `date`, `payment_method`, `registration`, `deposit_fee`, `diagnostic_test`, `status`) VALUES
+(1, 1729434667, 1, 1, 530, '2024-10-28', 'cash', 1, 100, 1, 'paid'),
+(2, 1729434667, 1, 1, 380, '2024-10-31', 'credit-card', 0, 100, 0, 'paid');
 
 -- --------------------------------------------------------
 
@@ -215,8 +231,7 @@ CREATE TABLE `students` (
   `student_name` varchar(100) NOT NULL,
   `class` varchar(50) DEFAULT NULL,
   `package_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  FOREIGN KEY (`package_id`) REFERENCES `packages`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -256,26 +271,6 @@ INSERT INTO `timetable` (`id`, `student_id`, `subject_id`, `title`, `room`, `ins
 (5, 2, 104, 'Statistics', 'Room D4', 'Mr. Brown', 'Thursday 1:00 PM');
 
 --
--- Table structure for table `payments`
---
-
-CREATE TABLE `payments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `package_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `date` date NULL,
-  `payment_method` varchar(50) NOT NULL,
-  `registration` BOOLEAN DEFAULT FALSE, 
-  `deposit_fee` int(11) DEFAULT NULL,
-  `diagnostic_test` BOOLEAN DEFAULT FALSE, 
-  `status` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
---
 -- Indexes for dumped tables
 --
 
@@ -283,8 +278,7 @@ CREATE TABLE `payments` (
 -- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_student` (`student_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `enrolled_classes`
@@ -299,23 +293,29 @@ ALTER TABLE `leaves`
   ADD PRIMARY KEY (`leave_id`);
 
 --
+-- Indexes for table `packages`
+--
+ALTER TABLE `packages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `parent`
 --
 ALTER TABLE `parent`
   ADD UNIQUE KEY `parent_id` (`parent_id`) USING BTREE;
 
 --
--- Indexes for table `parents`
+-- Indexes for table `payments`
 --
-ALTER TABLE `parents`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
-  ADD PRIMARY KEY (`student_id`);
+  ADD PRIMARY KEY (`student_id`),
+  ADD KEY `package_id` (`package_id`);
 
 --
 -- Indexes for table `timetable`
@@ -349,13 +349,13 @@ ALTER TABLE `leaves`
 -- AUTO_INCREMENT for table `packages`
 --
 ALTER TABLE `packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT for table `parents`
+-- AUTO_INCREMENT for table `payments`
 --
-ALTER TABLE `parents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `payments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `students`
@@ -374,10 +374,10 @@ ALTER TABLE `timetable`
 --
 
 --
--- Constraints for table `attendance`
+-- Constraints for table `students`
 --
-ALTER TABLE `attendance`
-  ADD CONSTRAINT `fk_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `students`
+  ADD CONSTRAINT `students_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
