@@ -43,6 +43,6 @@ include "../manager/includes/sidebar.php";
             </div>
         </div>
     </div>
-    <script src="../assets/javascript/manager-report.js"></script>
+    <script src="../assets/js/manager-report.js"></script>
 </body>
 </html>
