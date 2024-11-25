@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2024 at 10:10 AM
+-- Generation Time: Nov 25, 2024 at 02:51 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -21,10 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `mathlogydb`
 --
 
-CREATE DATABASE IF NOT EXISTS mathlogydb;
+create database if not exists mathlogydb;
 
-USE mathlogydb;
-
+use mathlogydb;
 -- --------------------------------------------------------
 
 --
@@ -46,11 +45,8 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `student_id`, `date`, `attendance_percentage`, `student_count`, `staff_count`, `status`) VALUES
-(1, 1, '2024-11-05', 92.50, 158, 13, 'present'),
-(2, 1, '2023-06-02', 92.50, 158, 13, 'present'),
-(3, 1, '2023-06-03', 92.50, 158, 13, 'absent'),
-(4, 2, '2023-06-01', 92.50, 158, 13, 'present'),
-(5, 2, '2023-06-02', 92.50, 158, 13, 'absent');
+(1, 1, '2024-11-07', 92.50, 158, 13, 'present'),
+(4, 2, '2023-06-01', 92.50, 158, 13, 'present');
 
 -- --------------------------------------------------------
 
@@ -119,9 +115,28 @@ CREATE TABLE `leave_requests` (
 
 INSERT INTO `leave_requests` (`leave_id`, `student_id`, `reason`, `start_date`, `end_date`) VALUES
 (1, 1, 'Medical leave due to fever', '2023-11-10', '2023-11-12'),
-(2, 2, 'Family event', '2023-11-15', '2023-11-16'),
-(3, 3, 'Attending a wedding', '2023-11-18', '2023-11-19'),
-(4, 4, 'Personal reasons', '2023-11-20', '2023-11-21');
+(2, 2, 'Family event', '2023-11-15', '2023-11-16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manager`
+--
+
+CREATE TABLE `manager` (
+  `manager_id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `manager`
+--
+
+INSERT INTO `manager` (`manager_id`, `username`, `password`) VALUES
+(1, 'manager1', '123'),
+(2, 'manager2', 'hashed_password_2'),
+(3, 'testmanager', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257');
 
 -- --------------------------------------------------------
 
@@ -171,18 +186,25 @@ INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
 
 CREATE TABLE `staff` (
   `staff_id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL
+  `name` varchar(255) NOT NULL,
+  `qualification` varchar(50) DEFAULT NULL,
+  `contact_number` varchar(15) DEFAULT NULL,
+  `leave_left` int(11) DEFAULT NULL,
+  `current_status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_id`, `name`) VALUES
-(1, 'Mr. Anderson'),
-(2, 'Ms. Clarke'),
-(3, 'Dr. Roberts'),
-(4, 'Mrs. White');
+INSERT INTO `staff` (`staff_id`, `name`, `qualification`, `contact_number`, `leave_left`, `current_status`) VALUES
+(1, 'Jane Cooper', 'Degree', '012-3456789', 2, 'Active'),
+(2, 'Floyd Miles', 'Degree', '012-3456789', 3, 'On Leave'),
+(3, 'Ronald Richards', 'Degree', '012-3456789', 2, 'On Leave'),
+(4, 'Marvin McKinney', 'Degree', '012-3456789', 8, 'Active'),
+(5, 'Jerome Bell', 'Degree', '012-3456789', 6, 'Active'),
+(6, 'Kathryn Murphy', 'Degree', '012-3456789', 5, 'Active'),
+(7, 'Jacob Jones', 'Degree', '012-3456789', 3, 'Active');
 
 -- --------------------------------------------------------
 
@@ -194,18 +216,17 @@ CREATE TABLE `students` (
   `student_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `total_fees` decimal(10,2) DEFAULT NULL,
-  `fees_paid` decimal(10,2) DEFAULT NULL
+  `fees_paid` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`student_id`, `name`, `total_fees`, `fees_paid`) VALUES
-(1, 'John Doe', 5000.00, 3500.00),
-(2, 'Jane Smith', 5000.00, 5000.00),
-(3, 'Alice Johnson', 4500.00, 3000.00),
-(4, 'Bob Brown', 5500.00, 2500.00);
+INSERT INTO `students` (`student_id`, `name`, `total_fees`, `fees_paid`, `created_at`) VALUES
+(1, 'John Doe', 5000.00, 3500.00, '2024-11-24 05:59:01'),
+(2, 'Jane Smith', 5000.00, 5000.00, '2024-11-24 05:59:01');
 
 -- --------------------------------------------------------
 
@@ -262,6 +283,13 @@ ALTER TABLE `leaves`
 ALTER TABLE `leave_requests`
   ADD PRIMARY KEY (`leave_id`),
   ADD KEY `student_id` (`student_id`);
+
+--
+-- Indexes for table `manager`
+--
+ALTER TABLE `manager`
+  ADD PRIMARY KEY (`manager_id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `packages`
@@ -322,6 +350,12 @@ ALTER TABLE `leave_requests`
   MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `manager`
+--
+ALTER TABLE `manager`
+  MODIFY `manager_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `packages`
 --
 ALTER TABLE `packages`
@@ -331,7 +365,7 @@ ALTER TABLE `packages`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `students`
