@@ -1,27 +1,21 @@
 // Function to handle the toggling of attendance status (present or absent)
 function toggleAttendance(studentId, status) {
-    // Get the current date selected in the dropdown
-    const selectedDate = document.getElementById('date-select').value;
-
-    // Send the updated attendance status to the server via AJAX
-    updateAttendanceStatus(studentId, status, selectedDate);
-
-    // Update the checkbox UI
+    // Get the checkboxes and date
     const presentCheckbox = document.getElementById(`present_${studentId}`);
     const absentCheckbox = document.getElementById(`absent_${studentId}`);
-
-    // Reset both checkboxes and then toggle the one that matches the status
-    presentCheckbox.checked = false;
-    absentCheckbox.checked = false;
-
-    if (status === 'present') {
-        presentCheckbox.checked = true;
-    } else if (status === 'absent') {
-        absentCheckbox.checked = true;
+    const currentDate = document.getElementById('date-select').value;
+    
+    if (!presentCheckbox || !absentCheckbox) {
+        console.error('Attendance checkboxes not found');
+        return;
     }
+     // Update checkboxes
+    presentCheckbox.checked = (status === 'present');
+    absentCheckbox.checked = (status === 'absent');
+     // Send update to server
+    updateAttendanceStatus(studentId, status, currentDate);
 }
-
-
+    
 // Function to update the attendance status in the database
 function updateAttendanceStatus(studentId, status, selectedDate) {
     // Create the AJAX request to send data to the backend

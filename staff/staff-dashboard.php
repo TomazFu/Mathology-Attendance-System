@@ -34,6 +34,7 @@ require_once "includes/fetch-attendance-data-process.php";
                 <!-- Attendance list overview -->
                 <div class="attendance-list dashboard-staff-box">
                     <h3>Attendance List for <?php echo date("Y-m-d") ?></h3>
+                    <input type="hidden" id="date-select" value="<?php echo date('Y-m-d'); ?>">
                     <?php if (!empty($studentsWithAttendance)): ?>
                         <div class="attendance-container">
                             <?php foreach ($studentsWithAttendance as $student): ?>

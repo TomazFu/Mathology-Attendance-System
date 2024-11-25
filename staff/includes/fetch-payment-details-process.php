@@ -2,13 +2,17 @@
 require_once "../config/connect.php";
 function getPaymentDetails($student_id, $conn)
 {
-    $sql = "SELECT p.*, pkg.package_name, pkg.price as package_price, s.student_name, pr.name as parent_name
-        FROM payments p 
-        LEFT JOIN packages pkg ON p.package_id = pkg.id 
-        LEFT JOIN students s ON p.student_id = s.student_id
-        LEFT JOIN parent pr ON s.parent_id = pr.parent_id
-        WHERE p.student_id = ? 
-        ORDER BY p.date DESC";
+    $sql = "SELECT 
+    s.studentid,
+   s.student_name,
+   COALESCE(a.status, '') as attendance_status
+FROM 
+   students s
+LEFT JOIN 
+   attendance a ON s.student_id = a.student_id 
+   AND a.date = ?
+ORDER BY 
+   s.student_name";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
