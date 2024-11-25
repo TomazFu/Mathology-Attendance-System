@@ -24,10 +24,6 @@ body {
     align-items: center;
 }
 
-.dashboard-container {
-    flex: 1;
-    min-height: 46vh; /* Adjust this value as needed */
-}
 
 .login-container {
     background-color: #ffffff;
@@ -76,17 +72,18 @@ button[type="submit"]:hover {
 
 /* Header styles */
 header {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     background-color: #f8f9fa;
-    padding: 20px 20px; /* Increased top and bottom padding */
-    z-index: 1000;
-    height: 80px; /* Set a specific height */
+    padding: 20px;
+    height: 80px;
     display: flex;
-    align-items: center; /* Center content vertically */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box shadow */
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
 }
 
 nav {
@@ -213,9 +210,57 @@ nav {
 
 .sidebar {
     width: 250px;
+    height: 100vh;
     background-color: #f8f9fa;
-    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 100px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.sidebar nav {
+    width: 100%;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar ul li a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: #e9ecef;
+    width: 100%;
+}
+
+.sidebar ul li.active a {
+    background-color: #e9ecef;
+    font-weight: bold;
 }
 
 .dashboard-content {
@@ -225,31 +270,13 @@ nav {
 }
 
 .dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Sidebar styles */
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-    background-color: #e9ecef;
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+    width: calc(100% - 250px);
+    position: relative;
+    padding-top: 100px;
 }
 
 /* Dashboard section styles */

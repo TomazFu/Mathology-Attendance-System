@@ -1,7 +1,7 @@
 <?php
 // Include header and sidebar
 include "../includes/header.php";
-include "../manager/includes/sidebar.php";
+include "../includes/sidebar.php";
 ?>
 
 <!DOCTYPE html>

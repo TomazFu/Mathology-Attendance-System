@@ -6,7 +6,7 @@ include '../manager/includes/fetch-leave-request.php';
 include "../includes/header.php";
 
 // Include sidebar functionality
-include "../manager/includes/sidebar.php";
+include "../includes/sidebar.php";
 ?>
 
 <!DOCTYPE html>

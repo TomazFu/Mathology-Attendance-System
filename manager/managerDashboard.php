@@ -6,7 +6,7 @@ include('../manager/includes/fetch-managerDashboard.php');
 include "../includes/header.php";
 
 // Include sidebar functionality
-include "../manager/includes/sidebar.php";
+include "../includes/sidebar.php";
 
 ?>
 
@@ -15,8 +15,8 @@ include "../manager/includes/sidebar.php";
 <head>
     <meta charset="UTF-8">
     <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/managerDashboard.css">
-    
 </head>
 <body>
     <!-- Sidebar -->

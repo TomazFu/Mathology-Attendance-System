@@ -1,11 +1,29 @@
 /* Overall Layout */
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin: 20px;
+.dashboard-container {
+    flex: 1;
+    margin-left: 250px; /* Match sidebar width */
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+    width: calc(100% - 250px); /* Adjust width to account for sidebar */
+    position: relative;
+    padding-top: 100px; /* Account for header height */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.dashboard-content {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Update width for all dashboard sections */
+.export-options,
+.monthly-summary,
+.stats,
+.attendance,
+.latest-leave-requests {
     width: 100%;
-    justify-content: center;
+    box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
 /* Monthly Summary Section */
@@ -14,6 +32,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .monthly-summary h2 {
@@ -33,6 +52,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .stats div {
@@ -46,6 +66,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .attendance h2 {
@@ -63,6 +84,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .latest-leave-requests h2 {
@@ -105,6 +127,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .export-btn {
@@ -139,39 +162,23 @@ button {
     color: white;
 }
 
-/*sidebar*/
-.sidebar {
-    width: 200px;
-    background-color: #f8f9fa;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    position: fixed; 
-    left: 0; 
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #343a40;
-    font-size: 18px;
+.main-content {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    margin-left: 70px; /* Match sidebar width */
+    width: calc(100% - 70px);
+    min-height: 100vh;
+    padding-top: 84px; /* Account for header height */
+    position: relative;
+    z-index: 1;
 }
 
-.sidebar ul li a i {
-    margin-right: 10px;
-}
-
-.sidebar ul li.active a {
-    font-weight: bold;
-    color: #007bff;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 15px;
+        padding-top: 90px;
+    }
 }
