@@ -78,11 +78,12 @@ function submitPayment(studentId) {
         const packageSelect = document.getElementById(`package-select-${studentId}`);
         const registrationCheckbox = document.getElementById(`registration-${studentId}`);
         const diagnosticCheckbox = document.getElementById(`diagnostic-${studentId}`);
-        const depositInput = document.getElementById(`deposit_fee-${studentId}`);
+        const depositCheckbox = document.getElementById(`deposit_fee-${studentId}`);
         const statusSelect = document.getElementById(`status-${studentId}`);
         const paymentDateInput = document.getElementById(`payment-date-${studentId}`);
         const parentIdInput = document.getElementById(`parent-id-${studentId}`);
         const currentPackageInput = document.getElementById(`current-package-${studentId}`);
+        const currentPackageDepositInput = document.getElementById(`package_deposit_fee-${studentId}`);
 
         // Get payment method first
         const selectedPaymentMethod = document.querySelector(`input[name="payment-method-${studentId}"]:checked`);
@@ -96,8 +97,7 @@ function submitPayment(studentId) {
 
         // Calculate total amount and fees
         let totalAmount = 0;
-        let depositFee = parseFloat(depositInput.value) || 0; // Moved this up
-
+        let depositFee = parseFloat(currentPackageDepositInput.value) 
         // Add package price if a package is selected
         if (packageSelect.value && packageSelect.value !== 'none') {
             const selectedOption = packageSelect.options[packageSelect.selectedIndex];
@@ -115,8 +115,9 @@ function submitPayment(studentId) {
             totalAmount += 100;
         }
 
-        // Add deposit fee
-        totalAmount += depositFee;
+        if (depositCheckbox.checked) {
+            totalAmount += depositFee;
+        }
 
         // Validation
         if (!paymentDateInput.value) {
