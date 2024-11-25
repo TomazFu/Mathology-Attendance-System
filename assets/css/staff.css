@@ -139,6 +139,23 @@ input[type="checkbox"] {
     height: 20px;
 }
 
+.attendance-date {
+    margin: 20px 0;
+}
+
+.attendance-date input[type="date"] {
+padding: 8px;
+border: 1px solid #ddd;
+border-radius: 4px;
+margin-right: 10px;
+}
+
+.attendance-date #selected-date {
+
+display: block;
+font-weight: bold;
+}
+
 /* Staff Registration page */
 
 .form-container {

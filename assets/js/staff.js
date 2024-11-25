@@ -51,6 +51,12 @@ function toggleExpandRecord(recordId, imageUrl) {
     }
 }
 
+function updateAttendanceDate(date) {
+    if (date) {
+        window.location.href = 'staff-attendance.php?date=' + date;
+    }
+}
+
 function showUpdateForm(studentId) {
     const updateForm = document.getElementById(`update-form-${studentId}`);
     
