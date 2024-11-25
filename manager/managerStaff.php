@@ -10,11 +10,12 @@ include "../includes/sidebar.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Management</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/manager-staff.css">
 </head>
 <body>
+    <?php renderSidebar('manager'); ?>
     <div class="main-content">
-        <?php renderSidebar('manager'); ?>
         <div class="container">
             <h1>Current Staff</h1>
             <div class="search-bar">
