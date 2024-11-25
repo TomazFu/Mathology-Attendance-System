@@ -11,8 +11,9 @@
 }
 
 .dashboard-content {
+    
     max-width: 100%;
-    margin: 0 auto;
+    margin-left: 50px;
 }
 
 /* Update width for all dashboard sections */
