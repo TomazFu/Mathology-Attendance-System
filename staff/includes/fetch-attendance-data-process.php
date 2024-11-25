@@ -4,6 +4,9 @@ require_once "../config/connect.php";
 
 $selectedDate = isset($_GET['date']) ? $_GET['date'] : date("Y-m-d");
 
+if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $selectedDate)) {
+    $selectedDate = date('Y-m-d');
+}
 // Fetch all students
 $sqlStudents = "SELECT * FROM students";
 $studentsResult = mysqli_query($conn, $sqlStudents);

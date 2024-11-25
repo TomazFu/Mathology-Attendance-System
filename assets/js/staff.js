@@ -1,27 +1,23 @@
 // Function to handle the toggling of attendance status (present or absent)
 function toggleAttendance(studentId, status) {
-    // Get the current date selected in the dropdown
-    const selectedDate = document.getElementById('date-select').value;
-
-    // Send the updated attendance status to the server via AJAX
-    updateAttendanceStatus(studentId, status, selectedDate);
-
-    // Update the checkbox UI
+    // Get the checkboxes and date
     const presentCheckbox = document.getElementById(`present_${studentId}`);
     const absentCheckbox = document.getElementById(`absent_${studentId}`);
-
-    // Reset both checkboxes and then toggle the one that matches the status
-    presentCheckbox.checked = false;
-    absentCheckbox.checked = false;
-
-    if (status === 'present') {
-        presentCheckbox.checked = true;
-    } else if (status === 'absent') {
-        absentCheckbox.checked = true;
+    const lateCheckbox = document.getElementById(`late_${studentId}`);
+    const currentDate = document.getElementById('date-select').value;
+    
+    if (!presentCheckbox || !absentCheckbox || !lateCheckbox) {
+        console.error('Attendance checkboxes not found');
+        return;
     }
+     // Update checkboxes
+    presentCheckbox.checked = (status === 'present');
+    absentCheckbox.checked = (status === 'absent');
+    lateCheckbox.checked = (status === 'late');
+     // Send update to server
+    updateAttendanceStatus(studentId, status, currentDate);
 }
-
-
+    
 // Function to update the attendance status in the database
 function updateAttendanceStatus(studentId, status, selectedDate) {
     // Create the AJAX request to send data to the backend
@@ -55,6 +51,12 @@ function toggleExpandRecord(recordId, imageUrl) {
     }
 }
 
+function updateAttendanceDate(date) {
+    if (date) {
+        window.location.href = 'staff-attendance.php?date=' + date;
+    }
+}
+
 function showUpdateForm(studentId) {
     const updateForm = document.getElementById(`update-form-${studentId}`);
     
@@ -78,11 +80,12 @@ function submitPayment(studentId) {
         const packageSelect = document.getElementById(`package-select-${studentId}`);
         const registrationCheckbox = document.getElementById(`registration-${studentId}`);
         const diagnosticCheckbox = document.getElementById(`diagnostic-${studentId}`);
-        const depositInput = document.getElementById(`deposit_fee-${studentId}`);
+        const depositCheckbox = document.getElementById(`deposit_fee-${studentId}`);
         const statusSelect = document.getElementById(`status-${studentId}`);
         const paymentDateInput = document.getElementById(`payment-date-${studentId}`);
         const parentIdInput = document.getElementById(`parent-id-${studentId}`);
         const currentPackageInput = document.getElementById(`current-package-${studentId}`);
+        const currentPackageDepositInput = document.getElementById(`package_deposit_fee-${studentId}`);
 
         // Get payment method first
         const selectedPaymentMethod = document.querySelector(`input[name="payment-method-${studentId}"]:checked`);
@@ -96,8 +99,11 @@ function submitPayment(studentId) {
 
         // Calculate total amount and fees
         let totalAmount = 0;
-        let depositFee = parseFloat(depositInput.value) || 0; // Moved this up
-
+        if (currentPackageDepositInput.value != null){
+            depositFee = parseFloat(currentPackageDepositInput.value) 
+        } else {
+            depositFee = 0;
+        }
         // Add package price if a package is selected
         if (packageSelect.value && packageSelect.value !== 'none') {
             const selectedOption = packageSelect.options[packageSelect.selectedIndex];
@@ -115,8 +121,9 @@ function submitPayment(studentId) {
             totalAmount += 100;
         }
 
-        // Add deposit fee
-        totalAmount += depositFee;
+        if (depositCheckbox.checked) {
+            totalAmount += depositFee;
+        }
 
         // Validation
         if (!paymentDateInput.value) {

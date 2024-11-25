@@ -29,19 +29,16 @@ require_once "includes/fetch-attendance-data-process.php";
         <?php renderSidebar('staff'); ?>
         <div class="main-content">
             <h1>Attendance</h1>
-            
+
             <!-- Date Selector Dropdown -->
             <div class="attendance-date">
                 <label for="date-select">Select Date: </label>
-                <select id="date-select" onchange="window.location.href='staff-attendance.php?date=' + this.value">
-                    <?php 
-                    // Generate the past 10 days options for the date dropdown
-                    for ($i = 0; $i < 10; $i++) {
-                        $date = date("Y-m-d", strtotime("-$i days"));
-                        echo "<option value='$date' " . ($selectedDate == $date ? 'selected' : '') . ">" . date("d/m/y", strtotime($date)) . "</option>";
-                    }
-                    ?>
-                </select>
+                <input
+                    type="date"
+                    id="date-select"
+                    value="<?php echo $selectedDate; ?>"
+                    max="<?php echo date('Y-m-d'); ?>"
+                    onchange="updateAttendanceDate(this.value)">
                 <div id="selected-date">
                     Date: <?php echo date("d/m/y", strtotime($selectedDate)); ?>
                 </div>
@@ -69,6 +66,14 @@ require_once "includes/fetch-attendance-data-process.php";
                                         id="absent_<?php echo $student['student_id']; ?>"
                                         <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
                                         onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
+                                </label>
+                                <label>
+                                    Late:
+                                    <input
+                                        type="checkbox"
+                                        id="late_<?php echo $student['student_id']; ?>"
+                                        <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
+                                        onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
                                 </label>
                             </div>
                         </div>

@@ -114,8 +114,8 @@ require_once "includes/fetch-student-package-process.php";
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Deposit</td>
-                                        <td><input type="text" id="deposit_fee-<?php echo $student['student_id']; ?>" value="0"></td>
+                                        <td>Deposit Fee</td>
+                                        <td><input type="checkbox" id="deposit_fee-<?php echo $student['student_id']; ?>" value="1"></td>
                                     </tr>
                                     <tr>
                                         <td>Payment Method</td>
@@ -144,6 +144,8 @@ require_once "includes/fetch-student-package-process.php";
                                         value="<?php echo $student['parent_id']; ?>">
                                     <input type="hidden" id="current-package-<?php echo $student['student_id']; ?>"
                                         value="<?php echo $student['package']['package_id']; ?>">
+                                        <input type="hidden" id="package_deposit_fee-<?php echo $student['student_id']; ?>"
+                                        value="<?php echo $student['package']['deposit_fee']; ?>">
                                 </table>
                                 <button onclick="submitPayment(<?php echo $student['student_id']; ?>)">Generate Payment</button>
                                 <h2>Payment History</h2>

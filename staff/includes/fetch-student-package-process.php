@@ -3,7 +3,7 @@ require_once "../config/connect.php";
 
 // Modified query to include package_id
 $sql = "SELECT s.student_id, s.student_name, s.class, s.package_id, s.parent_id, 
-        p.package_name, p.price, p.details 
+        p.package_name, p.price, p.details , p.deposit_fee
         FROM students s
         LEFT JOIN packages p ON s.package_id = p.id";
 
@@ -30,6 +30,7 @@ if ($result->num_rows > 0) {
             "package" => array(
                 "package_id" => $row["package_id"],  // Added this line
                 "package_name" => $row["package_name"],
+                "deposit_fee" => $row["deposit_fee"],
                 "price" => $row["price"],
                 "details" => $row["details"]
             )
