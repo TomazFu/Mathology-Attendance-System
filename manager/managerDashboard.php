@@ -15,7 +15,7 @@ include "../includes/sidebar.php";
 <head>
     <meta charset="UTF-8">
     <title>Manager Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/managerDashboard.css">
 </head>
 <body>

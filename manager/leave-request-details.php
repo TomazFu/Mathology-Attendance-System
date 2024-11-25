@@ -14,7 +14,7 @@ include "../includes/sidebar.php";
 <head>
     <meta charset="UTF-8">
     <title>Leave Request Details</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/manager-leave-details.css">
 </head>
 <body>
