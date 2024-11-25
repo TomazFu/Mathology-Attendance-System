@@ -11,20 +11,31 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $parent_id = $_SESSION["id"] ?? null;
 
 try {
-    // Get student ID from the students table using parent_id
-    $stmt = $conn->prepare("SELECT student_id FROM students WHERE parent_id = ?");
+    // First, let's debug the table structure
+    // Uncomment this temporarily to see the actual column names
+    /*
+    $result = $conn->query("DESCRIBE students");
+    $columns = $result->fetch_all(MYSQLI_ASSOC);
+    error_log("Students table columns: " . print_r($columns, true));
+    */
+
+    // Get all students for this parent
+    $stmt = $conn->prepare("SELECT student_id, student_name as name 
+                           FROM students 
+                           WHERE parent_id = ?");
     $stmt->bind_param("i", $parent_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
     if ($result->num_rows === 0) {
-        throw new Exception('No student found for this parent');
+        throw new Exception('No students found for this parent');
     }
     
-    $student = $result->fetch_assoc();
-    $student_id = $student['student_id'];
-
-    // Fetch timetable data including enrolled classes
+    // Get selected student_id from request, default to first student if not specified
+    $students = $result->fetch_all(MYSQLI_ASSOC);
+    $selected_student_id = $_GET['student_id'] ?? $students[0]['student_id'];
+    
+    // Fetch timetable data including enrolled classes for selected student
     $query = "
         SELECT 
             t.id,
@@ -50,7 +61,7 @@ try {
     ";
     
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $student_id);
+    $stmt->bind_param("i", $selected_student_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -68,14 +79,16 @@ try {
     }
 
     // Debug information
-    error_log("Fetched timetable data for student ID: " . $student_id);
+    error_log("Fetched timetable data for student ID: " . $selected_student_id);
     error_log("Number of classes found: " . count($timetable));
 
     echo json_encode([
         'success' => true,
         'timetable' => $timetable,
+        'students' => $students,
+        'selected_student_id' => $selected_student_id,
         'debug' => [
-            'student_id' => $student_id,
+            'student_id' => $selected_student_id,
             'parent_id' => $parent_id,
             'class_count' => count($timetable)
         ]

@@ -1,4 +1,9 @@
+let currentStudents = [];
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize student selector
+    initializeStudentSelector();
+    
     // Initialize weekly view
     initializeWeeklyView();
     
@@ -6,20 +11,105 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeListView();
 });
 
+function initializeStudentSelector() {
+    const studentSelect = document.getElementById('student-select');
+    if (!studentSelect) return;
+
+    studentSelect.addEventListener('change', function() {
+        fetchScheduleData().then(data => {
+            populateWeeklySchedule(data);
+            populateListView(data);
+        });
+    });
+}
+
+async function fetchScheduleData() {
+    try {
+        console.log('Fetching schedule data...');
+        showLoading();
+        
+        const studentId = document.getElementById('student-select')?.value;
+        const url = new URL('../parent/includes/fetch-timetable-data-process.php', window.location.href);
+        if (studentId) {
+            url.searchParams.append('student_id', studentId);
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        console.log('Received data:', data);
+
+        if (!data.success) {
+            throw new Error(data.error || 'Failed to fetch schedule data');
+        }
+
+        // Update student selector if needed
+        if (data.students && !currentStudents.length) {
+            currentStudents = data.students;
+            updateStudentSelector(data.students, data.selected_student_id);
+        }
+
+        if (!data.timetable || data.timetable.length === 0) {
+            console.log('No timetable data found');
+            return [];
+        }
+
+        // Transform the data
+        const transformedData = data.timetable.map(item => ({
+            id: item.id,
+            subject: item.title,
+            teacher: item.instructor,
+            room: item.room,
+            day: getDayFromTime(item.time),
+            startTime: getStartTime(item.time),
+            endTime: getEndTime(item.time),
+            subject_id: item.subject_id,
+            class_name: item.class_name
+        }));
+
+        console.log('Transformed data:', transformedData);
+        return transformedData;
+
+    } catch (error) {
+        console.error('Error fetching schedule data:', error);
+        showError('Unable to load timetable data: ' + error.message);
+        return [];
+    } finally {
+        hideLoading();
+    }
+}
+
+function updateStudentSelector(students, selectedId) {
+    const selector = document.getElementById('student-select');
+    if (!selector) return;
+
+    selector.innerHTML = students.map(student => 
+        `<option value="${student.student_id}" ${student.student_id == selectedId ? 'selected' : ''}>
+            ${student.name}
+        </option>`
+    ).join('');
+}
+
 function initializeWeeklyView() {
     const timeSlots = document.querySelector('.time-slots');
     const weeklyGrid = document.querySelector('.weekly-grid');
     
     // Clear existing content
-    timeSlots.innerHTML = '<div class="time-header">Time</div>';
+    timeSlots.innerHTML = '<div class="time-header">Days</div>';
     weeklyGrid.innerHTML = '';
     
+    // Create grid container
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'grid-container';
+    weeklyGrid.appendChild(gridContainer);
+
     // Add time slots (1-hour intervals)
     const times = [];
     for (let hour = 8; hour <= 18; hour++) {
         times.push(`${hour.toString().padStart(2, '0')}:00`);
     }
     
+    // Add time headers
     times.forEach(time => {
         const slot = document.createElement('div');
         slot.className = 'time-slot';
@@ -27,29 +117,24 @@ function initializeWeeklyView() {
         timeSlots.appendChild(slot);
     });
 
-    // Create grid container
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'grid-container';
-    weeklyGrid.appendChild(gridContainer);
-
-    // Create day columns
+    // Create day rows
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     days.forEach(day => {
-        const dayColumn = document.createElement('div');
-        dayColumn.className = 'day-column';
+        const dayRow = document.createElement('div');
+        dayRow.className = 'day-column';
         
         const header = document.createElement('div');
         header.className = 'day-header';
         header.textContent = day;
-        dayColumn.appendChild(header);
+        dayRow.appendChild(header);
         
         times.forEach(() => {
             const slot = document.createElement('div');
             slot.className = 'time-slot';
-            dayColumn.appendChild(slot);
+            dayRow.appendChild(slot);
         });
         
-        gridContainer.appendChild(dayColumn);
+        gridContainer.appendChild(dayRow);
     });
 
     // Fetch and populate schedule
@@ -134,53 +219,6 @@ function generateTimeSlots() {
         }
     }
     return slots;
-}
-
-async function fetchScheduleData() {
-    try {
-        console.log('Fetching schedule data...');
-        showLoading();
-        
-        const response = await fetch('../parent/includes/fetch-timetable-data-process.php');
-        const data = await response.json();
-        
-        console.log('Received data:', data);
-
-        if (!data.success) {
-            throw new Error(data.error || 'Failed to fetch schedule data');
-        }
-
-        if (!data.timetable || data.timetable.length === 0) {
-            console.log('No timetable data found');
-            return [];
-        }
-
-        // Log the data structure for debugging
-        logDataStructure(data.timetable);
-
-        // Transform the data
-        const transformedData = data.timetable.map(item => ({
-            id: item.id,
-            subject: item.title,
-            teacher: item.instructor,
-            room: item.room,
-            day: getDayFromTime(item.time),
-            startTime: getStartTime(item.time),
-            endTime: getEndTime(item.time),
-            subject_id: item.subject_id,
-            class_name: item.class_name
-        }));
-
-        console.log('Transformed data:', transformedData);
-        return transformedData;
-
-    } catch (error) {
-        console.error('Error fetching schedule data:', error);
-        showError('Unable to load timetable data: ' + error.message);
-        return [];
-    } finally {
-        hideLoading();
-    }
 }
 
 function getDayFromTime(timeString) {
@@ -281,13 +319,14 @@ function createClassSlot(item) {
     const slot = document.createElement('div');
     slot.className = 'class-slot';
     
-    // Calculate position and height
-    const startTime = item.startTime || '09:00';
-    const endTime = item.endTime || '10:00';
+    // Format time to ensure 1.5-hour duration
+    let startTime = item.startTime;
+    let endTime = calculateEndTime(startTime, 1.5); // 1.5 hours duration
     
-    const duration = calculateDuration(startTime, endTime);
+    // Calculate position and height
+    const duration = 1.5; // Fixed 1.5 hours duration
     const startMinutes = timeToMinutes(startTime) - timeToMinutes('08:00');
-    const height = duration * 50; // 50px per hour
+    const height = duration * 50; // 50px per hour (75px for 1.5 hours)
     const top = (startMinutes / 60) * 50; // 50px per hour
     
     slot.style.height = `${height}px`;
@@ -314,8 +353,12 @@ function createClassSlot(item) {
 function createScheduleItem(item) {
     const scheduleItem = document.createElement('div');
     scheduleItem.className = 'schedule-item';
+    
+    // Calculate end time (1.5 hours after start time)
+    const endTime = calculateEndTime(item.startTime, 1.5);
+    
     scheduleItem.innerHTML = `
-        <div class="schedule-time">${item.startTime || '09:00'} - ${item.endTime || '10:00'}</div>
+        <div class="schedule-time">${item.startTime || '09:00'} - ${endTime}</div>
         <div class="schedule-details">
             <h4>${item.subject || 'Unknown Subject'}</h4>
             <p>${item.teacher || 'TBA'} | ${item.room || 'TBA'}</p>
@@ -345,9 +388,9 @@ function calculateDuration(start, end) {
     if (!start || !end) return 1; // default duration
 
     try {
-        const [startHour, startMin] = start.split(':').map(Number);
-        const [endHour, endMin] = end.split(':').map(Number);
-        return (endHour + endMin/60) - (startHour + startMin/60);
+        const startMinutes = timeToMinutes(start);
+        const endMinutes = timeToMinutes(end);
+        return (endMinutes - startMinutes) / 60; // Convert back to hours
     } catch (error) {
         console.error('Error calculating duration:', error);
         return 1; // default duration
@@ -368,7 +411,9 @@ function showClassDetails(item) {
 function timeToMinutes(time) {
     if (!time) return 0;
     try {
-        const [hours, minutes] = time.split(':').map(Number);
+        let [hours, minutes] = time.split(':').map(Number);
+        // Ensure 24-hour format
+        if (hours < 8) hours += 12; // Convert afternoon times to 24-hour format
         return (hours * 60) + (minutes || 0);
     } catch (error) {
         console.error('Error converting time to minutes:', error);
@@ -405,4 +450,13 @@ function logDataStructure(data) {
             end: getEndTime(data[0]?.time)
         }
     });
+}
+
+// Add this new helper function to calculate end time
+function calculateEndTime(startTime, duration) {
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + (duration * 60);
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+    return `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
 }
