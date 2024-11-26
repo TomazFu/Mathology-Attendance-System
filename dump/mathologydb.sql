@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2024 at 08:16 AM
+-- Generation Time: Nov 26, 2024 at 04:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -283,7 +283,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_id`, `parent_id`, `student_name`, `class`, `package_id`, `total_fees`, `fees_paid`, `created_at`) VALUES
-(1, 1729434667, 'Student One', 'Class A', NULL, 100.00, 0.00, '2024-11-04 15:34:36'),
+(1, 1729434667, 'Student One', 'Class A', 1, 100.00, 0.00, '2024-11-04 15:34:36'),
 (2, 1729434667, 'Student Two', 'Class B', NULL, 1000.00, 1000.00, '2024-11-04 15:34:36'),
 (3, 1729434667, 'Student 3', 'Class A', NULL, 1500.00, 1000.00, '2024-11-07 13:44:30');
 
@@ -402,7 +402,7 @@ ALTER TABLE `enrolled_classes`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `manager`
