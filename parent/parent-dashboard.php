@@ -128,38 +128,6 @@ $parent_id = $_SESSION["id"];
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Activities Section -->
-            <div class="section-header">
-                <h2>Recent Activities</h2>
-                <p class="section-subtitle">Stay updated with your child's latest activities</p>
-            </div>
-
-            <div class="activity-grid">
-                <!-- Activity Cards -->
-                <div class="activity-card" data-activity-id="456">
-                    <div class="activity-icon homework">
-                        <i class="material-icons">assignment</i>
-                    </div>
-                    <div class="activity-details">
-                        <h4>Homework Submitted</h4>
-                        <p>Mathematics Assignment #12</p>
-                        <span class="activity-time">2 hours ago</span>
-                    </div>
-                </div>
-
-                <!-- Add more activity cards -->
-            </div>
-
-            <!-- Announcements Section -->
-            <div class="announcements-section">
-                <div class="section-header">
-                    <h2>Important Announcements</h2>
-                </div>
-                <div class="announcement-list">
-                    <!-- Add announcements here -->
-                </div>
-            </div>
         </div>
     </div>
 </div>
