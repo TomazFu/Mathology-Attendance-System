@@ -51,7 +51,7 @@ require_once "../includes/sidebar.php";
                     <i class="material-icons">check_circle</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="present-days">175</span>
+                    <span class="stat-value" id="present-days"></span>
                     <span class="stat-label">Days Present</span>
                 </div>
             </div>
@@ -61,7 +61,7 @@ require_once "../includes/sidebar.php";
                     <i class="material-icons">trending_up</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="attendance-rate">97.2%</span>
+                    <span class="stat-value" id="attendance-rate"></span>
                     <span class="stat-label">Attendance Rate</span>
                 </div>
             </div>
@@ -71,7 +71,7 @@ require_once "../includes/sidebar.php";
                     <i class="material-icons">warning</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="absences">5</span>
+                    <span class="stat-value" id="absences"></span>
                     <span class="stat-label">Total Absences</span>
                 </div>
             </div>
