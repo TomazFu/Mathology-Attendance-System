@@ -81,7 +81,7 @@ function submitPayment(studentId) {
         const registrationCheckbox = document.getElementById(`registration-${studentId}`);
         const diagnosticCheckbox = document.getElementById(`diagnostic-${studentId}`);
         const depositCheckbox = document.getElementById(`deposit_fee-${studentId}`);
-        const statusSelect = document.getElementById(`status-${studentId}`);
+        // const statusSelect = document.getElementById(`status-${studentId}`);
         const paymentDateInput = document.getElementById(`payment-date-${studentId}`);
         const parentIdInput = document.getElementById(`parent-id-${studentId}`);
         const currentPackageInput = document.getElementById(`current-package-${studentId}`);
@@ -163,7 +163,7 @@ function submitPayment(studentId) {
             registration: registrationCheckbox.checked ? 1 : 0,
             deposit_fee: depositFee,
             diagnostic_test: diagnosticCheckbox.checked ? 1 : 0,
-            status: statusSelect.value,
+            status: 'unpaid',
             date: paymentDateInput.value
         }).toString();
 

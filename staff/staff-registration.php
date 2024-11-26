@@ -47,10 +47,13 @@ require_once "../includes/sidebar.php";
                         <input type="text" name="username" placeholder="Username *" class="half-width" required>
                     </div>
                     <div class="form-row">
+                        <input type="text" name="name" placeholder="Full name *" class="half-width" required>
+                    </div>
+                    <div class="form-row">
                         <input type="password" name="password" placeholder="Password *" class="half-width" required>
                     </div>
                     <div class="form-row">
-                        <input type="text" name="name" placeholder="Full name *" class="half-width" required>
+                        <input type="password" name="confirm-password" placeholder="Confirm Password *" class="half-width" required>
                     </div>
                     <!-- <div class="form-row">
                         <div class="gender-container">

@@ -101,7 +101,7 @@ require_once "includes/fetch-student-package-process.php";
                                         </td>
                                     </tr>
                                 </table>
-                                <h2>Generate New Payment</h2>
+                                <h2>Generate New Bill</h2>
                                 <table>
                                     <tr>
                                         <td>Registration</td>
@@ -128,15 +128,6 @@ require_once "includes/fetch-student-package-process.php";
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Status</td>
-                                        <td>
-                                            <select id="status-<?php echo $student['student_id']; ?>">
-                                                <option value="paid">Paid</option>
-                                                <option value="unpaid">Unpaid</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td>Date</td>
                                         <td><input type="date" id="payment-date-<?php echo $student['student_id']; ?>"></td>
                                     </tr>
@@ -144,10 +135,10 @@ require_once "includes/fetch-student-package-process.php";
                                         value="<?php echo $student['parent_id']; ?>">
                                     <input type="hidden" id="current-package-<?php echo $student['student_id']; ?>"
                                         value="<?php echo $student['package']['package_id']; ?>">
-                                        <input type="hidden" id="package_deposit_fee-<?php echo $student['student_id']; ?>"
+                                    <input type="hidden" id="package_deposit_fee-<?php echo $student['student_id']; ?>"
                                         value="<?php echo $student['package']['deposit_fee']; ?>">
                                 </table>
-                                <button onclick="submitPayment(<?php echo $student['student_id']; ?>)">Generate Payment</button>
+                                <button onclick="submitPayment(<?php echo $student['student_id']; ?>)">Generate Bill</button>
                                 <h2>Payment History</h2>
                                 <table class="payment-history-table">
                                     <thead>
