@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const searchQuery = searchInput.value.trim();
         const sortOption = sortSelect.value;
 
+        // Show loading state
+        tableBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
+
         // Construct query parameters
         const params = new URLSearchParams();
         if (searchQuery) params.append("search", searchQuery);
@@ -16,27 +19,36 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fetch data from backend
         fetch(`../manager/includes/fetch-student-report.php?${params.toString()}`)
             .then(response => response.json())
-            .then(data => {
+            .then(response => {
+                if (!response.success) {
+                    throw new Error(response.error || 'Unknown error occurred');
+                }
+
+                // Log debug information
+                console.log('Debug Info:', response.debug);
+
+                const data = response.data;
                 tableBody.innerHTML = ""; // Clear existing rows
 
                 if (data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='6'>No data found.</td></tr>";
-                } else {
-                    data.forEach(student => {
-                        const row = `
-                            <tr>
-                                <td>${student.name || "N/A"}</td>
-                                <td>${student.programme || "N/A"}</td>
-                                <td>${student.attendance || "N/A"}</td>
-                                <td>${student.remaining_payment || "N/A"}</td>
-                            </tr>`;
-                        tableBody.innerHTML += row;
-                    });
+                    tableBody.innerHTML = "<tr><td colspan='4'>No data found.</td></tr>";
+                    return;
                 }
+
+                data.forEach(student => {
+                    const row = `
+                        <tr>
+                            <td>${student.name || "N/A"}</td>
+                            <td>${student.programme || "N/A"}</td>
+                            <td>${student.attendance}%</td>
+                            <td>${student.remaining_payment || "0"}</td>
+                        </tr>`;
+                    tableBody.innerHTML += row;
+                });
             })
             .catch(error => {
-                console.error("Error fetching student data:", error);
-                tableBody.innerHTML = "<tr><td colspan='6'>Error fetching data.</td></tr>";
+                console.error("Error details:", error);
+                tableBody.innerHTML = `<tr><td colspan='4'>Error: ${error.message}</td></tr>`;
             });
     }
 

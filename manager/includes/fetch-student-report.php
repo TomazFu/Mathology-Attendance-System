@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Database connection details
 $servername = "localhost";
 $username = "root";
@@ -10,57 +14,102 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check the connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(['error' => "Connection failed: " . $conn->connect_error]));
 }
 
-// Set the response type to JSON
-header('Content-Type: application/json');
+try {
+    // First, let's verify the tables exist and have data
+    $checkTables = "
+        SELECT 
+            (SELECT COUNT(*) FROM students) as student_count,
+            (SELECT COUNT(*) FROM packages) as package_count,
+            (SELECT COUNT(*) FROM attendance) as attendance_count
+    ";
+    
+    $tablesResult = $conn->query($checkTables);
+    $counts = $tablesResult->fetch_assoc();
+    
+    // Basic query with simpler structure first
+    $sql = "SELECT 
+        s.student_name as name, 
+        p.package_name AS programme,
+        (s.total_fees - s.fees_paid) AS remaining_payment,
+        (
+            SELECT COUNT(*) 
+            FROM attendance a 
+            WHERE a.student_id = s.student_id 
+            AND a.status = 'present'
+            AND MONTH(a.date) = MONTH(CURRENT_DATE)
+            AND YEAR(a.date) = YEAR(CURRENT_DATE)
+        ) as present_days,
+        (
+            SELECT COUNT(*) 
+            FROM attendance a 
+            WHERE a.student_id = s.student_id 
+            AND MONTH(a.date) = MONTH(CURRENT_DATE)
+            AND YEAR(a.date) = YEAR(CURRENT_DATE)
+        ) as total_days
+    FROM students s
+    LEFT JOIN packages p ON s.package_id = p.id";
 
-// Simpler and more efficient query using student table fields
-$sql = "SELECT s.student_name as name, 
-               p.package_name AS programme,
-               (s.total_fees - s.fees_paid) AS remaining_payment
-        FROM students s
-        LEFT JOIN packages p ON s.package_id = p.id";
-
-// Search functionality
-$conditions = []; 
-
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $search = $conn->real_escape_string($_GET['search']);
-    $conditions[] = "(s.name LIKE '%$search%' OR p.package_name LIKE '%$search%')";
-}
-
-// Append search conditions to SQL
-if (count($conditions) > 0) {
-    $sql .= " WHERE " . implode(" AND ", $conditions);
-}
-
-// Sorting functionality
-if (isset($_GET['sort']) && $_GET['sort'] !== 'none') {
-    if ($_GET['sort'] == 'highest') {
-        $sql .= " ORDER BY remaining_payment DESC";
-    } elseif ($_GET['sort'] == 'lowest') {
-        $sql .= " ORDER BY remaining_payment ASC";
+    // Search functionality
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search = $conn->real_escape_string($_GET['search']);
+        $sql .= " WHERE s.student_name LIKE '%$search%' OR p.package_name LIKE '%$search%'";
     }
-}
 
-// Execute the query
-$result = $conn->query($sql);
-$data = [];
-
-// Fetch all rows
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    // Sorting functionality
+    if (isset($_GET['sort']) && $_GET['sort'] !== 'none') {
+        $sql .= " ORDER BY remaining_payment " . 
+                ($_GET['sort'] === 'highest' ? 'DESC' : 'ASC');
     }
-} else {
+
+    // Execute the query
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        throw new Exception("Query failed: " . $conn->error);
+    }
+
     $data = [];
+
+    // Process the results
+    while ($row = $result->fetch_assoc()) {
+        // Calculate attendance percentage
+        $total_days = $row['total_days'];
+        $present_days = $row['present_days'];
+        
+        $attendance = $total_days > 0 ? 
+            round(($present_days / $total_days) * 100, 2) : 0;
+
+        $data[] = [
+            'name' => $row['name'],
+            'programme' => $row['programme'],
+            'attendance' => $attendance,
+            'remaining_payment' => $row['remaining_payment']
+        ];
+    }
+
+    // Add debug information
+    $debug = [
+        'table_counts' => $counts,
+        'query' => $sql,
+        'data_count' => count($data)
+    ];
+
+    // Return the data as JSON with debug info
+    echo json_encode([
+        'success' => true,
+        'debug' => $debug,
+        'data' => $data
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'error' => $e->getMessage()
+    ]);
 }
 
-// Return the data as JSON
-echo json_encode($data);
-
-// Close connection
 $conn->close();
 ?>

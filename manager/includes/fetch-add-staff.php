@@ -32,9 +32,26 @@ if ($method === 'GET') {
         }
         $stmt->close();
     } else {
-        $result = $conn->query("SELECT * FROM staff ORDER BY staff_id DESC");
+        $search = isset($_GET['search']) ? '%' . $_GET['search'] . '%' : '%';
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+        
+        $query = "SELECT * FROM staff WHERE name LIKE ? OR qualification LIKE ? OR contact_number LIKE ?";
+        
+        if ($sort === 'leave_asc') {
+            $query .= " ORDER BY leave_left ASC";
+        } elseif ($sort === 'leave_desc') {
+            $query .= " ORDER BY leave_left DESC";
+        } else {
+            $query .= " ORDER BY staff_id DESC";
+        }
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sss", $search, $search, $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $staff = $result->fetch_all(MYSQLI_ASSOC);
         echo json_encode(['success' => true, 'staff' => $staff]);
+        $stmt->close();
     }
 } elseif ($method === 'POST') {
     $name = $_POST['name'] ?? '';

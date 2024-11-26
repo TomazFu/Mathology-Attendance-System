@@ -21,9 +21,9 @@ include "../includes/sidebar.php";
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search">
                 <select id="sortSelect">
-                    <option value="none" selected>No Sorting</option>
-                    <option value="leave_asc">Lowest Leave</option>
-                    <option value="leave_desc">Highest Leave</option>
+                    <option value="">Default Sort</option>
+                    <option value="leave_desc">Leave (Highest to Lowest)</option>
+                    <option value="leave_asc">Leave (Lowest to Highest)</option>
                 </select>
             </div>
             <table id="staffTable">
