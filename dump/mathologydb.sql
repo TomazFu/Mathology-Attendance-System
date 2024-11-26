@@ -31,7 +31,7 @@ CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `date` date DEFAULT NULL,
-  `status` enum('present','absent') NOT NULL
+  `status` enum('present','absent','late') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
