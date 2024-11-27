@@ -4,28 +4,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const packagePrices = {
         'pre-primary': {
             regular: 280,
-            maintenance: 280,
+            maintenance: 690,
             intensive: 420,
             superIntensive: 560,
             deposit: 280
         },
         'secondary': {
-            regular: 350,
-            maintenance: 350,
-            intensive: 540,
-            superIntensive: 720,
-            deposit: 350
+            regular: 330,
+            maintenance: 815,
+            intensive: 495,
+            superIntensive: 660,
+            deposit: 330
         },
         'upper-secondary': {
-            regular: 580,
-            maintenance: 580,
+            regular: 380,
+            maintenance: 935,
             intensive: 570,
             superIntensive: 760,
-            deposit: 580
+            deposit: 380
         },
         'post-secondary': {
             regular: 480,
-            maintenance: 480,
+            maintenance: 1180,
             intensive: 720,
             superIntensive: 960,
             deposit: 480
@@ -73,17 +73,165 @@ function initializePackages() {
 }
 
 function handlePackageSelection(packageType) {
-    // Show confirmation modal
-    const confirmed = confirm(`Would you like to proceed with the ${packageType} package?`);
+    const studentSelect = document.getElementById('student-select');
+    const selectedLevel = document.querySelector('.level-btn.active').dataset.level;
     
-    if (confirmed) {
-        // You can implement the actual package selection logic here
-        // For example, making an API call or redirecting to a payment page
-        console.log(`Selected package: ${packageType}`);
-        
-        // Temporary alert for demonstration
-        alert('Thank you for your interest! Our team will contact you shortly to complete the registration process.');
+    if (!studentSelect.value) {
+        alert('Please select a student first');
+        return;
     }
+
+    // Define hours per package type
+    const packageHours = {
+        'Regular Program': {
+            monthly: 8,
+            quarterly: 24,
+            halfYearly: 48
+        },
+        'Maintenance Program': {
+            quarterly: 18
+        },
+        'Intensive Program': {
+            monthly: 12,
+            quarterly: 36
+        },
+        'Super Intensive Program': {
+            monthly: 16,
+            quarterly: 48
+        }
+    };
+
+    const hours = packageHours[packageType];
+
+    // Create and show the modal
+    const modal = document.createElement('div');
+    modal.className = 'package-modal';
+    modal.innerHTML = `
+        <div class="package-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Select Payment Option for ${packageType}</h2>
+            <div class="payment-options">
+                ${packageType !== 'Maintenance Program' ? `
+                    <div class="payment-option" data-type="monthly">
+                        <h3>Monthly Payment</h3>
+                        <p class="price"></p>
+                        <p>${hours.monthly} hours of tutoring per month</p>
+                    </div>
+                ` : ''}
+                <div class="payment-option" data-type="quarterly">
+                    <h3>Quarterly Payment</h3>
+                    <p class="price"></p>
+                    <p>${hours.quarterly} hours of tutoring (3 months)</p>
+                </div>
+                ${packageType === 'Regular Program' ? `
+                    <div class="payment-option" data-type="halfYearly">
+                        <h3>Half-Yearly Payment</h3>
+                        <p class="price"></p>
+                        <p>${hours.halfYearly} hours of tutoring (6 months)</p>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Add event listeners
+    const closeBtn = modal.querySelector('.close-modal');
+    closeBtn.onclick = () => {
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    };
+
+    const paymentOptions = modal.querySelectorAll('.payment-option');
+    paymentOptions.forEach(option => {
+        option.onclick = () => {
+            modal.classList.add('closing');
+            setTimeout(() => {
+                submitPackageSelection(packageType, selectedLevel, option.dataset.type, studentSelect.value);
+                modal.remove();
+            }, 300);
+        };
+    });
+
+    // Update prices based on selected level and package type
+    updateModalPrices(modal, selectedLevel, packageType);
+}
+
+function updateModalPrices(modal, level, packageType) {
+    const programTypes = {
+        'Regular Program': 'regular',
+        'Maintenance Program': 'maintenance',
+        'Intensive Program': 'intensive',
+        'Super Intensive Program': 'superIntensive'
+    };
+
+    const programKey = programTypes[packageType];
+    const prices = packagePrices[level];
+
+    const monthlyPrice = prices[programKey];
+    const quarterlyPrice = getQuarterlyPriceForLevel(monthlyPrice, level, programKey);
+    const halfYearlyPrice = getHalfYearlyPriceForLevel(monthlyPrice, level);
+
+    if (modal.querySelector('[data-type="monthly"]')) {
+        modal.querySelector('[data-type="monthly"] .price').textContent = `RM ${monthlyPrice}`;
+    }
+    modal.querySelector('[data-type="quarterly"] .price').textContent = `RM ${quarterlyPrice}`;
+    
+    if (packageType === 'Regular Program') {
+        modal.querySelector('[data-type="halfYearly"] .price').textContent = `RM ${halfYearlyPrice}`;
+    }
+}
+
+function getQuarterlyPrice(monthlyPrice) {
+    return Math.round(monthlyPrice * 2.85); // Approximate quarterly discount
+}
+
+function getHalfYearlyPrice(monthlyPrice) {
+    return Math.round(monthlyPrice * 5.57); // Approximate half-yearly discount
+}
+
+function submitPackageSelection(packageType, level, paymentType, studentId) {
+    const programMap = {
+        'Regular Program': 'Regular Program',
+        'Maintenance Program': 'Maintenance Program',
+        'Intensive Program': 'Intensive Program',
+        'Super Intensive Program': 'Super Intensive Program'
+    };
+
+    const levelMap = {
+        'pre-primary': 'Pre-Primary and Primary Level',
+        'secondary': 'Secondary Level',
+        'upper-secondary': 'Upper Secondary Level',
+        'post-secondary': 'Post-Secondary Level'
+    };
+
+    const packageName = `${levelMap[level]} ${programMap[packageType]} (${paymentType.charAt(0).toUpperCase() + paymentType.slice(1)})`;
+
+    // Make AJAX call to update package
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/Mathology-Attendance-System/parent/includes/update-student-package.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    alert('Package updated successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            } catch (e) {
+                alert('Error processing response');
+            }
+        }
+    };
+
+    xhr.send(`student_id=${studentId}&package_name=${encodeURIComponent(packageName)}`);
 }
 
 // Add smooth scroll for guarantee section
@@ -124,18 +272,91 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updatePackagePrices(prices) {
-    // Update regular program price
-    document.querySelector('.package-card:nth-child(1) .amount').textContent = prices.regular;
+    const level = getCurrentLevel();
     
-    // Update maintenance program price
-    document.querySelector('.package-card:nth-child(2) .amount').textContent = prices.maintenance;
-    
-    // Update intensive program price
-    document.querySelector('.package-card:nth-child(3) .amount').textContent = prices.intensive;
-    
-    // Update super intensive program price
-    document.querySelector('.package-card:nth-child(4) .amount').textContent = prices.superIntensive;
-    
+    // Regular Program Card
+    const regularCard = document.querySelector('.package-card:nth-child(1)');
+    regularCard.querySelector('.amount').textContent = prices.regular;
+    regularCard.querySelector('.package-features').innerHTML = `
+        <li><i class="material-icons">schedule</i> 2 visits per week (1 hour each)</li>
+        <li><i class="material-icons">schedule</i> OR 1 visit per week (2 hours each)</li>
+        <li><i class="material-icons">check_circle</i> Quarterly Package (24 hours): RM ${getQuarterlyPriceForLevel(prices.regular, level)}</li>
+        <li><i class="material-icons">check_circle</i> Half-Yearly Package (48 hours): RM ${getHalfYearlyPriceForLevel(prices.regular, level)}</li>
+    `;
+
+    // Maintenance Program Card
+    const maintenanceCard = document.querySelector('.package-card:nth-child(2)');
+    maintenanceCard.querySelector('.amount').textContent = prices.maintenance;
+    maintenanceCard.querySelector('.package-features').innerHTML = `
+        <li><i class="material-icons">schedule</i> 1 visit per week (1.5 hours each)</li>
+        <li><i class="material-icons">check_circle</i> Quarterly Payment Only</li>
+        <li><i class="material-icons">check_circle</i> Flexible Schedule</li>
+        <li><i class="material-icons">check_circle</i> Personalized Learning Path</li>
+        <li><i class="material-icons">check_circle</i> Progress Monitoring</li>
+    `;
+
+    // Intensive Program Card
+    const intensiveCard = document.querySelector('.package-card:nth-child(3)');
+    intensiveCard.querySelector('.amount').textContent = prices.intensive;
+    intensiveCard.querySelector('.package-features').innerHTML = `
+        <li><i class="material-icons">schedule</i> 2 visits per week (1.5 hours each)</li>
+        <li><i class="material-icons">check_circle</i> Quarterly Package (36 hours): RM ${getQuarterlyPriceForLevel(prices.intensive, level, 'intensive')}</li>
+        <li><i class="material-icons">check_circle</i> Enhanced Learning Support</li>
+        <li><i class="material-icons">check_circle</i> Detailed Progress Tracking</li>
+        <li><i class="material-icons">check_circle</i> Priority Scheduling</li>
+    `;
+
+    // Super Intensive Program Card
+    const superIntensiveCard = document.querySelector('.package-card:nth-child(4)');
+    superIntensiveCard.querySelector('.amount').textContent = prices.superIntensive;
+    superIntensiveCard.querySelector('.package-features').innerHTML = `
+        <li><i class="material-icons">schedule</i> 2 visits per week (2 hours each)</li>
+        <li><i class="material-icons">check_circle</i> Quarterly Package (48 hours): RM ${getQuarterlyPriceForLevel(prices.superIntensive, level, 'superIntensive')}</li>
+        <li><i class="material-icons">check_circle</i> Program suitability depends on diagnostic assessment</li>
+        <li><i class="material-icons">check_circle</i> Premium Learning Support</li>
+        <li><i class="material-icons">check_circle</i> Advanced Progress Analytics</li>
+    `;
+
     // Update deposit amount
-    document.querySelector('.fee-item:last-child .fee-amount').textContent = `RM${prices.deposit}`;
+    document.querySelector('.fee-item:last-child .fee-amount').textContent = `RM ${prices.deposit}`;
+}
+
+function getCurrentLevel() {
+    return document.querySelector('.level-btn.active').dataset.level;
+}
+
+function getQuarterlyPriceForLevel(monthlyPrice, level, program = 'regular') {
+    const quarterlyPrices = {
+        'pre-primary': {
+            regular: 800,
+            intensive: 1200,
+            superIntensive: 1600
+        },
+        'secondary': {
+            regular: 945,
+            intensive: 1415,
+            superIntensive: 1885
+        },
+        'upper-secondary': {
+            regular: 1085,
+            intensive: 1625,
+            superIntensive: 2170
+        },
+        'post-secondary': {
+            regular: 1370,
+            intensive: 2055,
+            superIntensive: 2740
+        }
+    };
+    return quarterlyPrices[level][program];
+}
+
+function getHalfYearlyPriceForLevel(monthlyPrice, level) {
+    const halfYearlyPrices = {
+        'pre-primary': 1560,
+        'secondary': 1850,
+        'upper-secondary': 2130,
+        'post-secondary': 2700
+    };
+    return halfYearlyPrices[level];
 } 
