@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Include the process file to fetch data
 include('../manager/includes/fetch-managerDashboard.php');
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../manager/includes/fetch-leave-request.php';
 
 // Include header
