@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Include the process file to fetch data
 include('../manager/includes/fetch-managerDashboard.php');
 
@@ -17,6 +18,7 @@ include "../includes/sidebar.php";
     <title>Manager Dashboard</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/managerDashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -25,34 +27,78 @@ include "../includes/sidebar.php";
 
             <!-- Main Dashboard Content -->
             <div class="dashboard-content">
+                <!-- Charts Container -->
+                <div class="charts-container">
+                    <!-- Sales Chart -->
+                    <div class="sales-chart">
+                        <h2>Monthly Income</h2>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <!-- Population Chart -->
+                    <div class="population-chart">
+                        <h2>Current Population</h2>
+                        <canvas id="populationChart"></canvas>
+                    </div>
+                </div>
+
                 <!-- Export Button -->
                 <div class="export-options">
                     <h2>Export Report</h2>
-                    <a href="../manager/includes/downloadReport.php?type=pdf" class="export-btn">Download PDF</a>
-                    <a href="../manager/includes/downloadReport.php?type=csv" class="export-btn">Download CSV</a>
+                    <form method="GET" action="../manager/includes/downloadReport.php">
+                        <select name="year" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <?php
+                            $currentYear = date('Y');
+                            for ($y = $currentYear; $y >= $currentYear - 2; $y--) {
+                                echo "<option value=\"$y\">$y</option>";
+                            }
+                            ?>
+                        </select>
+                        <select name="month" required>
+                            <option value="" disabled selected>Select Month</option>
+                            <?php
+                            for ($m = 1; $m <= 12; $m++) {
+                                $monthName = date('F', mktime(0, 0, 0, $m, 1));
+                                echo "<option value=\"$m\">$monthName</option>";
+                            }
+                            ?>
+                        </select>
+                        <button type="submit" name="type" value="pdf" class="export-btn">Download PDF</button>
+                        <button type="submit" name="type" value="csv" class="export-btn">Download CSV</button>
+                    </form>
                 </div>
 
-                <!-- Monthly Summary -->
-                <div class="monthly-summary">
-                    <h2>This Month</h2>
-                    <p>Total Fees Collection: RM <?php echo number_format($total_fees, 2); ?></p>
-                    <p>Total Fees Outstanding: RM <?php echo number_format($outstanding_fees, decimals: 2); ?></p>
-                </div>
 
                 <!-- Stats -->
                 <div class="stats">
-                    <div>Statistics</div>
-                    <!-- TODO student count, staff count, usage percentage -->
-                    <!-- <div>Total Students: <?php echo $student_count; ?></div>
-                    <div>Total Staff: <?php echo $staff_count; ?></div>
-                    <div>Usage: 90%</div> -->
+                    <div class="stat-cards">
+                        <?php foreach ($package_usage_data as $package): ?>
+                        <div class="stat-card">
+                            <h3><?php echo htmlspecialchars($package['package_name']); ?></h3>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Students:</span>
+                                    <span class="stat-value"><?php echo $package['student_count']; ?></span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Usage:</span>
+                                    <span class="stat-value"><?php echo $package['usage_percentage']; ?>%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Price:</span>
+                                    <span class="stat-value">RM <?php echo $package['package_price']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <!-- Attendance -->
                 <div class="attendance">
                     <h2>Overall Attendance Today</h2>
                     <!-- TODO attendance percentage -->
-                    <!-- <p><?php echo $attendance_percentage; ?>%</p> -->
+                    <p><?php echo $attendance_percentage; ?>%</p>
                 </div>
 
                 <!-- Latest Leave Requests -->
@@ -76,6 +122,102 @@ include "../includes/sidebar.php";
 
             </div>
         </div>
+
+    <script>
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: <?php echo $sales_dates_json; ?>,
+                datasets: [{
+                    label: 'Daily Sales (RM)',
+                    data: <?php echo $sales_amounts_json; ?>,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'RM ' + value;
+                            },
+                            font: {
+                                size: 12  // Fixed font size for y-axis
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12  // Fixed font size for x-axis
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14  // Fixed font size for legend
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const populationCtx = document.getElementById('populationChart').getContext('2d');
+        new Chart(populationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Students', 'Staff'],
+                datasets: [{
+                    label: 'Total Count',
+                    data: [<?php echo $student_count; ?>, <?php echo $staff_count; ?>],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 

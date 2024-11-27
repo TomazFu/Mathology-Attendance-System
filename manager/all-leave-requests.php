@@ -14,14 +14,14 @@ if ($conn->connect_error) {
 }
 
 // Initialize SQL query
-$sql = "SELECT leaves.leave_id, students.name AS student_name, leaves.reason, leaves.fromDate as start_date, leaves.toDate as end_date 
+$sql = "SELECT leaves.leave_id, students.student_name AS student_name, leaves.reason, leaves.fromDate as start_date, leaves.toDate as end_date 
         FROM leaves 
         JOIN students ON leaves.student_id = students.student_id";
 
 // Handle Search functionality
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $searchTerm = "%" . $_GET['search'] . "%";
-    $sql .= " WHERE students.name LIKE ?";
+    $sql .= " WHERE students.student_name LIKE ?";
 }
 
 // Handle Sort functionality

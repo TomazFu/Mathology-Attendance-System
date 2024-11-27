@@ -106,7 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch staff
     async function fetchStaff() {
         try {
-            const response = await fetch("../manager/includes/fetch-add-staff.php");
+            const searchTerm = searchInput.value;
+            const sortValue = sortSelect.value;
+            
+            const url = new URL("../manager/includes/fetch-add-staff.php", window.location.href);
+            if (searchTerm) url.searchParams.append("search", searchTerm);
+            if (sortValue) url.searchParams.append("sort", sortValue);
+
+            const response = await fetch(url);
             const data = await response.json();
 
             const tbody = document.querySelector("#staffTable tbody");

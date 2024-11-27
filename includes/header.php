@@ -11,6 +11,7 @@ $base_path = isset($is_index) && $is_index ? '' : '../';
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../assets/js/script.js"></script>
 </head>
 <body>
     <header>

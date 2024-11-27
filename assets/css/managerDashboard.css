@@ -18,7 +18,6 @@
 
 /* Update width for all dashboard sections */
 .export-options,
-.monthly-summary,
 .stats,
 .attendance,
 .latest-leave-requests {
@@ -27,23 +26,6 @@
     margin-bottom: 20px;
 }
 
-/* Monthly Summary Section */
-.monthly-summary {
-    background-color: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-}
-
-.monthly-summary h2 {
-    font-weight: 800;
-}
-
-.monthly-summary p {
-    font-size: 16px;
-    margin: 5px 0;
-}
 
 /* Stats Section */
 .stats {
@@ -172,6 +154,100 @@ button {
     padding-top: 84px; /* Account for header height */
     position: relative;
     z-index: 1;
+}
+
+.sales-chart {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.sales-chart canvas {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+.charts-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.sales-chart, .population-chart {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Adjust the canvas positioning */
+.sales-chart canvas, .population-chart canvas {
+    width: 100% !important;
+    height: calc(100% - 40px) !important;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Adjust header styling */
+.sales-chart h2, .population-chart h2 {
+    margin: 0 0 20px 0;
+    position: relative;
+    z-index: 1;
+    padding: 0 20px;
+}
+
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.stat-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-card h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #333;
 }
 
 /* Responsive adjustments */

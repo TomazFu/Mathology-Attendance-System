@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Include header and sidebar
 include "../includes/header.php";
 include "../includes/sidebar.php";
