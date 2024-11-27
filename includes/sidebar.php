@@ -13,7 +13,6 @@ function renderSidebar($role) {
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'managerDashboard.php'],
             ['icon' => 'fas fa-users', 'text' => 'Staff', 'link' => 'managerStaff.php'],
             ['icon' => 'fas fa-file-alt', 'text' => 'Report', 'link' => 'managerReport.php'],
-            ['icon' => 'fas fa-sign-out-alt', 'text' => 'Logout', 'link' => 'logout.php'],
         ],
         'staff' => [
             ['icon' => 'fas fa-home', 'text' => 'Dashboard', 'link' => 'staff-dashboard.php'],

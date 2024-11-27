@@ -27,7 +27,6 @@ $base_path = isset($is_index) && $is_index ? '' : '../';
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="dropdown-content" id="profileDropdown">
-                        <a href="#"><i class="fas fa-user"></i>Edit Profile</a>
                         <a href="<?php echo $base_path; ?>includes/logout.php">
                             <i class="fas fa-sign-out-alt"></i>Log Out
                         </a>

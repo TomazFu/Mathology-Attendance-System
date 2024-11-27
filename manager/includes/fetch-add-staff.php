@@ -59,9 +59,14 @@ if ($method === 'GET') {
     $contact = $_POST['contact'] ?? '';
     $leave = intval($_POST['leave'] ?? 0);
     $status = $_POST['status'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    $stmt = $conn->prepare("INSERT INTO staff (name, qualification, contact_number, leave_left, current_status) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssds", $name, $qualification, $contact, $leave, $status);
+    // Hash the password
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+    $stmt = $conn->prepare("INSERT INTO staff (name, qualification, contact_number, leave_left, current_status, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssdsss", $name, $qualification, $contact, $leave, $status, $email, $hashedPassword);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);
@@ -77,9 +82,18 @@ if ($method === 'GET') {
     $contact = $input['contact'] ?? '';
     $leave = intval($input['leave'] ?? 0);
     $status = $input['status'] ?? '';
+    $email = $input['email'] ?? '';
+    $password = $input['password'] ?? '';
 
-    $stmt = $conn->prepare("UPDATE staff SET name = ?, qualification = ?, contact_number = ?, leave_left = ?, current_status = ? WHERE staff_id = ?");
-    $stmt->bind_param("sssisi", $name, $qualification, $contact, $leave, $status, $staff_id);
+    if (!empty($password)) {
+        // Hash the new password
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $stmt = $conn->prepare("UPDATE staff SET name = ?, qualification = ?, contact_number = ?, leave_left = ?, current_status = ?, email = ?, password = ? WHERE staff_id = ?");
+        $stmt->bind_param("sssdsssi", $name, $qualification, $contact, $leave, $status, $email, $hashedPassword, $staff_id);
+    } else {
+        $stmt = $conn->prepare("UPDATE staff SET name = ?, qualification = ?, contact_number = ?, leave_left = ?, current_status = ?, email = ? WHERE staff_id = ?");
+        $stmt->bind_param("sssdssi", $name, $qualification, $contact, $leave, $status, $email, $staff_id);
+    }
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);

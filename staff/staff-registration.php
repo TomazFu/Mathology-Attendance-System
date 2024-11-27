@@ -44,7 +44,7 @@ require_once "../includes/sidebar.php";
             <div class="form-container">
                 <form id="parent-account-registration-form" action="includes/register-process.php" method="POST">
                     <div class="form-row">
-                        <input type="text" name="username" placeholder="Username *" class="half-width" required>
+                        <input type="text" name="email" placeholder="Email *" class="half-width" required>
                     </div>
                     <div class="form-row">
                         <input type="text" name="name" placeholder="Full name *" class="half-width" required>
@@ -55,25 +55,6 @@ require_once "../includes/sidebar.php";
                     <div class="form-row">
                         <input type="password" name="confirm-password" placeholder="Confirm Password *" class="half-width" required>
                     </div>
-                    <!-- <div class="form-row">
-                        <div class="gender-container">
-                            <label class="radio-label">
-                                <input type="radio" name="gender" value="male">
-                                Male
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="gender" value="female">
-                                Female
-                            </label>
-                        </div>
-                        <select class="half-width">
-                            <option value="" selected>Department</option>
-                            <option value="hr">HR</option>
-                            <option value="it">IT</option>
-                            <option value="finance">Finance</option>
-                        </select>
-                    </div> -->
-
                     <button type="submit" type="register-button">REGISTER</button>
                 </form>
                 <?php

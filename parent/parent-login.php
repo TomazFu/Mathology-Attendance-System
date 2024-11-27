@@ -28,7 +28,7 @@ session_start();
         <form action="includes/parent-login-process.php" method="POST" class="login-form">
             <div class="input-group">
                 <div class="input-wrapper">
-                    <input type="text" name="username" id="username" placeholder="Username" required>
+                    <input type="text" name="email" id="email" placeholder="Email" required>
                     <i class="fas fa-user"></i>
                 </div>
             </div>

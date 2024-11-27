@@ -3,12 +3,12 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once('../../config/connect.php');
 
-        $username = $_POST['username'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm-password'];
         $name = $_POST['name'];
 
-        if (empty($username) || empty($password) || empty($confirm_password) || empty($name)) {
+        if (empty($email) || empty($password) || empty($confirm_password) || empty($name)) {
             $_SESSION['registration_error'] = "All fields are required";
             header("Location: ../staff-registration.php");
             exit();
@@ -30,9 +30,9 @@
         // Generate a unique parent_id (you might want to implement a more robust method)
         $parent_id = time();
 
-        $sql = "INSERT INTO parent (parent_id, username, password, name) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO parent (parent_id, email, password, name) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $parent_id, $username, $password, $name);
+        $stmt->bind_param("isss", $parent_id, $email, $password, $name);
 
         if ($stmt->execute()) {
             $_SESSION['registration_success'] = "Parent registration successful!";
