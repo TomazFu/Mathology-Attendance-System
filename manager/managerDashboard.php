@@ -30,7 +30,7 @@ include "../includes/sidebar.php";
                 <div class="charts-container">
                     <!-- Sales Chart -->
                     <div class="sales-chart">
-                        <h2>Current Month Income</h2>
+                        <h2>Monthly Income</h2>
                         <canvas id="salesChart"></canvas>
                     </div>
                     <!-- Population Chart -->
@@ -43,8 +43,28 @@ include "../includes/sidebar.php";
                 <!-- Export Button -->
                 <div class="export-options">
                     <h2>Export Report</h2>
-                    <a href="../manager/includes/downloadReport.php?type=pdf" class="export-btn">Download PDF</a>
-                    <a href="../manager/includes/downloadReport.php?type=csv" class="export-btn">Download CSV</a>
+                    <form method="GET" action="../manager/includes/downloadReport.php">
+                        <select name="year" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <?php
+                            $currentYear = date('Y');
+                            for ($y = $currentYear; $y >= $currentYear - 2; $y--) {
+                                echo "<option value=\"$y\">$y</option>";
+                            }
+                            ?>
+                        </select>
+                        <select name="month" required>
+                            <option value="" disabled selected>Select Month</option>
+                            <?php
+                            for ($m = 1; $m <= 12; $m++) {
+                                $monthName = date('F', mktime(0, 0, 0, $m, 1));
+                                echo "<option value=\"$m\">$monthName</option>";
+                            }
+                            ?>
+                        </select>
+                        <button type="submit" name="type" value="pdf" class="export-btn">Download PDF</button>
+                        <button type="submit" name="type" value="csv" class="export-btn">Download CSV</button>
+                    </form>
                 </div>
 
 

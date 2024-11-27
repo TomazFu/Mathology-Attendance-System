@@ -17,15 +17,32 @@ if ($conn->connect_error) {
 
 
 
-// Fetch total students and staff count
-$student_count = $conn->query("SELECT COUNT(*) AS total FROM students")->fetch_assoc()['total'];
-$staff_count = $conn->query("SELECT COUNT(*) AS total FROM staff")->fetch_assoc()['total'];
+// Get selected year and month or default to current
+$selected_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
+$selected_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
 
-// Fetch today's attendance percentage
+// Fetch total students and staff count for the selected month and year
+$student_count = $conn->query("
+    SELECT COUNT(*) AS total 
+    FROM students 
+    WHERE MONTH(created_at) = $selected_month 
+    AND YEAR(created_at) = $selected_year"
+)->fetch_assoc()['total'];
+
+$staff_count = $conn->query("
+    SELECT COUNT(*) AS total 
+    FROM staff 
+    WHERE MONTH(created_at) = $selected_month 
+    AND YEAR(created_at) = $selected_year"
+)->fetch_assoc()['total'];
+
+// Fetch attendance percentage for the selected month and year
 $attendance_query = "SELECT 
-    COUNT(CASE WHEN status = 'present' THEN 1 END) * 100.0 / COUNT(*) as attendance_percentage
+    (COUNT(CASE WHEN status = 'present' THEN 1 END) * 100.0 / COUNT(*)) as attendance_percentage
     FROM attendance 
-    WHERE DATE(date) = CURDATE()";
+    WHERE MONTH(date) = $selected_month 
+    AND YEAR(date) = $selected_year";
+
 $attendance_result = $conn->query($attendance_query);
 $attendance_percentage = $attendance_result->num_rows > 0 ? 
     number_format($attendance_result->fetch_assoc()['attendance_percentage'], 1) : 'N/A';
@@ -36,12 +53,13 @@ $leave_requests_result = $conn->query("SELECT leave_id, students.student_name AS
                                      JOIN students ON leaves.student_id = students.student_id 
                                      ORDER BY leave_id DESC LIMIT 3");
 
-// Fetch monthly sales data for the current year
+// Fetch monthly sales data for the selected month and current year
 $sales_query = "SELECT 
     DATE_FORMAT(date, '%Y-%m') as month,
     SUM(amount) as monthly_total 
     FROM payments 
-    WHERE YEAR(date) = YEAR(CURRENT_DATE())
+    WHERE YEAR(date) = $selected_year
+    AND MONTH(date) = $selected_month
     GROUP BY DATE_FORMAT(date, '%Y-%m')
     ORDER BY month";
 $sales_result = $conn->query($sales_query);

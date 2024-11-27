@@ -1,7 +1,7 @@
 <?php
 // Include the process file to fetch data
 include('fetch-managerDashboard.php');
-require_once('C:\xampp\htdocs\Mathology-Attendance-System\manager\TCPDF-main\TCPDF-main\tcpdf.php'); 
+require_once('../TCPDF-main/TCPDF-main/tcpdf.php'); 
 
 // Handle export logic based on the type (PDF or CSV)
 $type = isset($_GET['type']) ? $_GET['type'] : '';
@@ -15,11 +15,9 @@ if ($type === 'pdf') {
     // Title and Summary
     $pdf->Cell(0, 10, 'Monthly Report', 0, 1, 'C');
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, 'Total Fees Collection: RM ' . number_format($total_fees, 2), 0, 1);
-    $pdf->Cell(0, 10, 'Total Fees Outstanding: RM ' . number_format($outstanding_fees, 2), 0, 1);
+    $pdf->Cell(0, 10, 'Total Amount: RM ' . number_format(array_sum($all_amounts), 2), 0, 1);
     $pdf->Cell(0, 10, 'Total Students: ' . $student_count, 0, 1);
     $pdf->Cell(0, 10, 'Total Staff: ' . $staff_count, 0, 1);
-    // TODO
     $pdf->Cell(0, 10, 'Overall Attendance Today: ' . $attendance_percentage . '%', 0, 1);
     $pdf->Ln(10);
 
@@ -42,11 +40,9 @@ if ($type === 'pdf') {
     $output = fopen('php://output', 'w');
     // Column headers
     fputcsv($output, ['Report Data']);
-    fputcsv($output, ['Total Fees Collection', 'RM ' . number_format($total_fees, 2)]);
-    fputcsv($output, ['Total Fees Outstanding', 'RM ' . number_format($outstanding_fees, 2)]);
+    fputcsv($output, ['Total Amount', 'RM ' . number_format(array_sum($all_amounts), 2)]);
     fputcsv($output, ['Total Students', $student_count]);
     fputcsv($output, ['Total Staff', $staff_count]);
-    // TODO
     fputcsv($output, ['Overall Attendance Today', $attendance_percentage . '%']);
     fputcsv($output, ['Leave Requests']);
     
@@ -62,4 +58,29 @@ if ($type === 'pdf') {
 
     fclose($output);
 }
+
+// Calculate monthly student count
+$monthly_student_count = "SELECT COUNT(*) as count 
+    FROM students 
+    WHERE MONTH(created_at) = MONTH(CURRENT_DATE) 
+    AND YEAR(created_at) = YEAR(CURRENT_DATE)";
+$result = $conn->query($monthly_student_count);
+$monthly_student_count = $result->fetch_assoc()['count'];
+
+// Calculate monthly staff count
+$monthly_staff_count = "SELECT COUNT(*) as count 
+    FROM staff 
+    WHERE MONTH(created_at) = MONTH(CURRENT_DATE) 
+    AND YEAR(created_at) = YEAR(CURRENT_DATE)";
+$result = $conn->query($monthly_staff_count);
+$monthly_staff_count = $result->fetch_assoc()['count'];
+
+// Calculate monthly attendance percentage
+$monthly_attendance_percentage = "SELECT 
+    (COUNT(CASE WHEN status = 'present' THEN 1 END) * 100.0 / COUNT(*)) as percentage
+    FROM attendance 
+    WHERE MONTH(date) = MONTH(CURRENT_DATE) 
+    AND YEAR(date) = YEAR(CURRENT_DATE)";
+$result = $conn->query($monthly_attendance_percentage);
+$monthly_attendance_percentage = number_format($result->fetch_assoc()['percentage'], 1);
 ?>
