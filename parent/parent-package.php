@@ -77,8 +77,8 @@ require_once "../includes/sidebar.php";
                     <ul class="package-features">
                         <li><i class="material-icons">schedule</i> 2 visits per week (1 hour each)</li>
                         <li><i class="material-icons">schedule</i> OR 1 visit per week (2 hours each)</li>
-                        <li><i class="material-icons">check_circle</i> Quarterly Package Available (24 hours): RM800</li>
-                        <li><i class="material-icons">check_circle</i> Half-Yearly Package (48 hours): RM1560</li>
+                        <li><i class="material-icons">check_circle</i> Quarterly Package (24 hours): RM 800</li>
+                        <li><i class="material-icons">check_circle</i> Half-Yearly Package (48 hours): RM 1560</li>
                     </ul>
                     <button class="package-btn">Get Started</button>
                 </div>
@@ -88,15 +88,16 @@ require_once "../includes/sidebar.php";
                     <div class="package-badge">Maintenance Program</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
-                        <span class="amount">280</span>
-                        <span class="period">/month</span>
+                        <span class="amount">690</span>
+                        <span class="period">/quarter</span>
                     </div>
                     <div class="package-subtitle">6 hours/month</div>
                     <ul class="package-features">
                         <li><i class="material-icons">schedule</i> 1 visit per week (1.5 hours each)</li>
-                        <li><i class="material-icons">check_circle</i> Quarterly Package Available (18 hours): RM690</li>
+                        <li><i class="material-icons">check_circle</i> Quarterly Payment Only</li>
                         <li><i class="material-icons">check_circle</i> Flexible Schedule</li>
                         <li><i class="material-icons">check_circle</i> Personalized Learning Path</li>
+                        <li><i class="material-icons">check_circle</i> Progress Monitoring</li>
                     </ul>
                     <button class="package-btn">Get Started</button>
                 </div>
@@ -113,9 +114,10 @@ require_once "../includes/sidebar.php";
                     <div class="package-subtitle">12 hours/month</div>
                     <ul class="package-features">
                         <li><i class="material-icons">schedule</i> 2 visits per week (1.5 hours each)</li>
-                        <li><i class="material-icons">check_circle</i> Quarterly Package Available (36 hours): RM1200</li>
+                        <li><i class="material-icons">check_circle</i> Quarterly Package (36 hours): RM 1200</li>
                         <li><i class="material-icons">check_circle</i> Enhanced Learning Support</li>
-                        <li><i class="material-icons">check_circle</i> Progress Tracking</li>
+                        <li><i class="material-icons">check_circle</i> Detailed Progress Tracking</li>
+                        <li><i class="material-icons">check_circle</i> Priority Scheduling</li>
                     </ul>
                     <button class="package-btn primary">Get Started</button>
                 </div>
@@ -131,9 +133,10 @@ require_once "../includes/sidebar.php";
                     <div class="package-subtitle">16 hours/month</div>
                     <ul class="package-features">
                         <li><i class="material-icons">schedule</i> 2 visits per week (2 hours each)</li>
-                        <li><i class="material-icons">check_circle</i> Quarterly Package Available (48 hours): RM1600</li>
-                        <li><i class="material-icons">check_circle</i> Comprehensive Support</li>
-                        <li><i class="material-icons">check_circle</i> Advanced Progress Tracking</li>
+                        <li><i class="material-icons">check_circle</i> Quarterly Package (48 hours): RM 1600</li>
+                        <li><i class="material-icons">check_circle</i> Program suitability depends on diagnostic assessment</li>
+                        <li><i class="material-icons">check_circle</i> Premium Learning Support</li>
+                        <li><i class="material-icons">check_circle</i> Advanced Progress Analytics</li>                        
                     </ul>
                     <button class="package-btn">Get Started</button>
                 </div>
@@ -145,15 +148,15 @@ require_once "../includes/sidebar.php";
                 <div class="fees-grid">
                     <div class="fee-item">
                         <span class="fee-label">Registration</span>
-                        <span class="fee-amount">RM50</span>
+                        <span class="fee-amount">RM 50</span>
                     </div>
                     <div class="fee-item">
-                        <span class="fee-label">Mathology Assessment (Lifetime)</span>
-                        <span class="fee-amount">RM100</span>
+                        <span class="fee-label">Diagnostic Assessment (Lifetime)</span>
+                        <span class="fee-amount">RM 100</span>
                     </div>
                     <div class="fee-item">
                         <span class="fee-label">Deposit (1 month)</span>
-                        <span class="fee-amount">RM280</span>
+                        <span class="fee-amount deposit-amount">RM 280</span>
                     </div>
                 </div>
             </div>

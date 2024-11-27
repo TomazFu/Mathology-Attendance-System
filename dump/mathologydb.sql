@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2024 at 08:16 AM
+-- Generation Time: Nov 27, 2024 at 04:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -145,38 +145,38 @@ CREATE TABLE `packages` (
 --
 
 INSERT INTO `packages` (`id`, `package_name`, `price`, `deposit_fee`, `details`) VALUES
-(1, 'Pre-primary/Primary: Regular-Monthly', 280, 280, 'This is the Monthly payment package for the Regular program in Pre-primary and Primary level - 8 Hours'),
-(2, 'Pre-primary/Primary: Regular-Quarterly', 800, 280, 'This is the Quarterly payment package for the Regular program in Pre-primary and Primary level - 24 Hours'),
-(3, 'Pre-primary/Primary: Regular-HalfYearly', 1560, 280, 'This is the Half Yearly payment package for the Regular program in Pre-primary and Primary level - 48 Hours'),
-(4, 'Pre-primary/Primary: Maintenance-Quarterly', 690, 280, 'This is the Quarterly payment package for the Maintenance program in Pre-primary and Primary level - 18 Hours'),
-(5, 'Pre-primary/Primary: Intensive-Monthly', 420, 280, 'This is the Monthly payment package for the Intensive program in Pre-primary and Primary level - 12 Hours'),
-(6, 'Pre-primary/Primary: Intensive-Quarterly', 1200, 280, 'This is the Quarterly payment package for the Intensive program in Pre-primary and Primary level - 36 Hours'),
-(7, 'Pre-primary/Primary: SuperIntensive-Monthly', 560, 280, 'This is the Monthly payment package for the Super Intensive program in Pre-primary and Primary level - 16 Hours'),
-(8, 'Pre-primary/Primary: SuperIntensive-Quarterly', 1600, 280, 'This is the Quarterly payment package for the Super Intensive program in Pre-primary and Primary level - 48 Hours'),
-(9, 'Secondary: Regular-Monthly', 330, 330, 'This is the Monthly payment package for the Regular program in Secondary level - 8 Hours'),
-(10, 'Secondary: Regular-Quarterly', 945, 330, 'This is the Quarterly payment package for the Regular program in Secondary level - 24 Hours'),
-(11, 'Secondary: Regular-HalfYearly', 1850, 330, 'This is the Half Yearly payment package for the Regular program in Secondary level - 48 Hours'),
-(12, 'Secondary: Maintenance-Quarterly', 815, 330, 'This is the Quarterly payment package for the Maintenance program in Secondary level - 18 Hours'),
-(13, 'Secondary: Intensive-Monthly', 495, 330, 'This is the Monthly payment package for the Intensive program in Secondary level - 12 Hours'),
-(14, 'Secondary: Intensive-Quarterly', 1415, 330, 'This is the Quarterly payment package for the Intensive program in Secondary level - 36 Hours'),
-(15, 'Secondary: SuperIntensive-Monthly', 660, 330, 'This is the Monthly payment package for the Super Intensive program in Secondary level - 16 Hours'),
-(16, 'Secondary: SuperIntensive-Quarterly', 1885, 330, 'This is the Quarterly payment package for the Super Intensive program in Secondary level - 48 Hours'),
-(17, 'Upper Secondary: Regular-Monthly', 380, 380, 'This is the Monthly payment package for the Regular program in Upper Secondary level - 8 Hours'),
-(18, 'Upper Secondary: Regular-Quarterly', 1085, 380, 'This is the Quarterly payment package for the Regular program in Upper Secondary level - 24 Hours'),
-(19, 'Upper Secondary: Regular-HalfYearly', 2130, 380, 'This is the Half Yearly payment package for the Regular program in Upper Secondary level - 48 Hours'),
-(20, 'Upper Secondary: Maintenance-Quarterly', 935, 380, 'This is the Quarterly payment package for the Maintenance program in Upper Secondary level - 18 Hours'),
-(21, 'Upper Secondary: Intensive-Monthly', 570, 380, 'This is the Monthly payment package for the Intensive program in Upper Secondary level - 12 Hours'),
-(22, 'Upper Secondary: Intensive-Quarterly', 1625, 380, 'This is the Quarterly payment package for the Intensive program in Upper Secondary level - 36 Hours'),
-(23, 'Upper Secondary: SuperIntensive-Monthly', 760, 380, 'This is the Monthly payment package for the Super Intensive program in Upper Secondary level - 16 Hours'),
-(24, 'Upper Secondary: SuperIntensive-Quarterly', 2170, 380, 'This is the Quarterly payment package for the Super Intensive program in Upper Secondary level - 48 Hours'),
-(25, 'Post-Secondary: Regular-Monthly', 480, 480, 'This is the Monthly payment package for the Regular program in Post-Secondary level - 8 Hours'),
-(26, 'Post-Secondary: Regular-Quarterly', 1370, 480, 'This is the Quarterly payment package for the Regular program in Post-Secondary level - 24 Hours'),
-(27, 'Post-Secondary: Regular-HalfYearly', 2700, 480, 'This is the Half Yearly payment package for the Regular program in Post-Secondary level - 48 Hours'),
-(28, 'Post-Secondary: Maintenance-Quarterly', 1180, 480, 'This is the Quarterly payment package for the Maintenance program in Post-Secondary level - 18 Hours'),
-(29, 'Post-Secondary: Intensive-Monthly', 720, 480, 'This is the Monthly payment package for the Intensive program in Post-Secondary level - 12 Hours'),
-(30, 'Post-Secondary: Intensive-Quarterly', 2055, 480, 'This is the Quarterly payment package for the Intensive program in Post-Secondary level - 36 Hours'),
-(31, 'Post-Secondary: SuperIntensive-Monthly', 960, 480, 'This is the Monthly payment package for the Super Intensive program in Post-Secondary level - 16 Hours'),
-(32, 'Post-Secondary: SuperIntensive-Quarterly', 2740, 480, 'This is the Quarterly payment package for the Super Intensive program in Post-Secondary level - 48 Hours');
+(1, 'Pre-Primary and Primary Level Regular Program (Monthly)', 280, 280, 'Monthly payment plan for Regular Program (Pre-Primary and Primary) - 8 hours per month'),
+(2, 'Pre-Primary and Primary Level Regular Program (Quarterly)', 800, 280, 'Quarterly payment plan for Regular Program (Pre-Primary and Primary) - 24 hours per quarter'),
+(3, 'Pre-Primary and Primary Level Regular Program (Half-Yearly)', 1560, 280, 'Half-Yearly payment plan for Regular Program (Pre-Primary and Primary) - 48 hours per 6 months'),
+(4, 'Pre-Primary and Primary Level Maintenance Program (Quarterly)', 690, 280, 'Quarterly payment plan for Maintenance Program (Pre-Primary and Primary) - 18 hours per quarter'),
+(5, 'Pre-Primary and Primary Level Intensive Program (Monthly)', 420, 280, 'Monthly payment plan for Intensive Program (Pre-Primary and Primary) - 12 hours per month'),
+(6, 'Pre-Primary and Primary Level Intensive Program (Quarterly)', 1200, 280, 'Quarterly payment plan for Intensive Program (Pre-Primary and Primary) - 36 hours per quarter'),
+(7, 'Pre-Primary and Primary Level Super Intensive Program (Monthly)', 560, 280, 'Monthly payment plan for Super Intensive Program (Pre-Primary and Primary) - 16 hours per month'),
+(8, 'Pre-Primary and Primary Level Super Intensive Program (Quarterly)', 1600, 280, 'Quarterly payment plan for Super Intensive Program (Pre-Primary and Primary) - 48 hours per quarter'),
+(9, 'Secondary Level Regular Program (Monthly)', 330, 330, 'Monthly payment plan for Regular Program (Secondary) - 8 hours per month'),
+(10, 'Secondary Level Regular Program (Quarterly)', 945, 330, 'Quarterly payment plan for Regular Program (Secondary) - 24 hours per quarter'),
+(11, 'Secondary Level Regular Program (Half-Yearly)', 1850, 330, 'Half-Yearly payment plan for Regular Program (Secondary) - 48 hours per 6 months'),
+(12, 'Secondary Level Maintenance Program (Quarterly)', 815, 330, 'Quarterly payment plan for Maintenance Program (Secondary) - 18 hours per quarter'),
+(13, 'Secondary Level Intensive Program (Monthly)', 495, 330, 'Monthly payment plan for Intensive Program (Secondary) - 12 hours per month'),
+(14, 'Secondary Level Intensive Program (Quarterly)', 1415, 330, 'Quarterly payment plan for Intensive Program (Secondary) - 36 hours per quarter'),
+(15, 'Secondary Level Super Intensive Program (Monthly)', 660, 330, 'Monthly payment plan for Super Intensive Program (Secondary) - 16 hours per month'),
+(16, 'Secondary Level Super Intensive Program (Quarterly)', 1885, 330, 'Quarterly payment plan for Super Intensive Program (Secondary) - 48 hours per quarter'),
+(17, 'Upper Secondary Level Regular Program (Monthly)', 380, 380, 'Monthly payment plan for Regular Program (Upper Secondary) - 8 hours per month'),
+(18, 'Upper Secondary Level Regular Program (Quarterly)', 1085, 380, 'Quarterly payment plan for Regular Program (Upper Secondary) - 24 hours per quarter'),
+(19, 'Upper Secondary Level Regular Program (Half-Yearly)', 2130, 380, 'Half-Yearly payment plan for Regular Program (Upper Secondary) - 48 hours per 6 months'),
+(20, 'Upper Secondary Level Maintenance Program (Quarterly)', 935, 380, 'Quarterly payment plan for Maintenance Program (Upper Secondary) - 18 hours per quarter'),
+(21, 'Upper Secondary Level Intensive Program (Monthly)', 570, 380, 'Monthly payment plan for Intensive Program (Upper Secondary) - 12 hours per month'),
+(22, 'Upper Secondary Level Intensive Program (Quarterly)', 1625, 380, 'Quarterly payment plan for Intensive Program (Upper Secondary) - 36 hours per quarter'),
+(23, 'Upper Secondary Level Super Intensive Program (Monthly)', 760, 380, 'Monthly payment plan for Super Intensive Program (Upper Secondary) - 16 hours per month'),
+(24, 'Upper Secondary Level Super Intensive Program (Quarterly)', 2170, 380, 'Quarterly payment plan for Super Intensive Program (Upper Secondary) - 48 hours per quarter'),
+(25, 'Post-Secondary Level Regular Program (Monthly)', 480, 480, 'Monthly payment plan for Regular Program (Post-Secondary) - 8 hours per month'),
+(26, 'Post-Secondary Level Regular Program (Quarterly)', 1370, 480, 'Quarterly payment plan for Regular Program (Post-Secondary) - 24 hours per quarter'),
+(27, 'Post-Secondary Level Regular Program (Half-Yearly)', 2700, 480, 'Half-Yearly payment plan for Regular Program (Post-Secondary) - 48 hours per 6 months'),
+(28, 'Post-Secondary Level Maintenance Program (Quarterly)', 1180, 480, 'Quarterly payment plan for Maintenance Program (Post-Secondary) - 18 hours per quarter'),
+(29, 'Post-Secondary Level Intensive Program (Monthly)', 720, 480, 'Monthly payment plan for Intensive Program (Post-Secondary) - 12 hours per month'),
+(30, 'Post-Secondary Level Intensive Program (Quarterly)', 2055, 480, 'Quarterly payment plan for Intensive Program (Post-Secondary) - 36 hours per quarter'),
+(31, 'Post-Secondary Level Super Intensive Program (Monthly)', 960, 480, 'Monthly payment plan for Super Intensive Program (Post-Secondary) - 16 hours per month'),
+(32, 'Post-Secondary Level Super Intensive Program (Quarterly)', 2740, 480, 'Quarterly payment plan for Super Intensive Program (Post-Secondary) - 48 hours per quarter');
 
 -- --------------------------------------------------------
 
@@ -402,7 +402,7 @@ ALTER TABLE `enrolled_classes`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `manager`

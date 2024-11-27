@@ -81,11 +81,68 @@ try {
             if (!preg_match("/^\d{4}-\d{2}$/", $gap_month)) {
                 throw new Exception("Invalid month selection");
             }
+            
+            // Check gap month limit
+            $current_year = date('Y', strtotime($gap_month));
+            $check_gap_sql = "SELECT COUNT(*) as gap_count 
+                             FROM leaves 
+                             WHERE student_id = ? 
+                             AND leave_type = 'gap' 
+                             AND YEAR(fromDate) = ?";
+            
+            $gap_stmt = $conn->prepare($check_gap_sql);
+            if (!$gap_stmt) {
+                throw new Exception("Database prepare error: " . $conn->error);
+            }
+            
+            $gap_stmt->bind_param("ii", $student_id, $current_year);
+            if (!$gap_stmt->execute()) {
+                throw new Exception("Database execution error: " . $gap_stmt->error);
+            }
+            
+            $gap_result = $gap_stmt->get_result();
+            $gap_count = $gap_result->fetch_assoc()['gap_count'];
+            
+            if ($gap_count >= 2) {
+                throw new Exception("Gap month limit exceeded. Please contact staff.");
+            }
+            
             $start_date = $gap_month . "-01";
             $end_date = date("Y-m-t", strtotime($start_date));
             break;
             
         case 'normal':
+            $start_date = $_POST["start_date"] ?? '';
+            $end_date = $_POST["end_date"] ?? '';
+            
+            if (empty($start_date) || empty($end_date)) {
+                throw new Exception("Start and end dates are required");
+            }
+
+            // Validate dates
+            $start_timestamp = strtotime($start_date);
+            $end_timestamp = strtotime($end_date);
+            
+            if (!$start_timestamp || !$end_timestamp) {
+                throw new Exception("Invalid date format");
+            }
+            
+            if ($start_timestamp > $end_timestamp) {
+                throw new Exception("End date cannot be before start date");
+            }
+
+            // Check if the start date is at least 48 hours in advance
+            $current_timestamp = time();
+            $hours_difference = ($start_timestamp - $current_timestamp) / 3600;
+            
+            if ($hours_difference < 48) {
+                throw new Exception("Normal leave must be submitted at least 48 hours in advance. Please contact staff.");
+            }
+
+            // Automatically approve the leave
+            $status = 'approved';
+            break;
+            
         case 'medical':
             $start_date = $_POST["start_date"] ?? '';
             $end_date = $_POST["end_date"] ?? '';
@@ -106,9 +163,38 @@ try {
                 throw new Exception("End date cannot be before start date");
             }
 
+            // Calculate days for current request
+            $days_requested = (($end_timestamp - $start_timestamp) / (60 * 60 * 24)) + 1;
+
+            // Check medical leave limit for the year
+            $current_year = date('Y', $start_timestamp);
+            $check_medical_sql = "SELECT 
+                                    SUM(DATEDIFF(toDate, fromDate) + 1) as total_days
+                                FROM leaves 
+                                WHERE student_id = ? 
+                                AND leave_type = 'medical' 
+                                AND YEAR(fromDate) = ?
+                                AND status != 'rejected'";
+            
+            $medical_stmt = $conn->prepare($check_medical_sql);
+            if (!$medical_stmt) {
+                throw new Exception("Database prepare error: " . $conn->error);
+            }
+            
+            $medical_stmt->bind_param("ii", $student_id, $current_year);
+            if (!$medical_stmt->execute()) {
+                throw new Exception("Database execution error: " . $medical_stmt->error);
+            }
+            
+            $medical_result = $medical_stmt->get_result();
+            $total_days = $medical_result->fetch_assoc()['total_days'] ?? 0;
+            
+            if (($total_days + $days_requested) > 6) {
+                throw new Exception("Medical leave limit of 6 days per year exceeded. Please contact staff.");
+            }
+
             // Additional validation for medical leave
-            if ($leave_type === 'medical' && 
-                (!isset($_FILES["medical_certificate"]) || $_FILES["medical_certificate"]["size"] === 0)) {
+            if (!isset($_FILES["medical_certificate"]) || $_FILES["medical_certificate"]["size"] === 0) {
                 throw new Exception("Medical certificate is required for medical leave");
             }
             break;
@@ -190,14 +276,14 @@ try {
 
     // Insert leave request
     $sql = "INSERT INTO leaves (student_id, reason, fromDate, toDate, document_path, supportive_document_path, status, leave_type) 
-            VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception("Database prepare error: " . $conn->error);
     }
 
-    if (!$stmt->bind_param("issssss", $student_id, $reason, $start_date, $end_date, $document_path, $supportive_document_path, $leave_type)) {
+    if (!$stmt->bind_param("isssssss", $student_id, $reason, $start_date, $end_date, $document_path, $supportive_document_path, $status, $leave_type)) {
         throw new Exception("Database binding error: " . $stmt->error);
     }
 
@@ -214,7 +300,7 @@ try {
         'reason' => $reason,
         'fromDate' => $start_date,
         'toDate' => $end_date,
-        'status' => 'pending',
+        'status' => $status,
         'leave_type' => $leave_type
     ];
 

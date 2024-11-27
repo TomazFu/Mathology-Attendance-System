@@ -193,7 +193,7 @@ $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/parent');
             </div>
         </div>
 
-        <div class="card" id="leaveHistory">
+        <div class="card" id="leaveHistory" style="display: none;">
             <h2 class="form-title">Leave History</h2>
             <?php if ($leave_history && $leave_history->num_rows > 0): ?>
                 <?php while($leave = $leave_history->fetch_assoc()): ?>

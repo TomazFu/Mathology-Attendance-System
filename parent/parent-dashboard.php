@@ -35,9 +35,13 @@ $parent_id = $_SESSION["id"];
                         <i class="material-icons">calendar_today</i>
                         View Schedule
                     </button>
-                    <button class="action-btn" data-action="contact-teacher">
-                        <i class="material-icons">message</i>
-                        Contact Teacher
+                    <button class="action-btn" data-action="view-attendance">
+                        <i class="material-icons">fact_check</i>
+                        View Attendance
+                    </button>
+                    <button class="action-btn" data-action="view-package">
+                        <i class="material-icons">inventory_2</i>
+                        View Package
                     </button>
                 </div>
             </div>
@@ -53,6 +57,24 @@ $parent_id = $_SESSION["id"];
             <div class="section-header">
                 <h2>Progress Overview</h2>
                 <p class="section-subtitle">Track your child's academic performance</p>
+                <div class="student-selector">
+                    <select id="student-select">
+                        <?php
+                        // Fetch students for current parent
+                        $parent_id = $_SESSION['id'];
+                        $student_sql = "SELECT student_id, student_name FROM students WHERE parent_id = ?";
+                        $stmt = $conn->prepare($student_sql);
+                        $stmt->bind_param("i", $parent_id);
+                        $stmt->execute();
+                        $students = $stmt->get_result();
+                        
+                        while ($student = $students->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($student['student_id']) . "'>" 
+                                . htmlspecialchars($student['student_name']) . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
             </div>
 
             <div class="dashboard-stats">
@@ -78,11 +100,11 @@ $parent_id = $_SESSION["id"];
 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="material-icons">trending_up</i>
+                        <i class="material-icons">event_busy</i>
                     </div>
                     <div class="stat-info">
-                        <span class="stat-value">85%</span>
-                        <span class="stat-label">Average Performance</span>
+                        <span class="stat-value" id="leave-status">0</span>
+                        <span class="stat-label">Total Leave Requests</span>
                     </div>
                 </div>
             </div>
@@ -92,24 +114,13 @@ $parent_id = $_SESSION["id"];
                 <div class="dashboard-card">
                     <div class="card-header">
                         <h3><i class="material-icons">schedule</i> Upcoming Classes</h3>
-                        <button class="view-all-btn">View Schedule</button>
+                        <a href="parent-timetable.php" class="view-all-btn">View Schedule</a>
                     </div>
-                    <div class="schedule-list">
-                        <!-- Add schedule items here -->
-                        <div class="schedule-item" data-class-id="123">
-                            <div class="schedule-time">
-                                <i class="material-icons">access_time</i>
-                                <span>09:00 AM</span>
-                            </div>
-                            <div class="schedule-info">
-                                <h4>Advanced Mathematics</h4>
-                                <p>with Mr. John Smith</p>
-                            </div>
-                            <div class="schedule-status">
-                                <span class="status-badge upcoming">Upcoming</span>
-                            </div>
+                    <div class="schedule-list" id="upcoming-classes">
+                        <!-- Classes will be populated dynamically -->
+                        <div class="no-classes-message" style="display: none;">
+                            No upcoming classes scheduled
                         </div>
-                        <!-- Add more schedule items -->
                     </div>
                 </div>
 
@@ -132,8 +143,6 @@ $parent_id = $_SESSION["id"];
     </div>
 </div>
 
-<!-- Add required scripts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/script.js"></script>
 <script src="../assets/js/parent.js"></script>
 
