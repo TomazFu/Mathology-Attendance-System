@@ -11,7 +11,7 @@ if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $selectedDate)) {
 $sqlStudents = "SELECT * FROM students";
 $studentsResult = mysqli_query($conn, $sqlStudents);
 
-// Initialize an array to hold all students and their attendance status for the selected date
+// Initialize an array to hold all students and their attendance status for the selected x
 $studentsWithAttendance = array();
 
 // Fetch attendance records for the selected date
