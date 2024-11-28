@@ -5,10 +5,6 @@
     min-height: 100vh;
 }
 
-.main-content {
-    padding: 2rem;
-}
-
 .main-content h1 {
     color: #2c3e50;
     margin-bottom: 2rem;
@@ -22,7 +18,7 @@
     flex-direction: row; 
     display: flex;
     gap: 1.5rem;
-    margin: 1.5rem 0;
+    margin: 0.5rem 0;
 }
 
 /* Dashboard Boxes */
@@ -33,7 +29,7 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
     height: auto;
-    min-height: 200px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
 }
@@ -108,7 +104,7 @@
 .view-package, .parents-registration {
     background: linear-gradient(145deg, #ffffff, #f5f7fa);
     border: 1px solid #e1e8f0;
-    cursor: pointer;
+    cursor: pointer; 
 }
 
 .view-package:hover, .parents-registration:hover {
@@ -545,6 +541,7 @@ font-weight: bold;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
+    margin-bottom:15px;
 }
 
 .view-packages-btn:hover {
