@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Animate the stats after updating
                     animateStats();
+
+                    // Update package details
+                    updatePackageDetails(studentId);
                 })
                 .catch(error => {
                     console.error('Error fetching dashboard data:', error);
@@ -130,6 +133,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 scheduleList.appendChild(scheduleItem);
             });
+        }
+
+        function updatePackageDetails(studentId) {
+            fetch('./includes/fetch-package-details.php?student_id=' + studentId)
+                .then(response => response.json())
+                .then(data => {
+                    const packageDetails = document.querySelector('.package-details');
+                    if (data.package_name) {
+                        packageDetails.innerHTML = `
+                            <div class="package-info">
+                                <div class="info-row">
+                                    <span class="label">Package Name:</span>
+                                    <span class="value">${data.package_name}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Monthly Fee:</span>
+                                    <span class="value">RM ${parseFloat(data.price).toFixed(2)}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Package Details:</span>
+                                    <span class="value">${data.details}</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        packageDetails.innerHTML = `
+                            <div class="no-package-message">
+                                No package currently assigned
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         // Fetch initial data

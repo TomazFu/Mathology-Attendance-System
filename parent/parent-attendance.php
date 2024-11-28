@@ -41,28 +41,18 @@ require_once "../includes/sidebar.php";
                     <i class="material-icons">calendar_today</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="total-days">180</span>
-                    <span class="stat-label">Total School Days</span>
+                    <span class="stat-value" id="total-classes">0</span>
+                    <span class="stat-label">Total Classes</span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">
+                <div class="stat-icon success">
                     <i class="material-icons">check_circle</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="present-days"></span>
-                    <span class="stat-label">Days Present</span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="material-icons">trending_up</i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value" id="attendance-rate"></span>
-                    <span class="stat-label">Attendance Rate</span>
+                    <span class="stat-value" id="classes-attended">0</span>
+                    <span class="stat-label">Classes Attended</span>
                 </div>
             </div>
 
@@ -71,50 +61,36 @@ require_once "../includes/sidebar.php";
                     <i class="material-icons">warning</i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value" id="absences"></span>
-                    <span class="stat-label">Total Absences</span>
+                    <span class="stat-value" id="classes-missed">0</span>
+                    <span class="stat-label">Classes Missed</span>
                 </div>
             </div>
         </div>
 
         <!-- Main Content Grid -->
         <div class="content-grid">
-            <!-- Attendance Chart Section -->
-            <div class="attendance-chart-section">
+            <!-- Attendance Records Section -->
+            <div class="attendance-records-section">
                 <div class="section-header">
-                    <h2>Attendance Trends</h2>
-                    <div class="chart-controls">
-                        <select id="attendance-period" onchange="updateAttendanceChart(this.value)">
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                            <option value="semester">This Semester</option>
-                        </select>
-                        <div class="chart-type-buttons">
-                            <button class="chart-type-btn active" data-type="line">
-                                <i class="material-icons">show_chart</i>
-                            </button>
-                            <button class="chart-type-btn" data-type="bar">
-                                <i class="material-icons">bar_chart</i>
-                            </button>
+                    <h2>Attendance Records</h2>
+                    <div class="filters">
+                        <div class="class-selector">
+                            <select id="class-select">
+                                <option value="all">All Classes</option>
+                                <!-- Will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="period-selector">
+                            <select id="attendance-period">
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="semester">This Semester</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="attendanceChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Attendance Log Section -->
-            <div class="attendance-log-section">
-                <div class="section-header">
-                    <h2>Recent Attendance</h2>
-                    <button class="view-all-btn">
-                        View All
-                        <i class="material-icons">arrow_forward</i>
-                    </button>
-                </div>
-                <div class="attendance-log">
-                    <!-- Logs will be populated dynamically -->
+                <div class="attendance-list">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
         </div>

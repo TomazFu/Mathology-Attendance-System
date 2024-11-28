@@ -29,7 +29,7 @@ require_once "../includes/sidebar.php";
                         <?php
                         // Fetch students for current parent
                         $parent_id = $_SESSION['id'];
-                        $student_sql = "SELECT s.student_id, s.student_name, p.package_name as current_package 
+                        $student_sql = "SELECT s.student_id, s.student_name, p.package_name as current_package, p.id as package_id 
                                       FROM students s 
                                       LEFT JOIN packages p ON s.package_id = p.id 
                                       WHERE s.parent_id = ?";
@@ -40,7 +40,8 @@ require_once "../includes/sidebar.php";
                         
                         while ($student = $students->fetch_assoc()) {
                             echo "<option value='" . htmlspecialchars($student['student_id']) . "' 
-                                  data-package='" . htmlspecialchars($student['current_package']) . "'>" 
+                                  data-package='" . htmlspecialchars($student['current_package']) . "'
+                                  data-package-id='" . htmlspecialchars($student['package_id']) . "'>" 
                                 . htmlspecialchars($student['student_name']) 
                                 . "</option>";
                         }
@@ -66,8 +67,9 @@ require_once "../includes/sidebar.php";
             <!-- Package Grid -->
             <div class="packages-grid">
                 <!-- Regular Program -->
-                <div class="package-card">
+                <div class="package-card" id="regular-program-card">
                     <div class="package-badge">Regular Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">280</span>
@@ -84,8 +86,9 @@ require_once "../includes/sidebar.php";
                 </div>
 
                 <!-- Maintenance Program -->
-                <div class="package-card">
+                <div class="package-card" id="maintenance-program-card">
                     <div class="package-badge">Maintenance Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">690</span>
@@ -103,9 +106,9 @@ require_once "../includes/sidebar.php";
                 </div>
 
                 <!-- Intensive Program -->
-                <div class="package-card featured">
+                <div class="package-card" id="intensive-program-card">
                     <div class="package-badge">Intensive Program</div>
-                    <div class="popular-tag">Most Popular</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">420</span>
@@ -119,12 +122,13 @@ require_once "../includes/sidebar.php";
                         <li><i class="material-icons">check_circle</i> Detailed Progress Tracking</li>
                         <li><i class="material-icons">check_circle</i> Priority Scheduling</li>
                     </ul>
-                    <button class="package-btn primary">Get Started</button>
+                    <button class="package-btn">Get Started</button>
                 </div>
 
                 <!-- Super Intensive Program -->
-                <div class="package-card">
+                <div class="package-card" id="super-intensive-program-card">
                     <div class="package-badge">Super Intensive Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">560</span>
@@ -158,13 +162,6 @@ require_once "../includes/sidebar.php";
                         <span class="fee-label">Deposit (1 month)</span>
                         <span class="fee-amount deposit-amount">RM 280</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="package-footer">
-                <div class="guarantee">
-                    <i class="material-icons">verified</i>
-                    <p>30-day satisfaction guarantee • Cancel anytime</p>
                 </div>
             </div>
         </div>

@@ -124,18 +124,53 @@ $parent_id = $_SESSION["id"];
                     </div>
                 </div>
 
-                <!-- Performance Analytics Card -->
+                <!-- Package Details Card -->
                 <div class="dashboard-card">
                     <div class="card-header">
-                        <h3><i class="material-icons">analytics</i> Performance Analytics</h3>
-                        <select id="performance-period">
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                            <option value="quarter">This Quarter</option>
-                        </select>
+                        <h3><i class="material-icons">inventory_2</i> Current Package Details</h3>
                     </div>
-                    <div class="performance-chart">
-                        <canvas id="performanceChart"></canvas>
+                    <div class="package-details">
+                        <?php
+                        // Get the first student's ID as default
+                        $default_student_sql = "SELECT student_id FROM students WHERE parent_id = ? LIMIT 1";
+                        $stmt = $conn->prepare($default_student_sql);
+                        $stmt->bind_param("i", $parent_id);
+                        $stmt->execute();
+                        $default_result = $stmt->get_result();
+                        $default_student = $default_result->fetch_assoc();
+                        $student_id = $default_student['student_id'];
+
+                        // Fetch package details for the selected student
+                        $package_sql = "SELECT p.package_name, p.price, p.details 
+                                       FROM students s 
+                                       LEFT JOIN packages p ON s.package_id = p.id 
+                                       WHERE s.student_id = ?";
+                        $stmt = $conn->prepare($package_sql);
+                        $stmt->bind_param("i", $student_id);
+                        $stmt->execute();
+                        $package_result = $stmt->get_result();
+                        $package = $package_result->fetch_assoc();
+                        
+                        if ($package && $package['package_name']): ?>
+                            <div class="package-info">
+                                <div class="info-row">
+                                    <span class="label">Package Name:</span>
+                                    <span class="value"><?php echo htmlspecialchars($package['package_name']); ?></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Monthly Fee:</span>
+                                    <span class="value">RM <?php echo number_format($package['price'], 2); ?></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Package Details:</span>
+                                    <span class="value"><?php echo htmlspecialchars($package['details']); ?></span>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="no-package-message">
+                                No package currently assigned
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
