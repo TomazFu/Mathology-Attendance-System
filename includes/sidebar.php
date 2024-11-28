@@ -19,6 +19,7 @@ function renderSidebar($role) {
             ['icon' => 'fas fa-chart-bar', 'text' => 'Attendance', 'link' => 'staff-attendance.php'],
             ['icon' => 'fas fa-user', 'text' => 'Registration', 'link' => 'staff-registration.php'],
             ['icon' => 'fas fa-th-large', 'text' => 'Package', 'link' => 'staff-package.php'],
+            ['icon' => 'fas fa-calendar-alt', 'text' => 'Leave', 'link' => 'staff-leave-approval.php']
         ],
     ];
 
