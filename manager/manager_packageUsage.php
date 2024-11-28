@@ -11,6 +11,7 @@ include "../includes/sidebar.php";
     <meta charset="UTF-8">
     <title>Package Usage Statistics</title>
     <link rel="stylesheet" href="../assets/css/managerDashboard.css">
+    <link rel="stylesheet" href="../assets/css/manager-package.css">
 </head>
 <body>
     <?php renderSidebar('manager'); ?>
@@ -18,8 +19,24 @@ include "../includes/sidebar.php";
         <div class="dashboard-content">
             <h1>Package Usage Statistics</h1>
             
-                <div class="stat-cards">
-                    <?php foreach ($package_usage_data as $package): ?>
+            <div class="search-sort-container">
+                <div class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search by package name">
+                </div>
+
+                <div class="sort-form">
+                    <select id="sortSelect">
+                        <option value="">Default Sort</option>
+                        <option value="usage_high">Usage (High to Low)</option>
+                        <option value="usage_low">Usage (Low to High)</option>
+                        <option value="price_high">Price (High to Low)</option>
+                        <option value="price_low">Price (Low to High)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stat-cards" id="packageCards">
+                <?php foreach ($package_usage_data as $package): ?>
                     <div class="stat-card">
                         <h3><?php echo htmlspecialchars($package['package_name']); ?></h3>
                         <div class="stat-details">
@@ -37,9 +54,10 @@ include "../includes/sidebar.php";
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
+    <script src="../assets/js/manager-package.js"></script>
 </body>
 </html> 

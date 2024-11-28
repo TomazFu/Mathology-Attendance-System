@@ -80,30 +80,35 @@
 .leave-request {
     background-color: #f9f9f9;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.leave-request:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.leave-request .leave-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .leave-request p {
     font-size: 14px;
+    margin: 0;
+    color: #333;
 }
 
-.view-btn {
-    text-decoration: none;
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    
-}
 
-.view-btn:hover {
-    background-color: #45a049;
-}
 
 /* Export Options */
 .export-options {
@@ -120,7 +125,7 @@
     text-decoration: none;
     padding: 10px 20px;
     border-radius: 5px;
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
@@ -128,7 +133,7 @@
 }
 
 .export-btn:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
 }
 
 /* Button Styling */

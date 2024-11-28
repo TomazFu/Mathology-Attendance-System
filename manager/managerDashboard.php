@@ -31,7 +31,7 @@ include "../includes/sidebar.php";
                 <div class="charts-container">
                     <!-- Sales Chart -->
                     <div class="sales-chart">
-                        <h2>Monthly Income</h2>
+                        <h2>Monthly Sales</h2>
                         <canvas id="salesChart"></canvas>
                     </div>
                     <!-- Population Chart -->
@@ -90,15 +90,15 @@ include "../includes/sidebar.php";
                 <div class="latest-leave-requests">
                     <h2>Latest Leave Requests</h2>
                     <?php while ($leave = $leave_requests_result->fetch_assoc()): ?>
-                        <div class="leave-request">
-                            <p>Leave ID: <?php echo htmlspecialchars($leave['leave_id'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>Student Name: <?php echo htmlspecialchars($leave['student_name'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>Reason: <?php echo htmlspecialchars($leave['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>From: <?php echo htmlspecialchars($leave['start_date'], ENT_QUOTES, 'UTF-8'); ?> to 
-                                    <?php echo htmlspecialchars($leave['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <a href="leave-request-details.php?leave_id=<?php echo urlencode($leave['leave_id']); ?>" 
-                            class="view-btn">View</a>
-                        </div>
+                        <a href="leave-request-details.php?leave_id=<?php echo urlencode($leave['leave_id']); ?>" class="leave-request">
+                            <div class="leave-content">
+                                <p>Leave ID: <?php echo htmlspecialchars($leave['leave_id'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>Student Name: <?php echo htmlspecialchars($leave['student_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>Reason: <?php echo htmlspecialchars($leave['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>From: <?php echo htmlspecialchars($leave['start_date'], ENT_QUOTES, 'UTF-8'); ?> to 
+                                        <?php echo htmlspecialchars($leave['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            </div>
+                        </a>
                     <?php endwhile; ?>
                     
                     <!-- View All Link -->
@@ -115,7 +115,7 @@ include "../includes/sidebar.php";
             data: {
                 labels: <?php echo $sales_dates_json; ?>,
                 datasets: [{
-                    label: 'Daily Sales (RM)',
+                    label: 'Monthly Sales (RM)',
                     data: <?php echo $sales_amounts_json; ?>,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1

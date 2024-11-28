@@ -21,19 +21,17 @@ if ($conn->connect_error) {
 $selected_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
 $selected_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
 
-// Fetch total students and staff count for the selected month and year
+// Fetch total students and staff count up until the selected month and year
 $student_count = $conn->query("
     SELECT COUNT(*) AS total 
     FROM students 
-    WHERE MONTH(created_at) = $selected_month 
-    AND YEAR(created_at) = $selected_year"
+    WHERE created_at <= LAST_DAY(DATE('$selected_year-$selected_month-01'))"
 )->fetch_assoc()['total'];
 
 $staff_count = $conn->query("
     SELECT COUNT(*) AS total 
     FROM staff 
-    WHERE MONTH(created_at) = $selected_month 
-    AND YEAR(created_at) = $selected_year"
+    WHERE created_at <= LAST_DAY(DATE('$selected_year-$selected_month-01'))"
 )->fetch_assoc()['total'];
 
 // Fetch attendance percentage for the selected month and year

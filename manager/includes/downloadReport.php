@@ -37,6 +37,26 @@ $monthly_attendance_percentage = "SELECT
 $result = $conn->query($monthly_attendance_percentage);
 $monthly_attendance_percentage = number_format($result->fetch_assoc()['percentage'], 1);
 
+// Get selected month from GET parameter, default to current month if not set
+$selected_month = isset($_GET['month']) ? intval($_GET['month']) : date('n');
+$selected_year = date('Y');
+
+// Fetch all leave requests for selected month report
+$leave_requests_query = "
+    SELECT l.leave_id, s.student_name, l.reason, 
+           l.fromDate as start_date, l.toDate as end_date,
+           l.leave_type, l.status
+    FROM leaves l 
+    JOIN students s ON l.student_id = s.student_id 
+    WHERE (MONTH(l.fromDate) = ? OR MONTH(l.toDate) = ?)
+    AND YEAR(l.fromDate) = ?
+    ORDER BY l.fromDate DESC";
+
+$stmt = $conn->prepare($leave_requests_query);
+$stmt->bind_param("iii", $selected_month, $selected_month, $selected_year);
+$stmt->execute();
+$leave_requests_result_report = $stmt->get_result();
+
 // Handle export logic based on the type (PDF or CSV)
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 

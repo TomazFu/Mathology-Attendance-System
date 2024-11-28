@@ -22,10 +22,6 @@ body {
     box-sizing: border-box;
 }
 
-h1 {
-    text-align: center;
-}
-
 /* Search and Sorting Bar */
 .search-bar {
     display: flex;

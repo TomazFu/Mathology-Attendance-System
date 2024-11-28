@@ -22,9 +22,9 @@ include "../includes/sidebar.php";
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search by name or programme">
                 <select id="sortSelect">
-                    <option value="none" selected>No Sorting</option>
-                    <option value="highest">Amount Payable: Highest</option>
-                    <option value="lowest">Amount Payable: Lowest</option>
+                    <option value="none" selected>Default Sort</option>
+                    <option value="highest">Amount (Highest to Lowest)</option>
+                    <option value="lowest">Amount (Lowest to Highest)</option>
                 </select>
             </div>
             <table id="studentTable">
