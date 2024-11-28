@@ -66,8 +66,9 @@ require_once "../includes/sidebar.php";
             <!-- Package Grid -->
             <div class="packages-grid">
                 <!-- Regular Program -->
-                <div class="package-card">
+                <div class="package-card" id="regular-program-card">
                     <div class="package-badge">Regular Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">280</span>
@@ -84,8 +85,9 @@ require_once "../includes/sidebar.php";
                 </div>
 
                 <!-- Maintenance Program -->
-                <div class="package-card">
+                <div class="package-card" id="maintenance-program-card">
                     <div class="package-badge">Maintenance Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">690</span>
@@ -103,9 +105,9 @@ require_once "../includes/sidebar.php";
                 </div>
 
                 <!-- Intensive Program -->
-                <div class="package-card featured">
+                <div class="package-card" id="intensive-program-card">
                     <div class="package-badge">Intensive Program</div>
-                    <div class="popular-tag">Most Popular</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">420</span>
@@ -119,12 +121,13 @@ require_once "../includes/sidebar.php";
                         <li><i class="material-icons">check_circle</i> Detailed Progress Tracking</li>
                         <li><i class="material-icons">check_circle</i> Priority Scheduling</li>
                     </ul>
-                    <button class="package-btn primary">Get Started</button>
+                    <button class="package-btn">Get Started</button>
                 </div>
 
                 <!-- Super Intensive Program -->
-                <div class="package-card">
+                <div class="package-card" id="super-intensive-program-card">
                     <div class="package-badge">Super Intensive Program</div>
+                    <div class="current-package-tag" style="display: none;">Current Package</div>
                     <div class="package-price">
                         <span class="currency">RM</span>
                         <span class="amount">560</span>

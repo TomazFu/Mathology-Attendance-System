@@ -1999,7 +1999,7 @@ input[type="file"] {
     color: #1e40af;
 }
 
-.popular-tag {
+.current-package-tag {
     position: absolute;
     top: -12px;
     right: 20px;

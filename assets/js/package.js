@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (studentSelect && studentSelect.options.length > 0) {
         const currentPackage = studentSelect.options[0].getAttribute('data-package');
         currentPackageDisplay.textContent = currentPackage || 'No Package';
+        updateCurrentPackageTag(currentPackage);
     }
     
     // Update package display when student selection changes
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedOption = this.options[this.selectedIndex];
         const currentPackage = selectedOption.getAttribute('data-package');
         currentPackageDisplay.textContent = currentPackage || 'No Package';
+        updateCurrentPackageTag(currentPackage);
     });
 });
 
@@ -194,13 +196,6 @@ function getHalfYearlyPrice(monthlyPrice) {
 }
 
 function submitPackageSelection(packageType, level, paymentType, studentId) {
-    const programMap = {
-        'Regular Program': 'Regular Program',
-        'Maintenance Program': 'Maintenance Program',
-        'Intensive Program': 'Intensive Program',
-        'Super Intensive Program': 'Super Intensive Program'
-    };
-
     const levelMap = {
         'pre-primary': 'Pre-Primary and Primary Level',
         'secondary': 'Secondary Level',
@@ -208,9 +203,19 @@ function submitPackageSelection(packageType, level, paymentType, studentId) {
         'post-secondary': 'Post-Secondary Level'
     };
 
-    const packageName = `${levelMap[level]} ${programMap[packageType]} (${paymentType.charAt(0).toUpperCase() + paymentType.slice(1)})`;
+    // For monthly payments, we need to match the database format exactly
+    let packageName;
+    if (paymentType === 'monthly') {
+        packageName = `${levelMap[level]} ${packageType} (Monthly)`;
+    } else if (paymentType === 'quarterly') {
+        packageName = `${levelMap[level]} ${packageType} (Quarterly)`;
+    } else if (paymentType === 'halfYearly') {
+        packageName = `${levelMap[level]} ${packageType} (Half-Yearly)`;
+    }
 
-    // Make AJAX call to update package
+    // Log the package name for debugging
+    console.log('Submitting package:', packageName);
+
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/Mathology-Attendance-System/parent/includes/update-student-package.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -224,8 +229,11 @@ function submitPackageSelection(packageType, level, paymentType, studentId) {
                     location.reload();
                 } else {
                     alert('Error: ' + response.message);
+                    console.error('Server response:', response);
                 }
             } catch (e) {
+                console.error('Error:', e);
+                console.error('Server response:', xhr.responseText);
                 alert('Error processing response');
             }
         }
@@ -275,7 +283,7 @@ function updatePackagePrices(prices) {
     const level = getCurrentLevel();
     
     // Regular Program Card
-    const regularCard = document.querySelector('.package-card:nth-child(1)');
+    const regularCard = document.querySelector('#regular-program-card');
     regularCard.querySelector('.amount').textContent = prices.regular;
     regularCard.querySelector('.package-features').innerHTML = `
         <li><i class="material-icons">schedule</i> 2 visits per week (1 hour each)</li>
@@ -285,7 +293,7 @@ function updatePackagePrices(prices) {
     `;
 
     // Maintenance Program Card
-    const maintenanceCard = document.querySelector('.package-card:nth-child(2)');
+    const maintenanceCard = document.querySelector('#maintenance-program-card');
     maintenanceCard.querySelector('.amount').textContent = prices.maintenance;
     maintenanceCard.querySelector('.package-features').innerHTML = `
         <li><i class="material-icons">schedule</i> 1 visit per week (1.5 hours each)</li>
@@ -296,7 +304,7 @@ function updatePackagePrices(prices) {
     `;
 
     // Intensive Program Card
-    const intensiveCard = document.querySelector('.package-card:nth-child(3)');
+    const intensiveCard = document.querySelector('#intensive-program-card');
     intensiveCard.querySelector('.amount').textContent = prices.intensive;
     intensiveCard.querySelector('.package-features').innerHTML = `
         <li><i class="material-icons">schedule</i> 2 visits per week (1.5 hours each)</li>
@@ -307,7 +315,7 @@ function updatePackagePrices(prices) {
     `;
 
     // Super Intensive Program Card
-    const superIntensiveCard = document.querySelector('.package-card:nth-child(4)');
+    const superIntensiveCard = document.querySelector('#super-intensive-program-card');
     superIntensiveCard.querySelector('.amount').textContent = prices.superIntensive;
     superIntensiveCard.querySelector('.package-features').innerHTML = `
         <li><i class="material-icons">schedule</i> 2 visits per week (2 hours each)</li>
@@ -359,4 +367,52 @@ function getHalfYearlyPriceForLevel(monthlyPrice, level) {
         'post-secondary': 2700
     };
     return halfYearlyPrices[level];
-} 
+}
+
+function updateCurrentPackageTag(packageName) {
+    // Hide all current package tags first
+    document.querySelectorAll('.current-package-tag').forEach(tag => {
+        tag.style.display = 'none';
+    });
+    
+    // Remove featured class from all cards
+    document.querySelectorAll('.package-card').forEach(card => {
+        card.classList.remove('featured');
+    });
+
+    if (!packageName || packageName === 'No Package') {
+        return;
+    }
+
+    // Extract the program type from the full package name
+    const programTypes = {
+        'Regular Program': '#regular-program-card',
+        'Maintenance Program': '#maintenance-program-card',
+        'Intensive Program': '#intensive-program-card',
+        'Super Intensive Program': '#super-intensive-program-card'
+    };
+
+    // Sort program types by length (longest first) to avoid partial matches
+    const sortedProgramTypes = Object.entries(programTypes).sort((a, b) => b[0].length - a[0].length);
+
+    // Find the matching program type
+    for (const [programType, cardId] of sortedProgramTypes) {
+        if (packageName.includes(programType)) {
+            const card = document.querySelector(cardId);
+            if (card) {
+                card.classList.add('featured');
+                card.querySelector('.current-package-tag').style.display = 'block';
+            }
+            break;
+        }
+    }
+}
+
+// Call this on initial load
+document.addEventListener('DOMContentLoaded', function() {
+    const studentSelect = document.getElementById('student-select');
+    if (studentSelect && studentSelect.options.length > 0) {
+        const currentPackage = studentSelect.options[0].getAttribute('data-package');
+        updateCurrentPackageTag(currentPackage);
+    }
+}); 
