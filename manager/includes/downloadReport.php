@@ -118,6 +118,10 @@ if ($type === 'pdf') {
     header('Content-Disposition: attachment; filename="mathology_report.csv"');
 
     $output = fopen('php://output', 'w');
+    
+    // Add UTF-8 BOM for proper Excel encoding
+    fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+    
     // Updated headers and structure
     fputcsv($output, ['MATHOLOGY - MATHS LEARNING CENTER']);
     fputcsv($output, ['Monthly Performance Report - ' . date('d/m/Y')]);
@@ -129,14 +133,16 @@ if ($type === 'pdf') {
     fputcsv($output, ['Overall Attendance Rate', $attendance_percentage . '%']);
     fputcsv($output, []);  // Empty line for spacing
     fputcsv($output, ['LEAVE APPLICATIONS']);
-    fputcsv($output, ['ID', 'Student Name', 'Start Date', 'End Date', 'Type', 'Status', 'Reason']);
+    
+    // Add format prefix to ensure Excel treats these as text
+    fputcsv($output, ['ID', 'Student Name', "'Start Date", "'End Date", 'Type', 'Status', 'Reason']);
     
     while ($leave = $leave_requests_result_report->fetch_assoc()) {
         fputcsv($output, [
             $leave['leave_id'],
             $leave['student_name'],
-            date('d/m/Y', strtotime($leave['start_date'])),
-            date('d/m/Y', strtotime($leave['end_date'])),
+            "'" . date('d/m/Y', strtotime($leave['start_date'])),  // Add single quote prefix
+            "'" . date('d/m/Y', strtotime($leave['end_date'])),    // Add single quote prefix
             ucfirst($leave['leave_type']),
             ucfirst($leave['status']),
             $leave['reason']
