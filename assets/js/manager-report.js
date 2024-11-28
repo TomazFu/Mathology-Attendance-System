@@ -36,20 +36,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 data.forEach(student => {
-                    const row = `
-                        <tr>
-                            <td>${student.name || "N/A"}</td>
-                            <td>${student.programme || "N/A"}</td>
-                            <td>${student.attendance}%</td>
-                            <td>${student.remaining_payment || "0"}</td>
-                        </tr>`;
-                    tableBody.innerHTML += row;
+                    const row = createTableRow(student);
+                    tableBody.appendChild(row);
                 });
             })
             .catch(error => {
                 console.error("Error details:", error);
                 tableBody.innerHTML = `<tr><td colspan='4'>Error: ${error.message}</td></tr>`;
             });
+    }
+
+    function createTableRow(student) {
+        const row = document.createElement('tr');
+        
+        // Create cells
+        const nameCell = document.createElement('td');
+        const programmeCell = document.createElement('td');
+        const attendanceCell = document.createElement('td');
+        const paymentStatusCell = document.createElement('td');
+        
+        // Set cell content
+        nameCell.textContent = student.name;
+        programmeCell.textContent = student.programme || 'No Programme';
+        attendanceCell.textContent = `${student.attendance}%`;
+        
+        // Style payment status
+        paymentStatusCell.textContent = student.payment_status;
+        paymentStatusCell.classList.add('status-badge', 
+            student.payment_status === 'paid' ? 'paid' : 
+            student.payment_status === 'unpaid' ? 'unpaid' : 'no-payment');
+        
+        // Append cells to row
+        row.appendChild(nameCell);
+        row.appendChild(programmeCell);
+        row.appendChild(attendanceCell);
+        row.appendChild(paymentStatusCell);
+        
+        return row;
     }
 
     // Event listeners for search and sort

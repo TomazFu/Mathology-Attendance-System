@@ -21,19 +21,17 @@ if ($conn->connect_error) {
 $selected_year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
 $selected_month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
 
-// Fetch total students and staff count for the selected month and year
+// Fetch total students and staff count up until the selected month and year
 $student_count = $conn->query("
     SELECT COUNT(*) AS total 
     FROM students 
-    WHERE MONTH(created_at) = $selected_month 
-    AND YEAR(created_at) = $selected_year"
+    WHERE created_at <= LAST_DAY(DATE('$selected_year-$selected_month-01'))"
 )->fetch_assoc()['total'];
 
 $staff_count = $conn->query("
     SELECT COUNT(*) AS total 
     FROM staff 
-    WHERE MONTH(created_at) = $selected_month 
-    AND YEAR(created_at) = $selected_year"
+    WHERE created_at <= LAST_DAY(DATE('$selected_year-$selected_month-01'))"
 )->fetch_assoc()['total'];
 
 // Fetch attendance percentage for the selected month and year
@@ -52,6 +50,17 @@ $leave_requests_result = $conn->query("SELECT leave_id, students.student_name AS
                                      FROM leaves 
                                      JOIN students ON leaves.student_id = students.student_id 
                                      ORDER BY leave_id DESC LIMIT 3");
+
+// Fetch all leave requests for current month report
+$leave_requests_result_report = $conn->query("
+    SELECT l.leave_id, s.student_name, l.reason, 
+           l.fromDate as start_date, l.toDate as end_date,
+           l.leave_type, l.status
+    FROM leaves l 
+    JOIN students s ON l.student_id = s.student_id 
+    WHERE MONTH(l.created_at) = MONTH(CURRENT_DATE)
+    AND YEAR(l.created_at) = YEAR(CURRENT_DATE)
+    ORDER BY l.created_at DESC");
 
 // Fetch monthly sales data for the selected month and current year
 $sales_query = "SELECT 

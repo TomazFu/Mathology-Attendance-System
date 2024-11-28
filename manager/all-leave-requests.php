@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Include header
+include "../includes/header.php";
+
+// Include sidebar functionality
+include "../includes/sidebar.php";
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -56,68 +64,103 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Leave Requests</title>
     <link rel="stylesheet" href="../assets/css/all-leave-request.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
-    <h2>All Leave Requests</h2>
-
-    <!-- Search Form (Auto-update on input) -->
-    <form action="all-leave-requests.php" method="GET">
-        <input type="text" name="search" id="search" placeholder="Search by student name" value="<?php echo htmlspecialchars($_GET['search'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-    </form>
-
-    <!-- Sorting by Month (Optional, if you still want to allow month-based sorting) -->
-    <form action="all-leave-requests.php" method="GET">
-        <label for="sort">Sort by Month:</label>
-        <select name="sort" id="sort">
-            <option value="">Select Month</option>
-            <option value="1" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '1') ? 'selected' : ''; ?>>January</option>
-            <option value="2" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '2') ? 'selected' : ''; ?>>February</option>
-            <option value="3" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '3') ? 'selected' : ''; ?>>March</option>
-            <option value="4" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '4') ? 'selected' : ''; ?>>April</option>
-            <option value="5" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '5') ? 'selected' : ''; ?>>May</option>
-            <option value="6" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '6') ? 'selected' : ''; ?>>June</option>
-            <option value="7" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '7') ? 'selected' : ''; ?>>July</option>
-            <option value="8" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '8') ? 'selected' : ''; ?>>August</option>
-            <option value="9" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '9') ? 'selected' : ''; ?>>September</option>
-            <option value="10" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '10') ? 'selected' : ''; ?>>October</option>
-            <option value="11" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '11') ? 'selected' : ''; ?>>November</option>
-            <option value="12" <?php echo (isset($_GET['sort']) && $_GET['sort'] == '12') ? 'selected' : ''; ?>>December</option>
-        </select>
-        <button type="submit">Sort</button>
-    </form>
-
-    <!-- Display leave requests -->
-    <div id="latest-leave-requests">
-        <?php while ($leave = $result->fetch_assoc()): ?>
-            <div class="leave-request">
-                <p>Leave ID: <?php echo htmlspecialchars($leave['leave_id'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p>Student Name: <?php echo htmlspecialchars($leave['student_name'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p>Reason: <?php echo htmlspecialchars($leave['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <p>From: <?php echo htmlspecialchars($leave['start_date'], ENT_QUOTES, 'UTF-8'); ?> to 
-                        <?php echo htmlspecialchars($leave['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php renderSidebar('manager'); ?>
+    
+    <div class="main-content">
+        <div class="leave-dashboard">
+            <div class="dashboard-header">
+                <h1>All Leave Requests</h1>
             </div>
-        <?php endwhile; ?>
+
+            <div class="search-sort-container">
+                <!-- Search Form -->
+                <div class="search-form">
+                    <form id="searchForm" onsubmit="return false;">
+                        <input type="text" name="search" id="search" 
+                            placeholder="Search by student name" 
+                            value="<?php echo htmlspecialchars($_GET['search'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                    </form>
+                </div>
+
+                <!-- Sort Form -->
+                <div class="sort-form">
+                    <form action="all-leave-requests.php" method="GET">
+                        <select name="sort" id="sort" onchange="this.form.submit()">
+                            <option value="">Filter by Month</option>
+                            <?php
+                            $months = [
+                                1 => 'January', 2 => 'February', 3 => 'March',
+                                4 => 'April', 5 => 'May', 6 => 'June',
+                                7 => 'July', 8 => 'August', 9 => 'September',
+                                10 => 'October', 11 => 'November', 12 => 'December'
+                            ];
+                            foreach ($months as $value => $month) {
+                                $selected = (isset($_GET['sort']) && $_GET['sort'] == $value) ? 'selected' : '';
+                                echo "<option value='$value' $selected>$month</option>";
+                            }
+                            ?>
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <div class="latest-leave-requests">
+                <?php while ($leave = $result->fetch_assoc()): ?>
+                    <div class="leave-request">
+                        <div class="leave-info">
+                            <p><span class="label">Leave ID:</span> <?php echo htmlspecialchars($leave['leave_id']); ?></p>
+                            <p><span class="label">Student:</span> <?php echo htmlspecialchars($leave['student_name']); ?></p>
+                        </div>
+                        <div class="leave-info">
+                            <p><span class="label">Reason:</span> <?php echo htmlspecialchars($leave['reason']); ?></p>
+                            <p><span class="label">Duration:</span> 
+                                <?php echo date('d M Y', strtotime($leave['start_date'])); ?> - 
+                                <?php echo date('d M Y', strtotime($leave['end_date'])); ?>
+                            </p>
+                        </div>
+                        <a href="leave-request-details.php?leave_id=<?php echo urlencode($leave['leave_id']); ?>" 
+                           class="view-btn">View Details</a>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        </div>
     </div>
 
     <script>
         $(document).ready(function() {
+            let searchTimer;
+            
             // Detect search input change and update results
             $('#search').on('input', function() {
-                var searchTerm = $(this).val();  // Get the search term
-                var sortValue = $('#sort').val();  // Get the selected month for sorting
-
-                // AJAX request to fetch the filtered results
-                $.ajax({
-                    url: 'all-leave-requests.php',
-                    method: 'GET',
-                    data: { search: searchTerm, sort: sortValue },
-                    success: function(response) {
-                        // Update the displayed leave requests with the new response
-                        $('#latest-leave-requests').html($(response).find('#latest-leave-requests').html());
-                    }
-                });
+                clearTimeout(searchTimer);
+                const searchTerm = $(this).val();
+                const sortValue = $('#sort').val();
+                
+                // Add a small delay to prevent too many requests
+                searchTimer = setTimeout(function() {
+                    // Show loading state
+                    $('.latest-leave-requests').html('<div class="loading">Searching...</div>');
+                    
+                    // AJAX request to fetch the filtered results
+                    $.ajax({
+                        url: 'all-leave-requests.php',
+                        method: 'GET',
+                        data: { 
+                            search: searchTerm, 
+                            sort: sortValue 
+                        },
+                        success: function(response) {
+                            $('.latest-leave-requests').html($(response).find('.latest-leave-requests').html());
+                        },
+                        error: function() {
+                            $('.latest-leave-requests').html('<div class="error">Error loading results</div>');
+                        }
+                    });
+                }, 300); // 300ms delay
             });
         });
     </script>

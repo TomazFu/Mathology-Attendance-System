@@ -11,6 +11,10 @@ if (isset($_SESSION['role'])) {
         case 'teacher':
             // Perform teacher-specific logout actions
             break;
+        case 'manager':
+            // Perform manager-specific logout actions
+            $redirect_path = "../manager/manager-login.php";
+            break;
         // Add more cases as needed
     }
 }
@@ -21,7 +25,11 @@ $_SESSION = array();
 // Destroy the session.
 session_destroy();
 
-// Redirect to login page
-header("location: ../index.php");
+// Redirect to login page based on role, or default to index
+if (isset($redirect_path)) {
+    header("location: " . $redirect_path);
+} else {
+    header("location: ../index.php");
+}
 exit;
 ?>

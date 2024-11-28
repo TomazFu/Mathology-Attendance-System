@@ -20,7 +20,7 @@ include "../includes/sidebar.php";
         <div class="container">
             <h1>Current Staff</h1>
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search">
+                <input type="text" id="searchInput" placeholder="Search by name">
                 <select id="sortSelect">
                     <option value="">Default Sort</option>
                     <option value="leave_desc">Leave (Highest to Lowest)</option>

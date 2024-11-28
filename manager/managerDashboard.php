@@ -31,7 +31,7 @@ include "../includes/sidebar.php";
                 <div class="charts-container">
                     <!-- Sales Chart -->
                     <div class="sales-chart">
-                        <h2>Monthly Income</h2>
+                        <h2>Monthly Sales</h2>
                         <canvas id="salesChart"></canvas>
                     </div>
                     <!-- Population Chart -->
@@ -70,33 +70,18 @@ include "../includes/sidebar.php";
 
 
                 <!-- Stats -->
-                <div class="stats">
-                    <div class="stat-cards">
-                        <?php foreach ($package_usage_data as $package): ?>
-                        <div class="stat-card">
-                            <h3><?php echo htmlspecialchars($package['package_name']); ?></h3>
-                            <div class="stat-details">
-                                <div class="stat-item">
-                                    <span class="stat-label">Students:</span>
-                                    <span class="stat-value"><?php echo $package['student_count']; ?></span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Usage:</span>
-                                    <span class="stat-value"><?php echo $package['usage_percentage']; ?>%</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Price:</span>
-                                    <span class="stat-value">RM <?php echo $package['package_price']; ?></span>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
+                <div class="package-stats">
+                    <div class="package-stat-cards">
+                        <h2>Package Usage Statistics</h2>
+                        <a href="manager_packageUsage.php" class="package-usage-link">
+                            <p>Click to view detailed package usage information</p>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Attendance -->
                 <div class="attendance">
-                    <h2>Overall Attendance Today</h2>
+                    <h2>Overall Attendance This Month</h2>
                     <!-- TODO attendance percentage -->
                     <p><?php echo $attendance_percentage; ?>%</p>
                 </div>
@@ -105,15 +90,15 @@ include "../includes/sidebar.php";
                 <div class="latest-leave-requests">
                     <h2>Latest Leave Requests</h2>
                     <?php while ($leave = $leave_requests_result->fetch_assoc()): ?>
-                        <div class="leave-request">
-                            <p>Leave ID: <?php echo htmlspecialchars($leave['leave_id'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>Student Name: <?php echo htmlspecialchars($leave['student_name'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>Reason: <?php echo htmlspecialchars($leave['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p>From: <?php echo htmlspecialchars($leave['start_date'], ENT_QUOTES, 'UTF-8'); ?> to 
-                                    <?php echo htmlspecialchars($leave['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <a href="leave-request-details.php?leave_id=<?php echo urlencode($leave['leave_id']); ?>" 
-                            class="view-btn">View</a>
-                        </div>
+                        <a href="leave-request-details.php?leave_id=<?php echo urlencode($leave['leave_id']); ?>" class="leave-request">
+                            <div class="leave-content">
+                                <p>Leave ID: <?php echo htmlspecialchars($leave['leave_id'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>Student Name: <?php echo htmlspecialchars($leave['student_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>Reason: <?php echo htmlspecialchars($leave['reason'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p>From: <?php echo htmlspecialchars($leave['start_date'], ENT_QUOTES, 'UTF-8'); ?> to 
+                                        <?php echo htmlspecialchars($leave['end_date'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            </div>
+                        </a>
                     <?php endwhile; ?>
                     
                     <!-- View All Link -->
@@ -130,7 +115,7 @@ include "../includes/sidebar.php";
             data: {
                 labels: <?php echo $sales_dates_json; ?>,
                 datasets: [{
-                    label: 'Daily Sales (RM)',
+                    label: 'Monthly Sales (RM)',
                     data: <?php echo $sales_amounts_json; ?>,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1
