@@ -163,13 +163,6 @@ require_once "../includes/sidebar.php";
                     </div>
                 </div>
             </div>
-
-            <div class="package-footer">
-                <div class="guarantee">
-                    <i class="material-icons">verified</i>
-                    <p>30-day satisfaction guarantee • Cancel anytime</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -203,7 +203,6 @@ function submitPackageSelection(packageType, level, paymentType, studentId) {
         'post-secondary': 'Post-Secondary Level'
     };
 
-    // For monthly payments, we need to match the database format exactly
     let packageName;
     if (paymentType === 'monthly') {
         packageName = `${levelMap[level]} ${packageType} (Monthly)`;
@@ -213,7 +212,6 @@ function submitPackageSelection(packageType, level, paymentType, studentId) {
         packageName = `${levelMap[level]} ${packageType} (Half-Yearly)`;
     }
 
-    // Log the package name for debugging
     console.log('Submitting package:', packageName);
 
     const xhr = new XMLHttpRequest();
@@ -225,7 +223,7 @@ function submitPackageSelection(packageType, level, paymentType, studentId) {
             try {
                 const response = JSON.parse(xhr.responseText);
                 if (response.success) {
-                    alert('Package updated successfully!');
+                    alert('Package updated successfully! Please proceed to make payment.');
                     location.reload();
                 } else {
                     alert('Error: ' + response.message);
