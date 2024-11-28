@@ -42,9 +42,9 @@
 }
 
 .dashboard-staff-box h3 {
+    margin-top:0px;
     color: #2c3e50;
     font-size: 1.25rem;
-    margin-bottom: -55px;
     font-weight: 600;
 }
 
@@ -59,7 +59,6 @@
 
 /* Attendance Records */
 .attendance-container {
-    margin-top:100px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -175,8 +174,6 @@ input[type="checkbox"]:checked::after {
     }
 } */
 
-
-
 button {
     padding: 5px 10px;
     margin-left: 5px;
@@ -195,77 +192,138 @@ button {
 
 /* Staff Attendance page*/
 .attendance-page-container {
-    padding:30px;
-    width: 95%;
+    max-width: 100%;
+    padding: 30px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.main-content h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background-color: #0066ff;
+    border-radius: 2px;
+}
+
+.attendance-date {
+    margin-bottom: 30px;
+}
+
+.attendance-date label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 500;
+}
+
+.attendance-date input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+}
+
+.attendance-date #selected-date {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 .attendance-container-list {
-    margin-top:10px;
+    width:1000px;
     display: flex;
     flex-direction: column;
+    gap: 15px;
+    max-height: 40vh;
+    height:auto;
     gap: 10px;
-    width: 100%;
     overflow-y: auto;
 }
 
 .attendance-record {
+    margin-top:5px;
+    max-width:100%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ccc; /* Border for each student record */
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for a similar look to the table */
-    background-color: #f9f9f9;
-    margin-bottom: 10px; /* Space between records */
+    transition: all 0.3s ease;
+}
+
+.attendance-record:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 .attendance-record .student-name {
-    flex: 1; /* Take the largest available space */
-    font-weight: bold;
+    flex: 1;
+    font-weight: 500;
+    color: #333;
 }
 
 .attendance-record .attendance-status {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
-.attendance-record label {
+.attendance-status label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
     font-size: 14px;
+    cursor: pointer;
 }
 
-.attendance-date {
-    width:100% !important;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: left;
-    color: #333;
-    margin-bottom: 15px; /* Space below the date text */
-}
-
-
-input[type="checkbox"] {
+/* Custom Checkbox Styles */
+.attendance-status input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
     width: 20px;
     height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
 }
 
-.attendance-date input[type="date"] {
-padding: 8px;
-border: 1px solid #ddd;
-border-radius: 4px;
-margin-right: 10px;
+.attendance-status input[type="checkbox"]:checked {
+    background-color: #0066ff;
+    border-color: #0066ff;
 }
 
-.attendance-date #selected-date {
-    display: block;
-    font-weight: bold;
-}
+.attendance-status input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}   
 
 /* Staff Registration page */
-
 .form-container {
     width: 320px;
     margin: 0 auto;

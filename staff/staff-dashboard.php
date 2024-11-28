@@ -80,12 +80,14 @@ require_once "includes/fetch-attendance-data-process.php";
                 <a href="staff-package.php" class="dashboard-link">
                     <div class="view-package dashboard-staff-box">
                         <h3>View Packages</h3>
+                        <i style="font-size: 30px;" class="fa fa-eye"></i>
                     </div>
                 </a>
                 <!-- View Registration -->
                 <a href="staff-registration.php" class="dashboard-link">
                     <div class="parents-registration dashboard-staff-box">
                         <h3>Parents Registration</h3>
+                        <i style="font-size: 30px;" class="fa fa-user-plus"></i>
                     </div>
                 </a>
             </div>
