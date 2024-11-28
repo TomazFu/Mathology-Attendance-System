@@ -33,11 +33,11 @@ require_once "../includes/sidebar.php";
             <h1> Parent Registration </h1>
             <?php
             if (isset($_SESSION['registration_success'])) {
-                echo '<div class="alert alert-success">' . $_SESSION['registration_success'] . '</div>';
+                echo '<div class="warning-box">' . $_SESSION['registration_success'] . '</div>';
                 unset($_SESSION['registration_success']);
             }
             if (isset($_SESSION['registration_error'])) {
-                echo '<div class="alert alert-error">' . $_SESSION['registration_error'] . '</div>';
+                echo '<div class="warning-box">' . $_SESSION['registration_error'] . '</div>';
                 unset($_SESSION['registration_error']);
             }
             ?>

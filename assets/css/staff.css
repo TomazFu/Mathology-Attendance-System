@@ -42,7 +42,7 @@
 }
 
 .dashboard-staff-box h3 {
-    margin-top:0px;
+    margin-top:10px;
     color: #2c3e50;
     font-size: 1.25rem;
     font-weight: 600;
@@ -55,6 +55,10 @@
     overflow-y: auto;
     display:flex;
     flex-direction: column;
+}
+
+.attendance-list.dashboard-staff-box h3{
+    margin-top:0px;
 }
 
 /* Attendance Records */
@@ -155,6 +159,7 @@ input[type="checkbox"]:checked::after {
     border-radius: 8px;
     font-size: 0.9rem;
     color: #64748b;
+    width:15%;
 }
 
 /* Responsive Design */
@@ -324,6 +329,17 @@ button {
 }   
 
 /* Staff Registration page */
+.warning-box {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
 .form-container {
     width: 320px;
     margin: 0 auto;

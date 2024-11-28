@@ -105,3 +105,22 @@
 body {
     background-color: #f5f7fa;
 }
+
+.main-content h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.main-content h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background-color: #0066ff;
+    border-radius: 2px;
+}
