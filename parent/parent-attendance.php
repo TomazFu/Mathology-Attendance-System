@@ -108,10 +108,6 @@ require_once "../includes/sidebar.php";
             <div class="attendance-log-section">
                 <div class="section-header">
                     <h2>Recent Attendance</h2>
-                    <button class="view-all-btn">
-                        View All
-                        <i class="material-icons">arrow_forward</i>
-                    </button>
                 </div>
                 <div class="attendance-log">
                     <!-- Logs will be populated dynamically -->
