@@ -34,8 +34,35 @@ require_once "includes/fetch-attendance-data-process.php";
             <div class="staff-dashboard-sections">
                 <!-- Attendance list overview -->
                 <div class="attendance-list dashboard-staff-box">
-                    <h3>Attendance List for <?php echo date("Y-m-d") ?></h3>
+                    <div class="attendance-header">
+                        <h3>Attendance List for <?php echo date("Y-m-d") ?></h3>
+                        <div class="subject-selector">
+                            <select name="subject_select" id="subject-select" required onchange="updateSubject(this.value)">
+                                <?php
+                                $sql = "SELECT id, subject_id, title FROM subject ORDER BY id";
+                                $result = $conn->query($sql);
+
+                                if ($result && $result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        // If no subject is selected in URL, select the first one
+                                        $selected = '';
+                                        if (!isset($_GET['subject']) && $result->num_rows > 0) {
+                                            $_GET['subject'] = $row['id'];
+                                        }
+
+                                        $selected = (isset($_GET['subject']) && $_GET['subject'] == $row['id']) ? 'selected' : '';
+
+                                        echo "<option value='" . $row['id'] . "' " . $selected . ">"
+                                            . htmlspecialchars($row['subject_id'] . ' - ' . $row['title'])
+                                            . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <input type="hidden" id="date-select" value="<?php echo date('Y-m-d'); ?>">
+
                     <?php if (!empty($studentsWithAttendance)): ?>
                         <div class="attendance-container">
                             <?php

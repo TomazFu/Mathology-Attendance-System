@@ -13,6 +13,31 @@
 }
 
 /* Dashboard Sections */
+.attendance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.attendance-header h3 {
+    margin: 0;
+}
+
+.attendance-header .subject-selector {
+    width: 100px;
+}
+
+.attendance-header .subject-selector select {
+    width: 50%;
+    margin-left:100px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+}
 .staff-dashboard-sections {
     display: flex;
     flex-direction: row; 
@@ -50,6 +75,7 @@
 
 /* Attendance List Box */
 .attendance-list.dashboard-staff-box {
+    align-items: start;
     max-height: 250px;
     width: 550px;
     overflow-y: auto;
@@ -123,6 +149,44 @@
     font-size: 0.9rem;
 }
 
+.subject-selector select {
+    padding: 0.5rem;
+    border: 1px solid #e1e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #64748b;
+    width:80%;
+}
+.attendance-date input[type="date"],
+.subject-selector select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color:#fff;
+}
+
+.attendance-date label,
+.subject-selector label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.selectors-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    width:100%;
+    margin-bottom: 10px;
+}
+
+.attendance-date, .subject-selector {
+    flex: 1;
+}
+
+
 /* Dashboard Links */
 .dashboard-link {
     text-decoration: none;
@@ -168,18 +232,14 @@ input[type="checkbox"]:checked::after {
 }
 
 /* Date Selection */
-.attendance-date {
-    margin-bottom: 2rem;
-}
 
 #date-select {
-    margin-bottom:15px;
     padding: 0.5rem;
     border: 1px solid #e1e8f0;
     border-radius: 8px;
     font-size: 0.9rem;
     color: #64748b;
-    width:15%;
+    width: 50%;
 }
 
 /* Responsive Design */
@@ -243,32 +303,6 @@ button {
     border-radius: 2px;
 }
 
-.attendance-date {
-    margin-bottom: 30px;
-}
-
-.attendance-date label {
-    display: block;
-    margin-bottom: 10px;
-    color: #333;
-    font-weight: 500;
-}
-
-.attendance-date input[type="date"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    background-color: #f8f9fa;
-}
-
-.attendance-date #selected-date {
-    color: #666;
-    font-size: 14px;
-    margin-top: 5px;
-}
 
 .attendance-container-list {
     width:1000px;

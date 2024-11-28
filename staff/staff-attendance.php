@@ -30,20 +30,36 @@ require_once "includes/fetch-attendance-data-process.php";
         <div class="main-content">
             <h1>Attendance</h1>
             <div class="attendance-page-container">
-                <!-- Date Selector Dropdown -->
-                <div class="attendance-date">
-                    <label for="date-select">Select Date: </label>
-                    <input
-                        type="date"
-                        id="date-select"
-                        value="<?php echo $selectedDate; ?>"
-                        max="<?php echo date('Y-m-d'); ?>"
-                        onchange="updateAttendanceDate(this.value)">
-                    <div id="selected-date">
-                        Date: <?php echo date("d/m/y", strtotime($selectedDate)); ?>
+                <div class="selectors-container">
+                    <div class="attendance-date">
+                        <label for="date-select">Select Date: </label>
+                        <input
+                            type="date"
+                            id="date-select"
+                            value="<?php echo $selectedDate; ?>"
+                            max="<?php echo date('Y-m-d'); ?>"
+                            onchange="updateAttendanceDate(this.value)">
+                    </div>
+                    <div class="subject-selector">
+                        <label for="subject-select">Select Subject: </label>
+                        <select name="subject_select" id="subject-select" required onchange="updateSubject(this.value)">
+                            <option value="">Choose a subject</option>
+                            <?php
+                            $sql = "SELECT id, subject_id, title FROM subject ORDER BY id";
+                            $result = $conn->query($sql);
+
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $selected = (isset($_GET['subject']) && $_GET['subject'] == $row['id']) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' " . $selected . ">"
+                                        . htmlspecialchars($row['subject_id'] . ' - ' . $row['title'])
+                                        . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
-
                 <!-- Display Attendance Records -->
                 <?php if (!empty($studentsWithAttendance)): ?>
                     <div class="attendance-container-list">
