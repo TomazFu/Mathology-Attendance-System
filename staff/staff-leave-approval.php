@@ -35,7 +35,7 @@ $result = $conn->query($sql);
     <?php renderSidebar('staff'); ?>
     
     <div class="main-content">
-        <h2>Pending Leave Requests</h2>
+        <h1>Pending Leave Requests</h1>
         
         <div class="leave-requests-container">
             <?php if ($result->num_rows > 0): ?>
@@ -73,6 +73,8 @@ $result = $conn->query($sql);
                         </div>
                     </div>
                 <?php endwhile; ?>
+            <?php else: ?>
+                <p class="warning-message warning-box">No pending leave requests found.</p>
             <?php endif; ?>
         </div>
     </div>
