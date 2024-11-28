@@ -70,33 +70,18 @@ include "../includes/sidebar.php";
 
 
                 <!-- Stats -->
-                <div class="stats">
-                    <div class="stat-cards">
-                        <?php foreach ($package_usage_data as $package): ?>
-                        <div class="stat-card">
-                            <h3><?php echo htmlspecialchars($package['package_name']); ?></h3>
-                            <div class="stat-details">
-                                <div class="stat-item">
-                                    <span class="stat-label">Students:</span>
-                                    <span class="stat-value"><?php echo $package['student_count']; ?></span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Usage:</span>
-                                    <span class="stat-value"><?php echo $package['usage_percentage']; ?>%</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Price:</span>
-                                    <span class="stat-value">RM <?php echo $package['package_price']; ?></span>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
+                <div class="package-stats">
+                    <div class="package-stat-cards">
+                        <h2>Package Usage Statistics</h2>
+                        <a href="manager_packageUsage.php" class="package-usage-link">
+                            <p>Click to view detailed package usage information</p>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Attendance -->
                 <div class="attendance">
-                    <h2>Overall Attendance Today</h2>
+                    <h2>Overall Attendance This Month</h2>
                     <!-- TODO attendance percentage -->
                     <p><?php echo $attendance_percentage; ?>%</p>
                 </div>

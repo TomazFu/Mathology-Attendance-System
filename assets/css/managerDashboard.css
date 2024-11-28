@@ -18,7 +18,7 @@
 
 /* Update width for all dashboard sections */
 .export-options,
-.stats,
+.package-stats,
 .attendance,
 .latest-leave-requests {
     width: 100%;
@@ -28,7 +28,7 @@
 
 
 /* Stats Section */
-.stats {
+.package-stats {
     display: flex;
     justify-content: space-between;
     background-color: #FFFFFF;
@@ -38,9 +38,12 @@
     width: 100%;
 }
 
-.stats div {
-    font-size: 16px;
-    font-weight: bold;
+.package-stats h2 {
+    font-weight: 800;
+}
+
+.package-usage-link {
+    text-decoration: none;
 }
 
 /* Attendance Section */
