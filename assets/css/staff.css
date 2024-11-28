@@ -661,7 +661,7 @@ button {
 
 /* View packages button */
 .view-packages-btn {
-    background-color: #4CAF50;
+    background-color: #0066ff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -669,11 +669,11 @@ button {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
-    margin-bottom:15px;
+    margin-bottom:50px;
 }
 
 .view-packages-btn:hover {
-    background-color: #45a049;
+    background-color: #0077cc;
 }
 
 .modal {

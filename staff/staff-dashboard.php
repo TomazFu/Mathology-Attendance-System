@@ -32,76 +32,13 @@
             <div class="main-content">
                 <h1>Dashboard</h1>
                 <div class="staff-dashboard-sections">
-                    <!-- Attendance list overview -->
-                    <div class="attendance-list dashboard-staff-box">
-                        <div class="attendance-header">
-                            <h3>Attendance List for <?php echo date("Y-m-d") ?></h3>
-                            <div class="subject-selector">
-                                <select name="subject_select" id="subject-select" required onchange="updateSubject(this.value)">
-                                    <option value="">Choose a subject</option>
-                                    <?php
-                                    $sql = "SELECT id, subject_id, title FROM subject ORDER BY id";
-                                    $result = $conn->query($sql);
-
-                                    if ($result && $result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            $selected = (isset($_GET['subject']) && $_GET['subject'] == $row['id']) ? 'selected' : '';
-                                            echo "<option value='" . $row['id'] . "' " . $selected . ">"
-                                                . htmlspecialchars($row['subject_id'] . ' - ' . $row['title'])
-                                                . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+                    <!-- Attendance Card -->
+                    <a href="staff-attendance.php" class="dashboard-link">
+                        <div class="attendance-management dashboard-staff-box">
+                            <h3 align="center">Attendance Management</h3>
+                            <i style="font-size: 30px;" class="fa fa-clipboard-check"></i>
                         </div>
-                        <input type="hidden" id="date-select" value="<?php echo date('Y-m-d'); ?>">
-
-                        <div class="attendance-container">
-                            <?php
-                            // Just show first 2 students
-                            $count = 0;
-                            foreach ($studentsWithAttendance as $student) {
-                                if ($count >= 2) break;
-                            ?>
-                                <div class="attendance-record">
-                                    <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
-                                    <div class="attendance-status">
-                                        <label>
-                                            Present:
-                                            <input type="checkbox"
-                                                id="present_<?php echo $student['student_id']; ?>"
-                                                <?php echo ($student['attendance_status'] == 'present') ? 'checked' : ''; ?>
-                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'present')" />
-                                        </label>
-                                        <label>
-                                            Absent:
-                                            <input type="checkbox"
-                                                id="absent_<?php echo $student['student_id']; ?>"
-                                                <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
-                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
-                                        </label>
-                                        <label>
-                                            Late:
-                                            <input type="checkbox"
-                                                id="late_<?php echo $student['student_id']; ?>"
-                                                <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
-                                                onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
-                                        </label>
-                                    </div>
-                                </div>
-                            <?php
-                                $count++;
-                            }
-                            ?>
-
-                            <?php if (count($studentsWithAttendance) > 2): ?>
-                                <a href="staff-attendance.php" class="view-all-link">View All Records</a>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="staff-dashboard-sections">
+                    </a>
                     <!-- View Package -->
                     <a href="staff-package.php" class="dashboard-link">
                         <div class="view-package dashboard-staff-box">

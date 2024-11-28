@@ -96,7 +96,7 @@ require_once "includes/fetch-attendance-data-process.php";
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <p>No attendance records available for this date.</p>
+                    <p>Please select a subject.</p>
                 <?php endif; ?>
             </div>
         </div>
