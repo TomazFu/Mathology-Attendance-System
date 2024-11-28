@@ -29,11 +29,17 @@ try {
     $tablesResult = $conn->query($checkTables);
     $counts = $tablesResult->fetch_assoc();
     
-    // Basic query with simpler structure first
+    // Modified query to include payment status
     $sql = "SELECT 
         s.student_name as name, 
         p.package_name AS programme,
-        (s.total_fees - s.fees_paid) AS remaining_payment,
+        (
+            SELECT status 
+            FROM payments 
+            WHERE student_id = s.student_id 
+            ORDER BY date DESC 
+            LIMIT 1
+        ) as payment_status,
         (
             SELECT COUNT(*) 
             FROM attendance a 
@@ -60,7 +66,7 @@ try {
 
     // Sorting functionality
     if (isset($_GET['sort']) && $_GET['sort'] !== 'none') {
-        $sql .= " ORDER BY remaining_payment " . 
+        $sql .= " ORDER BY payment_status " . 
                 ($_GET['sort'] === 'highest' ? 'DESC' : 'ASC');
     }
 
@@ -86,7 +92,7 @@ try {
             'name' => $row['name'],
             'programme' => $row['programme'],
             'attendance' => $attendance,
-            'remaining_payment' => $row['remaining_payment']
+            'payment_status' => $row['payment_status'] ?? 'No Payment'
         ];
     }
 
