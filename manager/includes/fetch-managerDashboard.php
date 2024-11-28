@@ -53,6 +53,17 @@ $leave_requests_result = $conn->query("SELECT leave_id, students.student_name AS
                                      JOIN students ON leaves.student_id = students.student_id 
                                      ORDER BY leave_id DESC LIMIT 3");
 
+// Fetch all leave requests for current month report
+$leave_requests_result_report = $conn->query("
+    SELECT l.leave_id, s.student_name, l.reason, 
+           l.fromDate as start_date, l.toDate as end_date,
+           l.leave_type, l.status
+    FROM leaves l 
+    JOIN students s ON l.student_id = s.student_id 
+    WHERE MONTH(l.created_at) = MONTH(CURRENT_DATE)
+    AND YEAR(l.created_at) = YEAR(CURRENT_DATE)
+    ORDER BY l.created_at DESC");
+
 // Fetch monthly sales data for the selected month and current year
 $sales_query = "SELECT 
     DATE_FORMAT(date, '%Y-%m') as month,

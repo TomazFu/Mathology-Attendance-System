@@ -71,13 +71,24 @@ if ($type === 'pdf') {
 
     // Leave Requests section
     $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(0, 10, 'Recent Leave Applications', 0, 1, 'L');
+    $pdf->Cell(0, 10, 'Monthly Leave Applications', 0, 1, 'L');
     $pdf->SetFont('helvetica', '', 11);
-    while ($leave = $leave_requests_result->fetch_assoc()) {
-        $pdf->Cell(0, 8, 'ID: ' . $leave['leave_id'] . ' - ' . $leave['student_name'], 0, 1);
-        $pdf->Cell(0, 8, 'Period: ' . $leave['start_date'] . ' to ' . $leave['end_date'], 0, 1);
-        $pdf->Cell(0, 8, 'Reason: ' . $leave['reason'], 0, 1);
-        $pdf->Ln(5);
+
+    // Create table headers
+    $pdf->Cell(20, 8, 'ID', 1, 0, 'C');
+    $pdf->Cell(50, 8, 'Student Name', 1, 0, 'C');
+    $pdf->Cell(35, 8, 'Start Date', 1, 0, 'C');
+    $pdf->Cell(35, 8, 'End Date', 1, 0, 'C');
+    $pdf->Cell(30, 8, 'Type', 1, 0, 'C');
+    $pdf->Cell(20, 8, 'Status', 1, 1, 'C');
+
+    while ($leave = $leave_requests_result_report->fetch_assoc()) {
+        $pdf->Cell(20, 8, $leave['leave_id'], 1, 0, 'C');
+        $pdf->Cell(50, 8, $leave['student_name'], 1, 0, 'L');
+        $pdf->Cell(35, 8, date('d/m/Y', strtotime($leave['start_date'])), 1, 0, 'C');
+        $pdf->Cell(35, 8, date('d/m/Y', strtotime($leave['end_date'])), 1, 0, 'C');
+        $pdf->Cell(30, 8, ucfirst($leave['leave_type']), 1, 0, 'C');
+        $pdf->Cell(20, 8, ucfirst($leave['status']), 1, 1, 'C');
     }
 
     $pdf->Output('report.pdf', 'I');
@@ -98,14 +109,16 @@ if ($type === 'pdf') {
     fputcsv($output, ['Overall Attendance Rate', $attendance_percentage . '%']);
     fputcsv($output, []);  // Empty line for spacing
     fputcsv($output, ['LEAVE APPLICATIONS']);
-    fputcsv($output, ['ID', 'Student Name', 'Start Date', 'End Date', 'Reason']);
+    fputcsv($output, ['ID', 'Student Name', 'Start Date', 'End Date', 'Type', 'Status', 'Reason']);
     
-    while ($leave = $leave_requests_result->fetch_assoc()) {
+    while ($leave = $leave_requests_result_report->fetch_assoc()) {
         fputcsv($output, [
             $leave['leave_id'],
             $leave['student_name'],
-            $leave['start_date'],
-            $leave['end_date'],
+            date('d/m/Y', strtotime($leave['start_date'])),
+            date('d/m/Y', strtotime($leave['end_date'])),
+            ucfirst($leave['leave_type']),
+            ucfirst($leave['status']),
             $leave['reason']
         ]);
     }
