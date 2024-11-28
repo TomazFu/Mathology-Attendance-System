@@ -78,7 +78,21 @@ function updateAttendanceDate(date) {
 // New function to handle subject selection changes
 function updateSubject(subjectId) {
     const currentDate = document.getElementById('date-select').value;
-    window.location.href = `staff-attendance.php?date=${currentDate}&subject=${subjectId}`;
+    
+    // If no subject is selected, clear the attendance container
+    if (!subjectId) {
+        document.querySelector('.attendance-container').innerHTML = '<p>Please select a subject</p>';
+        return;
+    }
+
+    // Check if we're on the dashboard or attendance page
+    if (window.location.pathname.includes('staff-dashboard.php')) {
+        // For dashboard, redirect with the subject
+        window.location.href = `staff-dashboard.php?subject=${subjectId}`;
+    } else {
+        // For attendance page, redirect with both date and subject
+        window.location.href = `staff-attendance.php?date=${currentDate}&subject=${subjectId}`;
+    }
 }
 function showUpdateForm(studentId) {
     const updateForm = document.getElementById(`update-form-${studentId}`);
