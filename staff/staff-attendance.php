@@ -29,7 +29,7 @@ require_once "includes/fetch-attendance-data-process.php";
         <?php renderSidebar('staff'); ?>
         <div class="main-content">
             <h1>Attendance</h1>
-            <div class="attendance-container">
+            <div class="attendance-page-container">
                 <!-- Date Selector Dropdown -->
                 <div class="attendance-date">
                     <label for="date-select">Select Date: </label>

@@ -23,15 +23,17 @@
 
 /* Dashboard Boxes */
 .dashboard-staff-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: white;
     border-radius: 15px;
     padding: 1.5rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
     height: auto;
-    min-height: 150px;
-    display: flex;
-    flex-direction: column;
+    min-height: 100px;
+    width: 200px;
 }
 
 .dashboard-staff-box:hover {
@@ -57,8 +59,11 @@
 
 /* Attendance Records */
 .attendance-container {
-    margin-top: 1rem;
-    gap: 1rem;
+    margin-top:100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
 .attendance-record {
@@ -189,7 +194,7 @@ button {
 }
 
 /* Staff Attendance page*/
-.attendance-container {
+.attendance-page-container {
     padding:30px;
     width: 95%;
     background-color: #fff;
