@@ -1,38 +1,55 @@
 // Function to handle the toggling of attendance status (present or absent)
 function toggleAttendance(studentId, status) {
-    // Get the checkboxes and date
+    // Get all necessary elements
     const presentCheckbox = document.getElementById(`present_${studentId}`);
     const absentCheckbox = document.getElementById(`absent_${studentId}`);
     const lateCheckbox = document.getElementById(`late_${studentId}`);
     const currentDate = document.getElementById('date-select').value;
+    const selectedSubject = document.getElementById('subject-select').value;
     
     if (!presentCheckbox || !absentCheckbox || !lateCheckbox) {
         console.error('Attendance checkboxes not found');
         return;
     }
-     // Update checkboxes
+
+    if (!selectedSubject) {
+        alert('Please select a subject first');
+        return;
+    }
+
+    // Update checkboxes
     presentCheckbox.checked = (status === 'present');
     absentCheckbox.checked = (status === 'absent');
     lateCheckbox.checked = (status === 'late');
-     // Send update to server
-    updateAttendanceStatus(studentId, status, currentDate);
-}
     
-// Function to update the attendance status in the database
-function updateAttendanceStatus(studentId, status, selectedDate) {
-    // Create the AJAX request to send data to the backend
+    // Send update to server with subject
+    updateAttendanceStatus(studentId, status, currentDate, selectedSubject);
+}
+
+// Updated function to include subject
+function updateAttendanceStatus(studentId, status, selectedDate, selectedSubject) {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "includes/update-attendance.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText); // Optionally log success message for debugging
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    console.log(response.message);
+                } else {
+                    console.error(response.message);
+                    alert('Error updating attendance: ' + response.message);
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                alert('Error updating attendance');
+            }
         }
     };
 
-    // Send the data (student_id, attendance_status, and selected_date) to update the record
-    xhr.send(`student_id=${studentId}&attendance_status=${status}&date=${selectedDate}`);
+    xhr.send(`student_id=${studentId}&attendance_status=${status}&date=${selectedDate}&subject_id=${selectedSubject}`);
 }
 
 function toggleExpandRecord(recordId, imageUrl) {
@@ -52,11 +69,31 @@ function toggleExpandRecord(recordId, imageUrl) {
 }
 
 function updateAttendanceDate(date) {
+    const selectedSubject = document.getElementById('subject-select').value;
     if (date) {
-        window.location.href = 'staff-attendance.php?date=' + date;
+        window.location.href = `staff-attendance.php?date=${date}&subject=${selectedSubject}`;
     }
 }
 
+// New function to handle subject selection changes
+function updateSubject(subjectId) {
+    const currentDate = document.getElementById('date-select').value;
+    
+    // If no subject is selected, clear the attendance container
+    if (!subjectId) {
+        document.querySelector('.attendance-container').innerHTML = '<p>Please select a subject</p>';
+        return;
+    }
+
+    // Check if we're on the dashboard or attendance page
+    if (window.location.pathname.includes('staff-dashboard.php')) {
+        // For dashboard, redirect with the subject
+        window.location.href = `staff-dashboard.php?subject=${subjectId}`;
+    } else {
+        // For attendance page, redirect with both date and subject
+        window.location.href = `staff-attendance.php?date=${currentDate}&subject=${subjectId}`;
+    }
+}
 function showUpdateForm(studentId) {
     const updateForm = document.getElementById(`update-form-${studentId}`);
     

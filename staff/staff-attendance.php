@@ -29,59 +29,76 @@ require_once "includes/fetch-attendance-data-process.php";
         <?php renderSidebar('staff'); ?>
         <div class="main-content">
             <h1>Attendance</h1>
+            <div class="attendance-page-container">
+                <div class="selectors-container">
+                    <div class="attendance-date">
+                        <label for="date-select">Select Date: </label>
+                        <input
+                            type="date"
+                            id="date-select"
+                            value="<?php echo $selectedDate; ?>"
+                            max="<?php echo date('Y-m-d'); ?>"
+                            onchange="updateAttendanceDate(this.value)">
+                    </div>
+                    <div class="subject-selector">
+                        <label for="subject-select">Select Subject: </label>
+                        <select name="subject_select" id="subject-select" required onchange="updateSubject(this.value)">
+                            <option value="">Choose a subject</option>
+                            <?php
+                            $sql = "SELECT id, subject_id, title FROM subject ORDER BY id";
+                            $result = $conn->query($sql);
 
-            <!-- Date Selector Dropdown -->
-            <div class="attendance-date">
-                <label for="date-select">Select Date: </label>
-                <input
-                    type="date"
-                    id="date-select"
-                    value="<?php echo $selectedDate; ?>"
-                    max="<?php echo date('Y-m-d'); ?>"
-                    onchange="updateAttendanceDate(this.value)">
-                <div id="selected-date">
-                    Date: <?php echo date("d/m/y", strtotime($selectedDate)); ?>
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $selected = (isset($_GET['subject']) && $_GET['subject'] == $row['id']) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' " . $selected . ">"
+                                        . htmlspecialchars($row['subject_id'] . ' - ' . $row['title'])
+                                        . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Display Attendance Records -->
-            <?php if (!empty($studentsWithAttendance)): ?>
-                <div class="attendance-container-list">
-                    <?php foreach ($studentsWithAttendance as $student): ?>
-                        <div class="attendance-record">
-                            <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
-                            <div class="attendance-status">
-                                <label>
-                                    Present:
-                                    <input
-                                        type="checkbox"
-                                        id="present_<?php echo $student['student_id']; ?>"
-                                        <?php echo ($student['attendance_status'] == 'present') ? 'checked' : ''; ?>
-                                        onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'present')" />
-                                </label>
-                                <label>
-                                    Absent:
-                                    <input
-                                        type="checkbox"
-                                        id="absent_<?php echo $student['student_id']; ?>"
-                                        <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
-                                        onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
-                                </label>
-                                <label>
-                                    Late:
-                                    <input
-                                        type="checkbox"
-                                        id="late_<?php echo $student['student_id']; ?>"
-                                        <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
-                                        onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
-                                </label>
+                <!-- Display Attendance Records -->
+                <?php if (!empty($studentsWithAttendance)): ?>
+                    <div class="attendance-container-list">
+                        <?php foreach ($studentsWithAttendance as $student): ?>
+                            <div class="attendance-record">
+                                <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
+                                <div class="attendance-status">
+                                    <label>
+                                        Present:
+                                        <input
+                                            type="checkbox"
+                                            id="present_<?php echo $student['student_id']; ?>"
+                                            <?php echo ($student['attendance_status'] == 'present') ? 'checked' : ''; ?>
+                                            onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'present')" />
+                                    </label>
+                                    <label>
+                                        Absent:
+                                        <input
+                                            type="checkbox"
+                                            id="absent_<?php echo $student['student_id']; ?>"
+                                            <?php echo ($student['attendance_status'] == 'absent') ? 'checked' : ''; ?>
+                                            onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'absent')" />
+                                    </label>
+                                    <label>
+                                        Late:
+                                        <input
+                                            type="checkbox"
+                                            id="late_<?php echo $student['student_id']; ?>"
+                                            <?php echo ($student['attendance_status'] == 'late') ? 'checked' : ''; ?>
+                                            onclick="toggleAttendance(<?php echo $student['student_id']; ?>, 'late')" />
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else: ?>
-                <p>No attendance records available for this date.</p>
-            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p>No attendance records available for this date.</p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </body>

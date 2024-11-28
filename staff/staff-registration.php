@@ -33,29 +33,29 @@ require_once "../includes/sidebar.php";
             <h1> Parent Registration </h1>
             <?php
             if (isset($_SESSION['registration_success'])) {
-                echo '<div class="alert alert-success">' . $_SESSION['registration_success'] . '</div>';
+                echo '<div class="warning-box">' . $_SESSION['registration_success'] . '</div>';
                 unset($_SESSION['registration_success']);
             }
             if (isset($_SESSION['registration_error'])) {
-                echo '<div class="alert alert-error">' . $_SESSION['registration_error'] . '</div>';
+                echo '<div class="warning-box">' . $_SESSION['registration_error'] . '</div>';
                 unset($_SESSION['registration_error']);
             }
             ?>
             <div class="form-container">
                 <form id="parent-account-registration-form" action="includes/register-process.php" method="POST">
                     <div class="form-row">
-                        <input type="text" name="email" placeholder="Email *" class="half-width" required>
+                        <input type="text" name="email" placeholder="Email *" class="full-width" required>
                     </div>
                     <div class="form-row">
-                        <input type="text" name="name" placeholder="Full name *" class="half-width" required>
+                        <input type="text" name="name" placeholder="Full name *" class="full-width" required>
                     </div>
                     <div class="form-row">
-                        <input type="password" name="password" placeholder="Password *" class="half-width" required>
+                        <input type="password" name="password" placeholder="Password *" class="full-width" required>
                     </div>
                     <div class="form-row">
-                        <input type="password" name="confirm-password" placeholder="Confirm Password *" class="half-width" required>
+                        <input type="password" name="confirm-password" placeholder="Confirm Password *" class="full-width" required>
                     </div>
-                    <button type="submit" type="register-button">REGISTER</button>
+                    <button type="submit" class="register-button"><i class="fa fa-user-plus"></i>&nbsp;REGISTER</button>
                 </form>
                 <?php
                 if (isset($_SESSION['registration_error'])) {

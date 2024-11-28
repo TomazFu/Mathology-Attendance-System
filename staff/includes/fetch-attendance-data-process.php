@@ -1,43 +1,48 @@
 <?php
-// Include database connection
-require_once "../config/connect.php";
+require_once dirname(dirname(__DIR__)) . "/config/connect.php";
 
+// Get selected date
 $selectedDate = isset($_GET['date']) ? $_GET['date'] : date("Y-m-d");
+$selectedSubject = isset($_GET['subject']) ? $_GET['subject'] : null;
 
-if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $selectedDate)) {
-    $selectedDate = date('Y-m-d');
-}
-// Fetch all students
-$sqlStudents = "SELECT * FROM students";
-$studentsResult = mysqli_query($conn, $sqlStudents);
-
-// Initialize an array to hold all students and their attendance status for the selected x
+// Initialize array to hold students with attendance
 $studentsWithAttendance = array();
 
-// Fetch attendance records for the selected date
-$sqlAttendance = "SELECT * FROM attendance WHERE date = '$selectedDate'";
-$attendanceResult = mysqli_query($conn, $sqlAttendance);
-$attendanceRecords = array();
+// Query to get all students and their attendance
+if ($selectedSubject) {
+    $query = "SELECT s.student_id, s.student_name, 
+              COALESCE(a.status, '') as attendance_status 
+              FROM students s 
+              LEFT JOIN attendance a ON s.student_id = a.student_id 
+              AND a.date = ? AND a.subject_id = ?";
 
-if ($attendanceResult) {
-    while ($row = mysqli_fetch_assoc($attendanceResult)) {
-        $attendanceRecords[$row['student_id']] = $row['status'];
+    if ($stmt = $conn->prepare($query)) {
+        $stmt->bind_param("si", $selectedDate, $selectedSubject);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        while ($row = $result->fetch_assoc()) {
+            $studentsWithAttendance[] = array(
+                'student_id' => $row['student_id'],
+                'student_name' => $row['student_name'],
+                'attendance_status' => $row['attendance_status']
+            );
+        }
+        $stmt->close();
+    }
+} else {
+    // If no subject selected, get all students
+    $query = "SELECT student_id, student_name FROM students";
+    $result = $conn->query($query);
+    
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $studentsWithAttendance[] = array(
+                'student_id' => $row['student_id'],
+                'student_name' => $row['student_name'],
+                'attendance_status' => ''
+            );
+        }
     }
 }
-
-// Process all students and attach their attendance status for the selected date
-while ($student = mysqli_fetch_assoc($studentsResult)) {
-    $studentsWithAttendance[] = array(
-        'student_id' => $student['student_id'],
-        'student_name' => $student['student_name'],
-        'attendance_status' => isset($attendanceRecords[$student['student_id']]) ? $attendanceRecords[$student['student_id']] : null
-    );
-}
-
-// Free result sets
-mysqli_free_result($studentsResult);
-mysqli_free_result($attendanceResult);
-
-// Close connection
-mysqli_close($conn);
 ?>
