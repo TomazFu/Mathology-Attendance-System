@@ -29,7 +29,7 @@ require_once "../includes/sidebar.php";
                         <?php
                         // Fetch students for current parent
                         $parent_id = $_SESSION['id'];
-                        $student_sql = "SELECT s.student_id, s.student_name, p.package_name as current_package 
+                        $student_sql = "SELECT s.student_id, s.student_name, p.package_name as current_package, p.id as package_id 
                                       FROM students s 
                                       LEFT JOIN packages p ON s.package_id = p.id 
                                       WHERE s.parent_id = ?";
@@ -40,7 +40,8 @@ require_once "../includes/sidebar.php";
                         
                         while ($student = $students->fetch_assoc()) {
                             echo "<option value='" . htmlspecialchars($student['student_id']) . "' 
-                                  data-package='" . htmlspecialchars($student['current_package']) . "'>" 
+                                  data-package='" . htmlspecialchars($student['current_package']) . "'
+                                  data-package-id='" . htmlspecialchars($student['package_id']) . "'>" 
                                 . htmlspecialchars($student['student_name']) 
                                 . "</option>";
                         }

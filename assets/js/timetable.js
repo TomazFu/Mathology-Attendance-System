@@ -110,6 +110,10 @@ function initializeWeeklyView() {
     const weeklyGrid = document.querySelector('.weekly-grid');
     weeklyGrid.innerHTML = '';
     
+    // Create a wrapper for scrolling
+    const scrollWrapper = document.createElement('div');
+    scrollWrapper.className = 'timetable-scroll-wrapper';
+    
     // Create grid container
     const gridContainer = document.createElement('div');
     gridContainer.className = 'grid-container';
@@ -156,7 +160,8 @@ function initializeWeeklyView() {
         gridContainer.appendChild(dayRow);
     });
     
-    weeklyGrid.appendChild(gridContainer);
+    scrollWrapper.appendChild(gridContainer);
+    weeklyGrid.appendChild(scrollWrapper);
 
     // Fetch and populate schedule
     fetchScheduleData().then(data => {

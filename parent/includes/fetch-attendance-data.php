@@ -11,6 +11,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $parent_id = $_SESSION["id"];
 $student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : null;
 $period = isset($_GET['period']) ? $_GET['period'] : 'month';
+$class_id = isset($_GET['class_id']) ? $_GET['class_id'] : 'all';
 
 if (!$student_id) {
     echo json_encode([
@@ -62,11 +63,16 @@ try {
             FROM attendance
             JOIN subject ON attendance.subject_id = subject.id 
             WHERE attendance.student_id = ? 
+            " . ($class_id !== 'all' ? "AND subject.id = ? " : "") . "
             $date_condition
             ORDER BY attendance.date DESC, subject.start_time ASC";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $student_id);
+    if ($class_id !== 'all') {
+        $stmt->bind_param("ii", $student_id, $class_id);
+    } else {
+        $stmt->bind_param("i", $student_id);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
 

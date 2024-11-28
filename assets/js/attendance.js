@@ -76,6 +76,12 @@ async function updateClassSelector(studentId) {
         `;
         
         classSelect.innerHTML = classOptions;
+        
+        classSelect.addEventListener('change', function() {
+            const studentId = document.getElementById('student-select').value;
+            const period = document.getElementById('attendance-period').value;
+            fetchAttendanceData(studentId, period, this.value);
+        });
     } catch (error) {
         console.error('Error updating class selector:', error);
     }

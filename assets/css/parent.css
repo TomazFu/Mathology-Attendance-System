@@ -1253,7 +1253,6 @@ input[type="file"] {
     width: 95%;
     max-width: 1600px;
     margin: 0 auto;
-    overflow-x: auto; /* Enable horizontal scroll if needed */
 }
 
 .timetable-header {
@@ -1300,28 +1299,32 @@ input[type="file"] {
     font-weight: 500;
 }
 
+.time-slot {
+    border: 1px solid #e2e8f0;
+}
+
 .weekly-timetable {
     --cell-width: 100px;
     --first-column-width: 120px;
     --row-height: 80px;
     --minutes-per-cell: 60;
     position: relative;
-    overflow: auto;
     background: white;
     border-radius: 12px;
     min-height: 400px;
     padding: 1rem;
+    overflow: hidden; /* Changed from overflow-x: auto */
 }
 
-.grid-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 1200px; /* Ensure minimum width to prevent squishing */
+.weekly-grid {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;  /* This ensures the border radius works properly */
 }
 
 .header-row {
     display: flex;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;  /* Changed from 2px to 1px for consistency */
 }
 
 .corner-cell {
@@ -1352,8 +1355,7 @@ input[type="file"] {
 
 .day-row {
     display: flex;
-    height: 80px; /* Increased height for better visibility */
-    border-bottom: 1px solid #e2e8f0;
+    height: 80px;
     position: relative;
 }
 
@@ -1375,8 +1377,17 @@ input[type="file"] {
     max-width: var(--cell-width);
     flex: 0 0 var(--cell-width);
     border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
     position: relative;
     box-sizing: border-box;
+}
+
+.day-row:last-child .time-slot {
+    border-bottom: none;  /* Remove bottom border for last row */
+}
+
+.time-slot:last-child {
+    border-right: none;  /* Remove right border for last column */
 }
 
 /* Enlarged view styles */
@@ -1420,16 +1431,17 @@ input[type="file"] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden */
+    padding: 4px;
 }
 
 .subject-name {
     font-weight: 600;
     font-size: 0.85rem;
     color: #1e293b;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal; /* Changed from nowrap */
+    overflow: visible; /* Changed from hidden */
+    /* Remove text-overflow: ellipsis */
 }
 
 .class-details {
@@ -1438,9 +1450,9 @@ input[type="file"] {
 }
 
 .class-details div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal; /* Changed from nowrap */
+    overflow: visible; /* Changed from hidden */
+    /* Remove text-overflow: ellipsis */
 }
 
 /* Add these styles for the list view */
@@ -1682,12 +1694,12 @@ input[type="file"] {
 }
 
 .stat-icon.success {
-    background: #dcfce7;
+    background: #e0f2fe;
     color: #166534;
 }
 
 .stat-icon.warning {
-    background: #fee2e2;
+    background: #e0f2fe;
     color: #991b1b;
 }
 
@@ -2033,11 +2045,6 @@ input[type="file"] {
 
 .package-card.featured {
     border: 2px solid #3b82f6;
-    transform: scale(1.05);
-}
-
-.package-card.featured:hover {
-    transform: scale(1.05) translateY(-5px);
 }
 
 .package-badge {
@@ -3399,3 +3406,86 @@ input[type="file"] {
     box-shadow: 0 0 0 1px #3b82f6;
 }
 
+.weekly-grid {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+}
+
+.timetable-scroll-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 1200px;
+}
+
+.header-row {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.corner-cell {
+    width: 100px;
+    flex-shrink: 0;
+    padding: 1rem;
+    font-weight: 600;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.time-header {
+    width: var(--cell-width);
+    min-width: var(--cell-width);
+    max-width: var(--cell-width);
+    flex: 0 0 var(--cell-width);
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+    border-right: 1px solid #e2e8f0;
+    box-sizing: border-box;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-row {
+    display: flex;
+    height: 80px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.day-label {
+    width: 100px;
+    flex-shrink: 0;
+    padding: 1rem;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-slot {
+    width: var(--cell-width);
+    min-width: var(--cell-width);
+    max-width: var(--cell-width);
+    flex: 0 0 var(--cell-width);
+    border-right: 1px solid #e2e8f0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Keep your existing enlarged view styles */
+.weekly-timetable.enlarged .timetable-scroll-wrapper {
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}

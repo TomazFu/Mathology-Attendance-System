@@ -1,46 +1,56 @@
+// Move packagePrices to global scope
+const packagePrices = {
+    'pre-primary': {
+        regular: 280,
+        maintenance: 690,
+        intensive: 420,
+        superIntensive: 560,
+        deposit: 280
+    },
+    'secondary': {
+        regular: 330,
+        maintenance: 815,
+        intensive: 495,
+        superIntensive: 660,
+        deposit: 330
+    },
+    'upper-secondary': {
+        regular: 380,
+        maintenance: 935,
+        intensive: 570,
+        superIntensive: 760,
+        deposit: 380
+    },
+    'post-secondary': {
+        regular: 480,
+        maintenance: 1180,
+        intensive: 720,
+        superIntensive: 960,
+        deposit: 480
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     initializePackages();
     const levelButtons = document.querySelectorAll('.level-btn');
-    const packagePrices = {
-        'pre-primary': {
-            regular: 280,
-            maintenance: 690,
-            intensive: 420,
-            superIntensive: 560,
-            deposit: 280
-        },
-        'secondary': {
-            regular: 330,
-            maintenance: 815,
-            intensive: 495,
-            superIntensive: 660,
-            deposit: 330
-        },
-        'upper-secondary': {
-            regular: 380,
-            maintenance: 935,
-            intensive: 570,
-            superIntensive: 760,
-            deposit: 380
-        },
-        'post-secondary': {
-            regular: 480,
-            maintenance: 1180,
-            intensive: 720,
-            superIntensive: 960,
-            deposit: 480
-        }
-    };
-
+    
     levelButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Update active state
             levelButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
-
+    
             // Update prices based on selected level
             const level = this.dataset.level;
             updatePackagePrices(packagePrices[level]);
+            
+            // Update package indicator for the new level
+            const studentSelect = document.getElementById('student-select');
+            if (studentSelect && studentSelect.options.length > 0) {
+                const currentPackage = studentSelect.options[studentSelect.selectedIndex].getAttribute('data-package');
+                const packageId = studentSelect.options[studentSelect.selectedIndex].getAttribute('data-package-id');
+                updateCurrentPackageTag(currentPackage, packageId, true);
+            }
         });
     });
 
@@ -50,16 +60,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize with first student's package
     if (studentSelect && studentSelect.options.length > 0) {
         const currentPackage = studentSelect.options[0].getAttribute('data-package');
+        const packageId = studentSelect.options[0].getAttribute('data-package-id');
         currentPackageDisplay.textContent = currentPackage || 'No Package';
-        updateCurrentPackageTag(currentPackage);
+        updateCurrentPackageTag(currentPackage, packageId, false);
     }
     
     // Update package display when student selection changes
     studentSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         const currentPackage = selectedOption.getAttribute('data-package');
+        const packageId = selectedOption.getAttribute('data-package-id');
         currentPackageDisplay.textContent = currentPackage || 'No Package';
-        updateCurrentPackageTag(currentPackage);
+        updateCurrentPackageTag(currentPackage, packageId, false);
     });
 });
 
@@ -173,17 +185,22 @@ function updateModalPrices(modal, level, packageType) {
     const programKey = programTypes[packageType];
     const prices = packagePrices[level];
 
-    const monthlyPrice = prices[programKey];
-    const quarterlyPrice = getQuarterlyPriceForLevel(monthlyPrice, level, programKey);
-    const halfYearlyPrice = getHalfYearlyPriceForLevel(monthlyPrice, level);
+    if (packageType === 'Maintenance Program') {
+        // Use maintenance price directly for quarterly payment
+        modal.querySelector('[data-type="quarterly"] .price').textContent = `RM ${prices.maintenance}`;
+    } else {
+        const monthlyPrice = prices[programKey];
+        const quarterlyPrice = getQuarterlyPriceForLevel(monthlyPrice, level, programKey);
+        const halfYearlyPrice = getHalfYearlyPriceForLevel(monthlyPrice, level);
 
-    if (modal.querySelector('[data-type="monthly"]')) {
-        modal.querySelector('[data-type="monthly"] .price').textContent = `RM ${monthlyPrice}`;
-    }
-    modal.querySelector('[data-type="quarterly"] .price').textContent = `RM ${quarterlyPrice}`;
-    
-    if (packageType === 'Regular Program') {
-        modal.querySelector('[data-type="halfYearly"] .price').textContent = `RM ${halfYearlyPrice}`;
+        if (modal.querySelector('[data-type="monthly"]')) {
+            modal.querySelector('[data-type="monthly"] .price').textContent = `RM ${monthlyPrice}`;
+        }
+        modal.querySelector('[data-type="quarterly"] .price').textContent = `RM ${quarterlyPrice}`;
+        
+        if (packageType === 'Regular Program') {
+            modal.querySelector('[data-type="halfYearly"] .price').textContent = `RM ${halfYearlyPrice}`;
+        }
     }
 }
 
@@ -257,9 +274,7 @@ function animatePackageCards() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
-                entry.target.style.transform = entry.target.classList.contains('featured') 
-                    ? 'scale(1.05)' 
-                    : 'translateY(0)';
+                
             }
         });
     }, { threshold: 0.1 });
@@ -367,7 +382,9 @@ function getHalfYearlyPriceForLevel(monthlyPrice, level) {
     return halfYearlyPrices[level];
 }
 
-function updateCurrentPackageTag(packageName) {
+function updateCurrentPackageTag(packageName, packageId, isAutoSwitch = false) {
+    console.log('Updating package tag:', { packageName, packageId, isAutoSwitch });
+    
     // Hide all current package tags first
     document.querySelectorAll('.current-package-tag').forEach(tag => {
         tag.style.display = 'none';
@@ -378,31 +395,101 @@ function updateCurrentPackageTag(packageName) {
         card.classList.remove('featured');
     });
 
-    if (!packageName || packageName === 'No Package') {
+    if (!packageId) {
+        console.log('No package ID provided');
         return;
     }
 
-    // Extract the program type from the full package name
-    const programTypes = {
-        'Regular Program': '#regular-program-card',
-        'Maintenance Program': '#maintenance-program-card',
-        'Intensive Program': '#intensive-program-card',
-        'Super Intensive Program': '#super-intensive-program-card'
+    // Convert packageId to number
+    packageId = parseInt(packageId);
+
+    // Get the current selected level
+    const currentLevel = document.querySelector('.level-btn.active').dataset.level;
+    console.log('Current level:', currentLevel);
+
+    // Get package details from database
+    const packageDetails = {
+        // Pre-Primary and Primary Level
+        1: { level: 'pre-primary', type: 'regular' },
+        2: { level: 'pre-primary', type: 'regular' },
+        3: { level: 'pre-primary', type: 'regular' },
+        4: { level: 'pre-primary', type: 'maintenance' },
+        5: { level: 'pre-primary', type: 'intensive' },
+        6: { level: 'pre-primary', type: 'intensive' },
+        7: { level: 'pre-primary', type: 'superIntensive' },
+        8: { level: 'pre-primary', type: 'superIntensive' },
+        // Secondary Level
+        9: { level: 'secondary', type: 'regular' },
+        10: { level: 'secondary', type: 'regular' },
+        11: { level: 'secondary', type: 'regular' },
+        12: { level: 'secondary', type: 'maintenance' },
+        13: { level: 'secondary', type: 'intensive' },
+        14: { level: 'secondary', type: 'intensive' },
+        15: { level: 'secondary', type: 'superIntensive' },
+        16: { level: 'secondary', type: 'superIntensive' },
+        // Upper Secondary Level
+        17: { level: 'upper-secondary', type: 'regular' },
+        18: { level: 'upper-secondary', type: 'regular' },
+        19: { level: 'upper-secondary', type: 'regular' },
+        20: { level: 'upper-secondary', type: 'maintenance' },
+        21: { level: 'upper-secondary', type: 'intensive' },
+        22: { level: 'upper-secondary', type: 'intensive' },
+        23: { level: 'upper-secondary', type: 'superIntensive' },
+        24: { level: 'upper-secondary', type: 'superIntensive' },
+        // Post Secondary Level
+        25: { level: 'post-secondary', type: 'regular' },
+        26: { level: 'post-secondary', type: 'regular' },
+        27: { level: 'post-secondary', type: 'regular' },
+        28: { level: 'post-secondary', type: 'maintenance' },
+        29: { level: 'post-secondary', type: 'intensive' },
+        30: { level: 'post-secondary', type: 'intensive' },
+        31: { level: 'post-secondary', type: 'superIntensive' },
+        32: { level: 'post-secondary', type: 'superIntensive' }
     };
 
-    // Sort program types by length (longest first) to avoid partial matches
-    const sortedProgramTypes = Object.entries(programTypes).sort((a, b) => b[0].length - a[0].length);
+    // Find the matching package details
+    const packageDetail = packageDetails[packageId];
+    console.log('Package detail found:', packageDetail);
 
-    // Find the matching program type
-    for (const [programType, cardId] of sortedProgramTypes) {
-        if (packageName.includes(programType)) {
-            const card = document.querySelector(cardId);
-            if (card) {
-                card.classList.add('featured');
-                card.querySelector('.current-package-tag').style.display = 'block';
+    if (!packageDetail) {
+        console.log('No package detail found for ID:', packageId);
+        return;
+    }
+
+    const { level: packageLevel, type: packageType } = packageDetail;
+    console.log('Package level and type:', { packageLevel, packageType });
+
+    // Check if the package belongs to the current selected level
+    if (packageLevel !== currentLevel) {
+        console.log('Level mismatch:', { packageLevel, currentLevel });
+        if (!isAutoSwitch) {
+            // If levels don't match and this isn't an auto-switch, 
+            // find and click the correct level button
+            const correctLevelButton = document.querySelector(`.level-btn[data-level="${packageLevel}"]`);
+            if (correctLevelButton) {
+                correctLevelButton.click();
             }
-            break;
         }
+        return;
+    }
+
+    const programTypes = {
+        'regular': '#regular-program-card',
+        'maintenance': '#maintenance-program-card',
+        'intensive': '#intensive-program-card',
+        'superIntensive': '#super-intensive-program-card'
+    };
+
+    const cardId = programTypes[packageType];
+    console.log('Card ID:', cardId);
+    
+    const card = document.querySelector(cardId);
+    if (card) {
+        card.classList.add('featured');
+        card.querySelector('.current-package-tag').style.display = 'block';
+        console.log('Updated card:', cardId);
+    } else {
+        console.log('Card not found:', cardId);
     }
 }
 
@@ -411,6 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const studentSelect = document.getElementById('student-select');
     if (studentSelect && studentSelect.options.length > 0) {
         const currentPackage = studentSelect.options[0].getAttribute('data-package');
-        updateCurrentPackageTag(currentPackage);
+        const packageId = studentSelect.options[0].getAttribute('data-package-id');
+        updateCurrentPackageTag(currentPackage, packageId, false);
     }
 }); 
