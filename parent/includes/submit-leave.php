@@ -74,6 +74,9 @@ try {
     $student = $result->fetch_assoc();
     $student_name = $student['student_name'];
 
+    // Set default status at the beginning
+    $status = 'pending';
+
     // Handle dates based on leave type
     switch ($leave_type) {
         case 'gap':
@@ -139,7 +142,7 @@ try {
                 throw new Exception("Normal leave must be submitted at least 48 hours in advance. Please contact staff.");
             }
 
-            // Automatically approve the leave
+            // For normal leave, it's automatically approved
             $status = 'approved';
             break;
             
@@ -272,6 +275,15 @@ try {
         if (!move_uploaded_file($file["tmp_name"], $supportive_document_path)) {
             throw new Exception("Failed to upload supporting document");
         }
+    }
+
+    // Before database insertion, modify the paths to remove one ../
+    if ($document_path) {
+        $document_path = preg_replace('/^\.\.\/\.\.\//', '../', $document_path);
+    }
+
+    if ($supportive_document_path) {
+        $supportive_document_path = preg_replace('/^\.\.\/\.\.\//', '../', $supportive_document_path);
     }
 
     // Insert leave request

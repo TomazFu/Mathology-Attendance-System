@@ -29,7 +29,7 @@ function sendReceiptEmail($paymentData, $parentEmail) {
         $mail->Port = 465;
 
         // Recipients
-        $mail->setFrom('tomazfushaoyang@gmail.com');
+        $mail->setFrom('tomazfushaoyang@gmail.com', 'Mathology');
         $mail->addAddress($parentEmail);
 
         // Content
