@@ -38,7 +38,12 @@ require_once "includes/fetch-attendance-data-process.php";
                     <input type="hidden" id="date-select" value="<?php echo date('Y-m-d'); ?>">
                     <?php if (!empty($studentsWithAttendance)): ?>
                         <div class="attendance-container">
-                            <?php foreach ($studentsWithAttendance as $student): ?>
+                            <?php
+                            // Get only the first two records
+                            $limitedStudents = array_slice($studentsWithAttendance, 0, 2);
+
+                            foreach ($limitedStudents as $student):
+                            ?>
                                 <div class="attendance-record">
                                     <div class="student-name"><?php echo htmlspecialchars($student['student_name']); ?></div>
                                     <div class="attendance-status">
@@ -69,6 +74,10 @@ require_once "includes/fetch-attendance-data-process.php";
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+
+                            <?php if (count($studentsWithAttendance) > 2): ?>
+                                <a href="staff-attendance.php" class="view-all-link">View All Records</a>
+                            <?php endif; ?>
                         </div>
                     <?php else: ?>
                         <p>No attendance records available.</p>

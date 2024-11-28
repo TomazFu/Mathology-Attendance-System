@@ -50,7 +50,7 @@
 
 /* Attendance List Box */
 .attendance-list.dashboard-staff-box {
-    max-height: 200px;
+    max-height: 250px;
     width: 550px;
     overflow-y: auto;
     display:flex;
@@ -82,7 +82,27 @@
     background: #f8fafc;
 }
 
-/* Student Name */
+.view-all-link {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #0066ff;
+    width:30%;
+    margin: -10px auto;
+}
+
+.view-all-link:hover {
+    color: #d0d4d8;
+}
+
 .student-name {
     color: #2c3e50;
     font-weight: 500;
@@ -255,7 +275,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: 40vh;
+    max-height: 60vh;
     height:auto;
     gap: 10px;
     overflow-y: auto;

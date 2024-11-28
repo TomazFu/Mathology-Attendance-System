@@ -30,34 +30,36 @@ SET time_zone = "+00:00";
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL,
   `date` date DEFAULT NULL,
   `status` enum('present','absent','late') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`) VALUES
-(1, 1, '2023-06-01', 'present'),
-(2, 1, '2023-06-02', 'present'),
-(3, 1, '2023-06-03', 'absent'),
-(4, 2, '2023-06-01', 'present'),
-(5, 2, '2023-06-02', 'absent'),
-(6, 1, '2024-11-24', 'present'),
-(7, 1, '2024-11-23', 'present'),
-(8, 1, '2024-11-22', 'absent'),
-(9, 1, '2024-11-21', 'present'),
-(10, 1, '2024-11-20', 'present'),
-(11, 1, '2024-11-25', 'present'),
-(12, 2, '2024-11-25', 'present'),
-(13, 3, '2024-11-25', 'present'),
-(14, 1, '2024-11-26', 'absent'),
-(15, 2, '2024-11-26', 'present'),
-(16, 3, '2024-11-26', 'present'),
-(17, 1, '2024-11-27', 'present'),
-(18, 2, '2024-11-27', 'present'),
-(19, 3, '2024-11-27', 'present');
+INSERT INTO `attendance` (`id`, `student_id`, `date`, `subject_id`, `status`) VALUES
+(1, 1, '2023-06-01', '1', 'present'),
+(2, 1, '2023-06-02', '1', 'present'),
+(3, 1, '2023-06-03', '2', 'absent'),
+(4, 2, '2023-06-01', '1', 'present'),
+(5, 2, '2023-06-02', '3', 'absent'),
+(6, 1, '2024-11-24', '4', 'present'),
+(7, 1, '2024-11-23', '4', 'present'),
+(8, 1, '2024-11-22', '4', 'absent'),
+(9, 1, '2024-11-21', '2', 'present'),
+(10, 1, '2024-11-20', '2', 'present'),
+(11, 1, '2024-11-25', '2', 'present'),
+(12, 2, '2024-11-25', '2', 'present'),
+(13, 3, '2024-11-25', '2', 'present'),
+(14, 1, '2024-11-26', '2', 'absent'),
+(15, 2, '2024-11-26', '2', 'present'),
+(16, 3, '2024-11-26', '2', 'present'),
+(17, 1, '2024-11-27', '2', 'present'),
+(18, 2, '2024-11-27', '2', 'present'),
+(19, 3, '2024-11-27', '2', 'present');
 
 -- --------------------------------------------------------
 
@@ -475,6 +477,7 @@ ALTER TABLE `enrolled_classes`
 ALTER TABLE `students`
   ADD CONSTRAINT `students_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
