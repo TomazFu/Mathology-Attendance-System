@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2024 at 04:18 PM
+-- Generation Time: Nov 28, 2024 at 01:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,7 +54,10 @@ INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`) VALUES
 (13, 3, '2024-11-25', 'present'),
 (14, 1, '2024-11-26', 'absent'),
 (15, 2, '2024-11-26', 'present'),
-(16, 3, '2024-11-26', 'present');
+(16, 3, '2024-11-26', 'present'),
+(17, 1, '2024-11-27', 'present'),
+(18, 2, '2024-11-27', 'present'),
+(19, 3, '2024-11-27', 'present');
 
 -- --------------------------------------------------------
 
@@ -91,6 +94,7 @@ CREATE TABLE `leaves` (
   `fromDate` date DEFAULT NULL,
   `toDate` date DEFAULT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `response_reason` text DEFAULT NULL,
   `document_path` varchar(255) DEFAULT NULL,
   `supportive_document_path` varchar(255) DEFAULT NULL,
   `leave_type` varchar(255) NOT NULL,
@@ -101,11 +105,15 @@ CREATE TABLE `leaves` (
 -- Dumping data for table `leaves`
 --
 
-INSERT INTO `leaves` (`leave_id`, `student_id`, `reason`, `fromDate`, `toDate`, `status`, `document_path`, `supportive_document_path`, `leave_type`, `created_at`) VALUES
-(1, 1, 'Family vacation', '2023-07-01', '2023-07-05', 'pending', NULL, NULL, '', '2024-11-04 15:34:36'),
-(2, 2, 'Medical appointment', '2023-07-10', '2023-07-10', 'pending', NULL, NULL, '', '2024-11-04 15:34:36'),
-(19, 2, 'x', '2024-11-07', '2024-11-25', 'pending', '../../uploads/medical/mc_erd_6744d3911ca5b.png', NULL, 'medical', '2024-11-25 19:44:17'),
-(20, 2, 'x', '2024-11-07', '2024-11-25', 'pending', '../../uploads/medical/mc_erd_6744d3911e787.png', NULL, 'medical', '2024-11-25 19:44:17');
+INSERT INTO `leaves` (`leave_id`, `student_id`, `reason`, `fromDate`, `toDate`, `status`, `response_reason`, `document_path`, `supportive_document_path`, `leave_type`, `created_at`) VALUES
+(46, 3, 'asdf', '2024-12-01', '2024-12-02', 'approved', NULL, NULL, NULL, 'normal', '2024-11-28 00:12:27'),
+(48, 3, 'dfs', '2025-01-01', '2025-01-31', 'approved', 'Approved', NULL, NULL, 'gap', '2024-11-28 00:18:12'),
+(49, 3, 'no', '2024-12-01', '2024-12-02', 'rejected', 'test', '../uploads/medical/mc_Project_Schedule_6747b7c24a24f.jpg', NULL, 'medical', '2024-11-28 00:22:26'),
+(50, 3, 'asfd', '2024-12-02', '2024-12-03', 'approved', 'Approved', '../uploads/medical/mc_Project_Schedule_6747b963c08df.jpg', NULL, 'medical', '2024-11-28 00:29:23'),
+(51, 3, 'sdf', '2024-11-01', '2024-11-30', 'approved', 'Approved', NULL, NULL, 'gap', '2024-11-28 00:35:09'),
+(52, 2, 'ssadd', '2024-11-01', '2024-11-30', 'approved', 'dfasdssaddfffdadf', NULL, NULL, 'gap', '2024-11-28 00:38:10'),
+(53, 2, 'dfs', '2024-11-01', '2024-11-30', 'approved', 'Approved', NULL, NULL, 'gap', '2024-11-28 00:38:14'),
+(54, 3, 'sdfsdf', '2024-11-01', '2024-11-30', 'rejected', 'adf', NULL, NULL, 'gap', '2024-11-28 00:38:20');
 
 -- --------------------------------------------------------
 
@@ -186,7 +194,7 @@ INSERT INTO `packages` (`id`, `package_name`, `price`, `deposit_fee`, `details`)
 
 CREATE TABLE `parent` (
   `parent_id` int(50) NOT NULL,
-  `username` varchar(30) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(60) DEFAULT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -195,10 +203,10 @@ CREATE TABLE `parent` (
 -- Dumping data for table `parent`
 --
 
-INSERT INTO `parent` (`parent_id`, `username`, `password`, `name`) VALUES
-(2, 'asdf', '$2y$10$rioS6IyB9wWcAd7r.FaonetXtAuswXreZLAMS.eIB/3MDs01D.QUK', 'asdf'),
-(1729434667, 'test', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
-(1732524960, 'testing', '$2y$10$.5wdw9z5mB0tfj09q2VOYOdAH4dv3Wh0Bki34PRhoYs9WQD8.fBO.', 'testing');
+INSERT INTO `parent` (`parent_id`, `email`, `password`, `name`) VALUES
+(2, 'asdf@gmail.com', '$2y$10$rioS6IyB9wWcAd7r.FaonetXtAuswXreZLAMS.eIB/3MDs01D.QUK', 'asdf'),
+(1729434667, 'p23015018@student.newinti.edu.my', '$2y$10$hYXsldyOh9FPa9HWD3Ycc.sUjuwNwdJD6ToTFhMgT3tOnG99ezPiG', 'Mathology'),
+(1732524960, 'testing@example.com', '$2y$10$.5wdw9z5mB0tfj09q2VOYOdAH4dv3Wh0Bki34PRhoYs9WQD8.fBO.', 'testing');
 
 -- --------------------------------------------------------
 
@@ -228,8 +236,11 @@ INSERT INTO `payments` (`id`, `parent_id`, `student_id`, `package_id`, `amount`,
 (1, 1729434667, 1, 1, 530, '2024-10-28', 'cash', 1, 100, 1, 'paid'),
 (2, 1729434667, 1, 1, 380, '2024-10-31', 'credit-card', 0, 100, 0, 'paid'),
 (3, 1729434667, 1, 1, 2435, '2024-11-05', 'cash', 1, 400, 1, 'paid'),
-(4, 1729434667, 1, 1, 910, '2024-10-29', 'cash', 1, 100, 1, 'unpaid'),
-(5, 1729434667, 1, 31, 2109, '2024-11-08', 'cheque', 1, 999, 1, 'paid');
+(4, 1729434667, 1, 1, 910, '2024-10-29', 'cash', 1, 100, 1, 'paid'),
+(5, 1729434667, 1, 31, 2109, '2024-11-08', 'cheque', 1, 999, 1, 'paid'),
+(6, 1729434667, 1, 1, 660, '2024-11-27', 'cash', 0, 280, 1, 'paid'),
+(7, 1729434667, 3, 3, 1990, '2024-11-22', 'cash', 1, 280, 1, 'paid'),
+(8, 1729434667, 3, 3, 1990, '2024-11-01', 'cash', 1, 280, 1, 'paid');
 
 -- --------------------------------------------------------
 
@@ -239,27 +250,28 @@ INSERT INTO `payments` (`id`, `parent_id`, `student_id`, `package_id`, `amount`,
 
 CREATE TABLE `staff` (
   `staff_id` int(11) NOT NULL,
-  `username` varchar(30) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(60) NOT NULL,
   `name` varchar(255) NOT NULL,
   `qualification` varchar(50) DEFAULT NULL,
   `contact_number` varchar(15) DEFAULT NULL,
   `leave_left` int(11) DEFAULT NULL,
-  `current_status` varchar(20) DEFAULT NULL
+  `current_status` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_id`, `username`, `password`, `name`, `qualification`, `contact_number`, `leave_left`, `current_status`) VALUES
-(1, 'jane', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Jane Cooper', 'Degree', '012-3456789', 2, 'Active'),
-(2, 'miles', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Floyd Miles', 'Degree', '012-3456789', 3, 'On Leave'),
-(3, 'ronald', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Ronald Richards', 'Degree', '012-3456789', 2, 'On Leave'),
-(4, 'marvin', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Marvin McKinney', 'Degree', '012-3456789', 8, 'Active'),
-(5, 'bell', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Jerome Bell', 'Degree', '012-3456789', 6, 'Active'),
-(6, 'murphy', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Kathryn Murphy', 'Degree', '012-3456789', 5, 'Active'),
-(7, 'jacob', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Jacob Jones', 'Degree', '012-3456788', 2, 'Active');
+INSERT INTO `staff` (`staff_id`, `email`, `password`, `name`, `qualification`, `contact_number`, `leave_left`, `current_status`, `created_at`) VALUES
+(1, 'jane@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Jane Cooper', 'Degree', '012-3456789', 2, 'Active', '2024-11-27 18:47:56'),
+(2, 'miles@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Floyd Miles', 'Degree', '012-3456789', 3, 'On Leave', '2024-11-27 18:47:56'),
+(3, 'ronald@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Ronald Richards', 'Degree', '012-3456789', 2, 'On Leave', '2024-11-27 18:47:56'),
+(4, 'marvin@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Marvin McKinney', 'Degree', '012-3456789', 8, 'Active', '2024-11-27 18:47:56'),
+(5, 'bell@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Jerome Bell', 'Degree', '012-3456789', 6, 'Active', '2024-11-27 18:47:56'),
+(6, 'murphy@gmail.com', '$2y$10$.ZCBvS/RrLMSsIPMf9Rzv.lk6ommpH7uHbG5BLEeg8IB2pxSqwOd6', 'Kathryn Murphy', 'Degree', '012-3456789', 5, 'Active', '2024-11-27 18:47:56'),
+(15, 'p23015018@student.newinti.edu.my', '$2y$10$Y6OBN2F8a2oCLySEh.R1OujEq6C37chZ/bnIqXuZuOb1Mwhes98M6', 'Tomaz', 'Diploma', '012-3456789', 6, 'Active', '2024-11-27 19:42:32');
 
 -- --------------------------------------------------------
 
@@ -283,9 +295,9 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_id`, `parent_id`, `student_name`, `class`, `package_id`, `total_fees`, `fees_paid`, `created_at`) VALUES
-(1, 1729434667, 'Student One', 'Class A', NULL, 100.00, 0.00, '2024-11-04 15:34:36'),
-(2, 1729434667, 'Student Two', 'Class B', NULL, 1000.00, 1000.00, '2024-11-04 15:34:36'),
-(3, 1729434667, 'Student 3', 'Class A', NULL, 1500.00, 1000.00, '2024-11-07 13:44:30');
+(1, 1729434667, 'Student One', 'Class A', 1, 100.00, 0.00, '2024-11-04 15:34:36'),
+(2, 1729434667, 'Student Two', 'Class B', 2, 1000.00, 1000.00, '2024-11-04 15:34:36'),
+(3, 1729434667, 'Student 3', 'Class A', 3, 1500.00, 1000.00, '2024-11-07 13:44:30');
 
 -- --------------------------------------------------------
 
@@ -390,7 +402,7 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `enrolled_classes`
@@ -402,7 +414,7 @@ ALTER TABLE `enrolled_classes`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `manager`
@@ -426,13 +438,13 @@ ALTER TABLE `parent`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `students`
