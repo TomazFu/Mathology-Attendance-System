@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: manager-login.php");
+    exit;
+}
+
 // Include the process file to fetch data
 include('../manager/includes/fetch-managerDashboard.php');
 

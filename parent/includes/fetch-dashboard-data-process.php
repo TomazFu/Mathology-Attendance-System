@@ -44,7 +44,7 @@ try {
 
     $attendanceRate = 0;
     if ($attendance['total_days'] > 0) {
-        $attendanceRate = round(($attendance['present_days'] / $attendance['total_days']) * 100);
+        $attendanceRate = round(($attendance['present_days'] / $attendance['total_days']) * 100, 2);
     }
 
     error_log("Attendance Rate: " . $attendanceRate);

@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: manager-login.php");
+    exit;
+}
+
 include('../manager/includes/fetch-managerDashboard.php');
 include "../includes/header.php";
 include "../includes/sidebar.php";
