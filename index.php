@@ -197,51 +197,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 </script>
-
-<!-- Update the footer container to remove sidebar margins -->
-<footer class="site-footer" style="margin-left: 0;">
-    <div class="footer-background"></div>
-    <div class="footer-content">
-        <div class="footer-section">
-            <h3>About Mathology</h3>
-            <p>Empowering students through innovative mathematics education. Our mission is to make learning mathematics engaging, accessible, and effective for every student.</p>
-        </div>
-        
-        <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul class="footer-links">
-                <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
-                <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
-                <li><a href="#login-section"><i class="fas fa-chevron-right"></i> Get Started</a></li>
-                <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
-                <li><a href="#"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h3>Contact Us</h3>
-            <div class="footer-contact">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>123, Bayan Lepas, Penang</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>(60) 123456789</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>Mathology@gmail.com</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>&copy; <?php echo date("Y"); ?> Mathology. All rights reserved.</p>
-    </div>
-</footer>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>

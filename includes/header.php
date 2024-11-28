@@ -11,14 +11,14 @@ $base_path = isset($is_index) && $is_index ? '' : '../';
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="<?php echo $base_path; ?>assets/img/mathology.ico">
     <script src="../assets/js/script.js"></script>
 </head>
 <body>
     <header>
         <div class="header-container">
             <a href="<?php echo $base_path; ?>index.php" class="logo">
-                <i class="fas fa-square-root-alt"></i>
-                <span>Mathology</span>
+                <img src="<?php echo $base_path; ?>assets/img/mathology.png" alt="Mathology" class="logo-img">
             </a>
             <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
             <div class="header-right">

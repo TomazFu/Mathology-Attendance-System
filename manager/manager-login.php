@@ -39,18 +39,6 @@ session_start();
                     <i class="fas fa-lock"></i>
                 </div>
             </div>
-            
-            <div class="login-options">
-                <label class="remember-me" for="remember">
-                    <input type="checkbox" name="remember" id="remember">
-                    <span>Remember me</span>
-                </label>
-                <a href="#" class="forgot-password" title="Reset your password">
-                    <i class="fas fa-key"></i>
-                    Forgot Password?
-                </a>
-            </div>
-            
             <button type="submit">
                 <i class="fas fa-sign-in-alt"></i>
                 Sign In
