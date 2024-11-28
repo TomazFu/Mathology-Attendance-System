@@ -11,6 +11,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Add this after the database connection
+date_default_timezone_set('Asia/Kuala_Lumpur'); // Sets timezone to GMT+8
+
 // Calculate monthly statistics first
 // Calculate monthly student count
 $monthly_student_count = "SELECT COUNT(*) as count 
@@ -76,7 +79,7 @@ if ($type === 'pdf') {
     $pdf->SetFont('helvetica', 'B', 14);
     $pdf->Cell(0, 10, 'Monthly Performance Report', 0, 1, 'C');
     $pdf->SetFont('helvetica', 'I', 10);
-    $pdf->Cell(0, 10, 'Generated on: ' . date('d/m/Y'), 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Generated on: ' . date('d/m/Y H:i', time()), 0, 1, 'C');
     $pdf->Ln(10);
 
     // Summary section
@@ -124,7 +127,7 @@ if ($type === 'pdf') {
     
     // Updated headers and structure
     fputcsv($output, ['MATHOLOGY - MATHS LEARNING CENTER']);
-    fputcsv($output, ['Monthly Performance Report - ' . date('d/m/Y')]);
+    fputcsv($output, ['Monthly Performance Report - ' . date('d/m/Y H:i', time())]);
     fputcsv($output, []);  // Empty line for spacing
     fputcsv($output, ['SUMMARY']);
     fputcsv($output, ['Total Revenue', 'RM ' . number_format(array_sum($all_amounts), 2)]);
