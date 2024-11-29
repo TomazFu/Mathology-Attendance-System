@@ -32,7 +32,7 @@
 
         $sql = "INSERT INTO parent (parent_id, email, password, name) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $parent_id, $email, $password, $name);
+        $stmt->bind_param("isss", $parent_id, $email, $hashed_password, $name);
 
         if ($stmt->execute()) {
             $_SESSION['registration_success'] = "Parent registration successful!";
