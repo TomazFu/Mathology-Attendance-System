@@ -33,7 +33,7 @@ require_once "../includes/sidebar.php";
             <h1> Parent Registration </h1>
             <?php
             if (isset($_SESSION['registration_success'])) {
-                echo '<div class="warning-box">' . $_SESSION['registration_success'] . '</div>';
+                echo '<div class="success-box">' . $_SESSION['registration_success'] . '</div>';
                 unset($_SESSION['registration_success']);
             }
             if (isset($_SESSION['registration_error'])) {
@@ -56,17 +56,6 @@ require_once "../includes/sidebar.php";
                         <input type="password" name="confirm-password" placeholder="Confirm Password *" class="full-width" required>
                     </div>
                     <button type="submit" class="register-button"><i class="fa fa-user-plus"></i>&nbsp;REGISTER</button>
-                </form>
-                <?php
-                if (isset($_SESSION['registration_error'])) {
-                    echo '<div class="error">' . $_SESSION['registration_error'] . '</div>';
-                    unset($_SESSION['registration_error']);
-                }
-                if (isset($_SESSION['registration_success'])) {
-                    echo '<div class="success">' . $_SESSION['registration_success'] . '</div>';
-                    unset($_SESSION['registration_success']);
-                }
-                ?>
             </div>
         </div>
     </div>

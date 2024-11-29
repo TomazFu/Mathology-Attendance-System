@@ -394,6 +394,17 @@ button {
     border-color: #f5c2c7;
 }
 
+.success-box {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #ffffff;
+    background-color: #0095ff;
+    border-color: #f5c2c7;
+}
+
 .form-container {
     width: 320px;
     margin: 0 auto;
