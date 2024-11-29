@@ -35,7 +35,7 @@
                     <!-- Attendance Card -->
                     <a href="staff-attendance.php" class="dashboard-link">
                         <div class="attendance-management dashboard-staff-box">
-                            <h3 align="center">Attendance Management</h3>
+                            <h3 style="text-align: center;">Attendance Management</h3>
                             <i style="font-size: 30px;" class="fa fa-clipboard-check"></i>
                         </div>
                     </a>

@@ -277,7 +277,7 @@ button {
 
 /* Staff Attendance page*/
 .attendance-page-container {
-    max-width: 100%;
+    width: 963px;
     padding: 30px;
     background-color: #fff;
     border-radius: 10px;
